@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.logging.Log;
@@ -53,12 +54,19 @@ public class PricesFetchAppRunner implements Runnable {
 
 			SYMBOL_ISIN_MAP.put(symbol, isin);
 
-			final StockValueCall stockValueCall = new StockValueCallBuilder().symbol(symbol).apiKey(apiKey).build();
+			StockValueCallBuilder stockValueCallBuilder = new StockValueCallBuilder().symbol(symbol).apiKey(apiKey);
+
+			final Optional<String> timeoutOptional = admSuppoprt.getProperty(AvProperties.TIMEOUT);
+			if (timeoutOptional.isPresent()) {
+				stockValueCallBuilder.timeOut(Integer.valueOf(timeoutOptional.get()));
+			}
+
+			final StockValueCall stockValueCall = stockValueCallBuilder.symbol(symbol).apiKey(apiKey).build();
 
 			final StockValueCallRunner runner = new StockValueCallRunner(stockValueCall);
-			tasks.add(runner);		
+			tasks.add(runner);
 		});
-		
+
 		final TimedExecutor timedExecutor = new TimedExecutor(5, tasks);
 		timedExecutor.execute();
 
@@ -124,7 +132,7 @@ public class PricesFetchAppRunner implements Runnable {
 
 	private String getProperty(String fetchvaluesFile) {
 		return admSuppoprt.getProperty(fetchvaluesFile)
-				.orElseThrow(() -> new BaseException("not setted: ", fetchvaluesFile));
+				.orElseThrow(() -> new BaseException("not setted: '%s'", fetchvaluesFile));
 	}
 
 };

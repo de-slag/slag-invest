@@ -9,13 +9,15 @@ import de.slag.invest.av.AvException;
 
 public class StockValueCallBuilder implements Builder<StockValueCall> {
 
-	private static final int TIME_OUT = 3000;
+	private static final int DEFAULT_TIME_OUT = 3000;
 
 	private String apiKey;
-	
+
 	private String symbol;
-	
+
 	private Boolean outputSizeFull;
+
+	private Integer readTimeOut;
 
 	public StockValueCall build() {
 		if (StringUtils.isBlank(apiKey)) {
@@ -24,12 +26,13 @@ public class StockValueCallBuilder implements Builder<StockValueCall> {
 		if (StringUtils.isBlank(symbol)) {
 			throw new AvException("symbol configured");
 		}
-		
+
 		return build0();
 	}
 
 	private StockValueCall build0() {
-		final AlphaVantageConnector apiConnector = new AlphaVantageConnector(apiKey, TIME_OUT);
+		final int currentReadTimeOut = readTimeOut != null ? readTimeOut : DEFAULT_TIME_OUT;
+		final AlphaVantageConnector apiConnector = new AlphaVantageConnector(apiKey, currentReadTimeOut);
 
 		final StockValueCall stockValueCall = new StockValueCall();
 		stockValueCall.setStockTimeSeries(new TimeSeries(apiConnector));
@@ -38,12 +41,12 @@ public class StockValueCallBuilder implements Builder<StockValueCall> {
 
 		return stockValueCall;
 	}
-	
+
 	public StockValueCallBuilder outputSizeFull(boolean outputSizeFull) {
 		this.outputSizeFull = outputSizeFull;
 		return this;
 	}
-	
+
 	public StockValueCallBuilder symbol(String symbol) {
 		this.symbol = symbol;
 		return this;
@@ -51,6 +54,11 @@ public class StockValueCallBuilder implements Builder<StockValueCall> {
 
 	public StockValueCallBuilder apiKey(String apiKey) {
 		this.apiKey = apiKey;
+		return this;
+	}
+
+	public StockValueCallBuilder timeOut(int timeOutInMilliseconds) {
+		this.readTimeOut = timeOutInMilliseconds;
 		return this;
 	}
 
