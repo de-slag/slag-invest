@@ -1,6 +1,5 @@
 package de.slag.invest.app;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
