@@ -19,10 +19,10 @@ import de.slag.common.base.BaseException;
 import de.slag.common.utils.CsvUtils;
 import de.slag.common.utils.DateUtils;
 import de.slag.invest.av.AvProperties;
-import de.slag.invest.av.call.StockValueCall;
-import de.slag.invest.av.call.StockValueCallBuilder;
-import de.slag.invest.av.model.AvStockValue;
-import de.slag.invest.av.response.AvStockValueResponse;
+import de.slag.invest.av.stock.AvStock;
+import de.slag.invest.av.stock.AvStockCall;
+import de.slag.invest.av.stock.AvStockCallBuilder;
+import de.slag.invest.av.stock.AvStockResponse;
 
 public class PricesFetchAppRunner implements Runnable {
 
@@ -33,7 +33,7 @@ public class PricesFetchAppRunner implements Runnable {
 	private static String ISIN = "ISIN";
 	private static String SYMBOL = "SYMBOL";
 
-	private Map<String, Collection<AvStockValue>> allValues = new HashMap<>();
+	private Map<String, Collection<AvStock>> allValues = new HashMap<>();
 
 	private Map<String, String> SYMBOL_ISIN_MAP = new HashMap<String, String>();
 
@@ -54,14 +54,14 @@ public class PricesFetchAppRunner implements Runnable {
 
 			SYMBOL_ISIN_MAP.put(symbol, isin);
 
-			StockValueCallBuilder stockValueCallBuilder = new StockValueCallBuilder().symbol(symbol).apiKey(apiKey);
+			AvStockCallBuilder stockValueCallBuilder = new AvStockCallBuilder().symbol(symbol).apiKey(apiKey);
 
 			final Optional<String> timeoutOptional = admSuppoprt.getProperty(AvProperties.TIMEOUT);
 			if (timeoutOptional.isPresent()) {
-				stockValueCallBuilder.timeOut(Integer.valueOf(timeoutOptional.get()));
+				stockValueCallBuilder.readTimeOut(Integer.valueOf(timeoutOptional.get()));
 			}
 
-			final StockValueCall stockValueCall = stockValueCallBuilder.symbol(symbol).apiKey(apiKey).build();
+			final AvStockCall stockValueCall = stockValueCallBuilder.symbol(symbol).apiKey(apiKey).build();
 
 			final StockValueCallRunner runner = new StockValueCallRunner(stockValueCall);
 			tasks.add(runner);
@@ -71,9 +71,15 @@ public class PricesFetchAppRunner implements Runnable {
 		timedExecutor.execute();
 
 		tasks.forEach(runner -> {
-			final AvStockValueResponse response = runner.getResponse();
-			final String symbol = runner.getSymbol();
-			Collection<AvStockValue> values = response.getValues();
+			final AvStockResponse response = runner.getResponse();
+			Collection<AvStock> values = response.getStocks();
+			Optional<AvStock> findAny = values.stream().findAny();
+			if(!findAny.isPresent()) {
+				LOG.debug("no stocks found");
+				return;
+			}
+			AvStock avStock = findAny.get();
+			String symbol = avStock.getSymbol();
 			LOG.info(String.format("call for symbol '%s' done. %s values recieved.", symbol, values.size()));
 
 			final String isin = SYMBOL_ISIN_MAP.get(symbol);
@@ -92,7 +98,7 @@ public class PricesFetchAppRunner implements Runnable {
 
 			Collection<Collection<String>> resultList = new ArrayList<>();
 
-			final Collection<AvStockValue> values = allValues.get(isin);
+			final Collection<AvStock> values = allValues.get(isin);
 			values.forEach(value -> {
 				List<String> row = new ArrayList<>();
 				row.add(isin);
@@ -101,7 +107,7 @@ public class PricesFetchAppRunner implements Runnable {
 				row.add(value.getHigh().toString());
 				row.add(value.getLow().toString());
 				row.add(value.getClose().toString());
-				row.add(value.getVolume().toString());
+				row.add(Long.toString(value.getVolume()));
 				row.add(formattedFetchTime);
 				resultList.add(row);
 			});
