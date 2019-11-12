@@ -122,7 +122,7 @@ public class PricesFetchAppRunner implements Runnable {
 
 		});
 
-		LOG.info("all done");
+		LOG.info("all done. export dir: " + fetchValuesOutputDirPath);
 
 	}
 
