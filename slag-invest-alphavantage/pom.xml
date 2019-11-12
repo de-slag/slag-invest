@@ -15,9 +15,20 @@
 
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-base</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.slag.common</groupId>
+			<artifactId>slag-common-utils</artifactId>
 		</dependency>
 
 		<dependency>
