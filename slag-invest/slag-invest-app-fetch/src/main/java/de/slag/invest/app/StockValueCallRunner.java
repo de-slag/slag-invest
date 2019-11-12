@@ -4,27 +4,26 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.slag.common.base.BaseException;
-import de.slag.invest.av.call.StockValueCall;
-import de.slag.invest.av.response.AvStockValueResponse;
+import de.slag.invest.av.stock.AvStockCall;
+import de.slag.invest.av.stock.AvStockResponse;
 
 public class StockValueCallRunner implements Runnable {
 
 	private static final Log LOG = LogFactory.getLog(StockValueCallRunner.class);
 
-	private StockValueCall call;
+	private AvStockCall call;
 
-	private AvStockValueResponse response;
+	private AvStockResponse response;
 
 	private Exception e;
 
-	public StockValueCallRunner(StockValueCall call) {
+	public StockValueCallRunner(AvStockCall call) {
 		this.call = call;
 	}
 
 	@Override
 	public void run() {
-		final String symbol = call.getSymbol();
-		LOG.info(String.format("call for symbol '%s'...", symbol));
+		LOG.info(String.format("call '%s'...", call));
 		try {
 			this.response = call.call();
 		} catch (Exception e) {
@@ -32,18 +31,14 @@ public class StockValueCallRunner implements Runnable {
 			this.e = e;
 			return;
 		}
-		LOG.info(String.format("call for symbol '%s' done. %s values recieved.", symbol, response.getValues().size()));
+		LOG.info(String.format("call for symbol '%s' done. %s values recieved.", call, response.getStocks().size()));
 	}
 
-	public AvStockValueResponse getResponse() {
+	public AvStockResponse getResponse() {
 		if (e != null) {
 			throw new BaseException("error while calling", e.getMessage());
 		}
 		return response;
-	}
-
-	public String getSymbol() {
-		return call.getSymbol();
 	}
 
 }
