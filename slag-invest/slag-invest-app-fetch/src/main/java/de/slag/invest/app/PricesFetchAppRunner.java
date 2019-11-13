@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import de.slag.common.base.BaseException;
 import de.slag.common.utils.CsvUtils;
 import de.slag.common.utils.DateUtils;
+import de.slag.invest.api.FetchCsvModel;
 import de.slag.invest.av.AvProperties;
 import de.slag.invest.av.stock.AvStock;
 import de.slag.invest.av.stock.AvStockCall;
@@ -91,7 +92,7 @@ public class PricesFetchAppRunner implements Runnable {
 		allValues.keySet().forEach(isin -> conclusion.add(String.format("%s: %s", isin, allValues.get(isin).size())));
 		LOG.info(String.format("all fetched:\n%s", String.join("\n", conclusion)));
 
-		final List<String> header = Arrays.asList(ISIN, "DATE", "OPEN", "HIGH", "LOW", "CLOSE", "VOLUME", "FETCHED");
+		final List<String> header = FetchCsvModel.HEADER;
 		final String formattedFetchTime = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss")
 				.format(DateUtils.toDate(fetchTime));
 		allValues.keySet().forEach(isin -> {
