@@ -21,6 +21,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>slag-invest-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-base</artifactId>
 		</dependency>
