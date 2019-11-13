@@ -12,6 +12,7 @@
 		<module>slag-invest-av-app</module>
 		<module>slag-invest-app-fetch</module>
 		<module>slag-invest-purchase-model</module>
+		<module>slag-invest-api</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>
