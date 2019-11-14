@@ -13,6 +13,17 @@ Hruschka & Dr. Gernot Starke.
 
 # 1. Einführung und Ziele {#section-introduction-and-goals}
 
+**Inhalt**
+<offen>
+    
+**Motivation**
+<offen>
+
+**Form**
+|Use-Case|
+|---|
+Der Anwender möchte den akutellen Wert seines Depots berechnen und dokumentieren lassen.|
+
 ## 1.1 Aufgabenstellung
 Die Anwendung soll Berechnungen im Bereich börsengehandeter Titel durchführen können.
 
