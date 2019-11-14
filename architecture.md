@@ -11,16 +11,16 @@ Template Revision: 7.0 DE (asciidoc-based), January 2017
 architecture template, <http://www.arc42.de>. Created by Dr. Peter
 Hruschka & Dr. Gernot Starke.
 
-Einführung und Ziele {#section-introduction-and-goals}
+1. Einführung und Ziele {#section-introduction-and-goals}
 ====================
 
-Aufgabenstellung {#_aufgabenstellung}
+1.1 Aufgabenstellung
 ----------------
 
-Qualitätsziele {#_qualit_tsziele}
+1.2 Qualitätsziele {#_qualit_tsziele}
 --------------
 
-Stakeholder {#_stakeholder}
+1.3 Stakeholder {#_stakeholder}
 -----------
 
 +-----------------+-----------------+-----------------------------------+
@@ -31,10 +31,10 @@ Stakeholder {#_stakeholder}
 | *\<Rolle-2\>*   | *\<Kontakt-2\>* | *\<Erwartung-2\>*                 |
 +-----------------+-----------------+-----------------------------------+
 
-Randbedingungen {#section-architecture-constraints}
+2. Randbedingungen {#section-architecture-constraints}
 ===============
 
-Kontextabgrenzung {#section-system-scope-and-context}
+3. Kontextabgrenzung {#section-system-scope-and-context}
 =================
 
 Fachlicher Kontext {#_fachlicher_kontext}
@@ -53,10 +53,10 @@ Technischer Kontext {#_technischer_kontext}
 
 **\<Mapping fachliche auf technische Schnittstellen\>**
 
-Lösungsstrategie {#section-solution-strategy}
+4. Lösungsstrategie {#section-solution-strategy}
 ================
 
-Bausteinsicht {#section-building-block-view}
+5. Bausteinsicht {#section-building-block-view}
 =============
 
 Whitebox Gesamtsystem {#_whitebox_gesamtsystem}
@@ -136,7 +136,7 @@ Ebene 3 {#_ebene_3}
 
 *\<Whitebox-Template\>*
 
-Laufzeitsicht {#section-runtime-view}
+6. Laufzeitsicht {#section-runtime-view}
 =============
 
 *\<Bezeichnung Laufzeitszenario 1\>* {#__emphasis_bezeichnung_laufzeitszenario_1_emphasis}
@@ -157,7 +157,7 @@ Laufzeitsicht {#section-runtime-view}
 
 ...
 
-Verteilungssicht {#section-deployment-view}
+7. Verteilungssicht {#section-deployment-view}
 ================
 
 Infrastruktur Ebene 1 {#_infrastruktur_ebene_1}
@@ -194,7 +194,7 @@ Infrastruktur Ebene 2 {#_infrastruktur_ebene_2}
 
 *\<Diagramm + Erläuterungen\>*
 
-Querschnittliche Konzepte {#section-concepts}
+8. Querschnittliche Konzepte {#section-concepts}
 =========================
 
 *\<Konzept 1\>* {#__emphasis_konzept_1_emphasis}
@@ -214,10 +214,10 @@ Querschnittliche Konzepte {#section-concepts}
 
 *\<Erklärung\>*
 
-Entwurfsentscheidungen {#section-design-decisions}
+9. Entwurfsentscheidungen {#section-design-decisions}
 ======================
 
-Qualitätsanforderungen {#section-quality-scenarios}
+10. Qualitätsanforderungen {#section-quality-scenarios}
 ======================
 
 Qualitätsbaum {#_qualit_tsbaum}
@@ -226,10 +226,10 @@ Qualitätsbaum {#_qualit_tsbaum}
 Qualitätsszenarien {#_qualit_tsszenarien}
 ------------------
 
-Risiken und technische Schulden {#section-technical-risks}
+11. Risiken und technische Schulden {#section-technical-risks}
 ===============================
 
-Glossar {#section-glossary}
+12. Glossar {#section-glossary}
 =======
 
 +-----------------------+-----------------------------------------------+
