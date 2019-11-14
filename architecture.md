@@ -13,16 +13,6 @@ Hruschka & Dr. Gernot Starke.
 
 # 1. Einführung und Ziele {#section-introduction-and-goals}
 
-**Inhalt**
-
-(noch offen)
-    
-**Motivation**
-
-(noch offen)
-
-**Form**
-
 |Use-Case|
 |---|
 |Der Anwender möchte den akutellen Wert seines Depots automatisiert berechnen und dokumentieren lassen.|
@@ -41,18 +31,20 @@ Die Anwendung soll Berechnungen im Bereich börsengehandeter Titel durchführen 
 |---|---|
 |User|technisch und fachlich mittelmäßig versiert, wenig Unterstützung notwendig, hoher Freiheitsgrad benötigt|
 
-2. Randbedingungen {#section-architecture-constraints}
-===============
+# 2. Randbedingungen
 
-3. Kontextabgrenzung {#section-system-scope-and-context}
-=================
+* Lauffähigkeit auf handelsüblichen Computern ohne DB-Anbindung sicherstellen.
 
-Fachlicher Kontext {#_fachlicher_kontext}
-------------------
+# 3. Kontextabgrenzung {#section-system-scope-and-context}
 
-**\<Diagramm und/oder Tabelle\>**
+* Schnittstelle zum Beziehen von Börsendaten
 
-**\<optional: Erläuterung der externen fachlichen Schnittstellen\>**
+## 3.1 Fachlicher Kontext {#_fachlicher_kontext}
+
+|Externe Schnittstelle|Bedeutung|
+|---|---|
+|Schnittstelle zum Beziehen von Börsendaten|Grundlage aller Berechnungen soll eine Schnittstelle sein, von der automatisiert Kurse und Preise abgerufen werden können.|
+
 
 Technischer Kontext {#_technischer_kontext}
 -------------------
