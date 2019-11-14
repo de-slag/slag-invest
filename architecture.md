@@ -11,25 +11,20 @@ Template Revision: 7.0 DE (asciidoc-based), January 2017
 architecture template, <http://www.arc42.de>. Created by Dr. Peter
 Hruschka & Dr. Gernot Starke.
 
-1. Einführung und Ziele {#section-introduction-and-goals}
-====================
+# 1. Einführung und Ziele {#section-introduction-and-goals}
 
-1.1 Aufgabenstellung
-----------------
+## 1.1 Aufgabenstellung
+Die Anwendung soll Berechnungen im Bereich börsengehandeter Titel durchführen können.
 
-1.2 Qualitätsziele {#_qualit_tsziele}
---------------
+## 1.2 Qualitätsziele
+1. Korrektheit - Die Ergebnisse sollen richtig sein.
+1. Portabilität - Die Anwendung soll möglichst ohne Aufwand auf anderen Systemen lauffähig gemacht werden.
 
-1.3 Stakeholder {#_stakeholder}
------------
+## 1.3 Stakeholder {#_stakeholder}
 
-+-----------------+-----------------+-----------------------------------+
-| Rolle           | Kontakt         | Erwartungshaltung                 |
-+=================+=================+===================================+
-| *\<Rolle-1\>*   | *\<Kontakt-1\>* | *\<Erwartung-1\>*                 |
-+-----------------+-----------------+-----------------------------------+
-| *\<Rolle-2\>*   | *\<Kontakt-2\>* | *\<Erwartung-2\>*                 |
-+-----------------+-----------------+-----------------------------------+
+|Rolle|Erwartungshaltung|
+|---|---|
+|User|technisch und fachlich mittelmäßig versiert, wenig Unterstützung notwendig, hoher Freiheitsgrad benötigt|
 
 2. Randbedingungen {#section-architecture-constraints}
 ===============
