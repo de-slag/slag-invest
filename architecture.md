@@ -33,6 +33,7 @@ Die Anwendung soll Berechnungen im Bereich börsengehandeter Titel durchführen 
 ## 1.2 Qualitätsziele
 1. Korrektheit - Die Ergebnisse sollen richtig sein.
 1. Portabilität - Die Anwendung soll möglichst ohne Aufwand auf anderen Systemen lauffähig gemacht werden.
+3. Robustheit - gegenüber den gelieferten Daten.
 
 ## 1.3 Stakeholder {#_stakeholder}
 
