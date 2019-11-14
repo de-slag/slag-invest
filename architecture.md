@@ -25,7 +25,7 @@ Hruschka & Dr. Gernot Starke.
 
 |Use-Case|
 |---|
-|Der Anwender möchte den akutellen Wert seines Depots berechnen und dokumentieren lassen.|
+|Der Anwender möchte den akutellen Wert seines Depots automatisiert berechnen und dokumentieren lassen.|
 
 ## 1.1 Aufgabenstellung
 Die Anwendung soll Berechnungen im Bereich börsengehandeter Titel durchführen können.
