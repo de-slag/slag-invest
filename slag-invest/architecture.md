@@ -169,6 +169,7 @@ Infrastruktur Ebene 2
 |invest-data-*|Modul einer Daten-Schale|
 |invest-interface-*|Modul einer Interface-Schale|
 |invest-app-*|Modul einer Anwendungs-Schale|
+|import/export|Modul der Adapter-Schale|
 
 **Packages**
 
