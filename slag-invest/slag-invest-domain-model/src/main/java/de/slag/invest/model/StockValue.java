@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import de.slag.common.model.EntityBean;
 
 @Entity
-public class StockValue extends EntityBean {
+public class StockValue extends DomainBean {
 	
 	@Basic
 	private String isin;
