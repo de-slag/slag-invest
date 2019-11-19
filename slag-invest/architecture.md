@@ -281,6 +281,7 @@ Es handelt sich um ein neues System, daher gibt es keine technischen Schulden.
 |---|---|
 |StockValue|Handelbarer Börsentitel; beispielseweise Aktie, Derivat, ETF, etc.|
 |Schale|"Schicht" der Anwendung, da keine Schichten- sondern Onion-Architektur, hier "Schale" genannt|
+|Modul|technische Einheit, die mehrere Maven-Module enthalten kann|
 
 Ende der Architekturdokumentation
 
