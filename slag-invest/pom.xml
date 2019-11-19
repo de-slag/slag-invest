@@ -20,6 +20,8 @@
 		<module>slag-invest-domain-model</module>
 		<module>slag-invest-domain-repository</module>
 		<module>slag-invest-domain-service</module>
+		<module>slag-invest-domain-service-impl</module>
+		<module>slag-invest-db-repostitory</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>
