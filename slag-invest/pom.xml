@@ -22,6 +22,10 @@
 		<module>slag-invest-domain-service</module>
 		<module>slag-invest-domain-service-impl</module>
 		<module>slag-invest-db-repostitory</module>
+		<module>slag-invest-data-import-api</module>
+		<module>slag-invest-report-api</module>
+		<module>slag-invest-data-import</module>
+		<module>slag-invest-report</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>
