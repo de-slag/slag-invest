@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -18,7 +21,7 @@ import de.slag.common.base.BaseException;
 
 @Service
 public class InvestAppAdmService implements AdmService {
-	
+
 	private static final Log LOG = LogFactory.getLog(InvestAppAdmService.class);
 
 	public static final String CONFIG = "de.slag.configfile";
@@ -46,19 +49,22 @@ public class InvestAppAdmService implements AdmService {
 		} catch (IOException e) {
 			throw new BaseException(e);
 		}
-		
-		// TODO: debug log configured properties
-		
-		
-		
-		
+
+		final List<String> keyValuesStrings = properties.keySet().stream().map(key -> (String) key)
+				.map(key -> key + ": " + properties.getProperty(key)).collect(Collectors.toList());
+
+		LOG.debug(String.format("configuration:\n%s", String.join("\n", keyValuesStrings)));
+
 		LOG.info("setUp successful");
 
 	}
 
-	public String getValue(String key) {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<String> getValue(String key) {
+		final String property = properties.getProperty(key);
+		if (property == null) {
+			return Optional.empty();
+		}
+		return Optional.of(property);
 	}
 
 }
