@@ -1,5 +1,7 @@
 package de.slag.invest.service;
 
+import java.util.Collection;
+
 import javax.annotation.Resource;
 
 import de.slag.invest.model.DomainBean;
@@ -20,6 +22,10 @@ public abstract class AbstractDomainServiceImpl<T extends DomainBean> implements
 	
 	public T loadById(Long id) {
 		return universalRepo.loadById(id, getType());
+	}
+	
+	public Collection<Long> findAllIds() {
+		return universalRepo.findAllIds(getType());
 	}
 
 	protected abstract Class<T> getType();

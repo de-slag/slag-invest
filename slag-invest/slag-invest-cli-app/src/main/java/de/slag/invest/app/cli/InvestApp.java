@@ -46,6 +46,7 @@ public class InvestApp {
 	}
 
 	private void run() {
-		
+		investAppService.importData();
+		investAppService.report();
 	}
 }
