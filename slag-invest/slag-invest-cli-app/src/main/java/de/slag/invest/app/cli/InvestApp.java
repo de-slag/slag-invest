@@ -19,6 +19,9 @@ public class InvestApp {
 		final InvestApp investApp = new InvestApp();
 		investApp.setUp(args);
 		investApp.run();
+		
+		LOG.info("all done, Exit!");
+		System.exit(0);
 	}
 
 	private InvestAppService investAppService;
