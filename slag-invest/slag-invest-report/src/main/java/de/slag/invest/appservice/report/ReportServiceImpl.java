@@ -13,7 +13,7 @@ public class ReportServiceImpl implements ReportService {
 	private StockValueService stockValueService;
 
 	public String testReport() {
-		return "this is an empty test report";
+		return "Test-Report: " + stockValueService.findAllIds().size() + " datasets found";
 	}
 
 }

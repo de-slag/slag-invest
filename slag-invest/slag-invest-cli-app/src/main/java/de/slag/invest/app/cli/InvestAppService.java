@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import de.slag.common.base.AdmService;
 import de.slag.invest.appservice.dataimport.DataImportSerivce;
+import de.slag.invest.appservice.report.ReportService;
 
 @Service
 public class InvestAppService {
@@ -19,14 +20,17 @@ public class InvestAppService {
 	
 	@Resource
 	private DataImportSerivce dataImportSerivce;
+	
+	@Resource
+	private ReportService reportService;
 
 
 	public void importData() {
-		LOG.error("not implemented yet");
+		dataImportSerivce.importData();
 	}
 	
-	public void calc() {
-		LOG.error("not implemented yet");
+	public void report() {
+		System.out.println(reportService.testReport());
 	}
 
 }

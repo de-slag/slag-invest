@@ -1,5 +1,6 @@
 package de.slag.invest.repo.db;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -50,6 +51,10 @@ public class UniversalRepoImpl implements UniversalRepo {
 			return null;
 		}
 		return type.cast(loadById.get());
+	}
+
+	public <D extends DomainBean> Collection<Long> findAllIds(Class<D> type) {
+		return hibernateSupport.findAllIds(type);
 	}
 
 }
