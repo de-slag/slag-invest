@@ -9,10 +9,21 @@
 	</parent>
 	<artifactId>slag-invest-domain-service-impl</artifactId>
 	<dependencies>
+		<!-- invest -->
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>slag-invest-domain-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>de.slag.invest</groupId>
 			<artifactId>slag-invest-domain-repository</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<!-- common -->
+		<dependency>
+			<groupId>de.slag.common</groupId>
+			<artifactId>slag-common-context</artifactId>
 		</dependency>
 	</dependencies>
 </project>
