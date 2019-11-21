@@ -1,14 +1,19 @@
 package de.slag.invest.repo.db;
 
+import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
 import de.slag.common.base.AdmService;
-import de.slag.common.base.BaseException;
+import de.slag.common.context.SubClassesUtils;
 import de.slag.common.db.HibernateSupport;
 import de.slag.common.db.HibernateSupportBuilder;
+import de.slag.common.db.h2.InMemoryProperties;
 import de.slag.common.model.EntityBeanUtils;
 import de.slag.invest.model.DomainBean;
 import de.slag.invest.repo.UniversalRepo;
@@ -23,9 +28,11 @@ public class UniversalRepoImpl implements UniversalRepo {
 
 	@PostConstruct
 	public void init() {
-
-		// TODO HibernateSupportBuilder ...
-		throw new BaseException("not implemented yet");
+		SubClassesUtils.findAllSubclassesOf(DomainBean.class);
+		hibernateSupport = new HibernateSupportBuilder()
+				.registerClasses(SubClassesUtils.findAllSubclassesOf(DomainBean.class))
+				.hibernateDialect(InMemoryProperties.DIALECT).url(InMemoryProperties.URL).user(InMemoryProperties.USER)
+				.driver(InMemoryProperties.DRIVER).password(InMemoryProperties.PASSWORD).build();
 	}
 
 	public void save(DomainBean bean) {
@@ -38,7 +45,11 @@ public class UniversalRepoImpl implements UniversalRepo {
 	}
 
 	public <D extends DomainBean> D loadById(Long id, Class<D> type) {
-		return type.cast(hibernateSupport.loadById(id, type));
+		Optional<D> loadById = hibernateSupport.loadById(id, type);
+		if (!loadById.isPresent()) {
+			return null;
+		}
+		return type.cast(loadById.get());
 	}
 
 }
