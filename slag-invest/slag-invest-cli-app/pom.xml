@@ -20,6 +20,12 @@
 			<version>${project.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>slag-invest-report-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<!-- common -->
 		<dependency>
 			<groupId>de.slag.common</groupId>
@@ -47,7 +53,13 @@
 			<groupId>de.slag.invest</groupId>
 			<artifactId>slag-invest-db-repostitory</artifactId>
 			<version>${project.version}</version>
-		</dependency>		
+		</dependency>
+
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>slag-invest-report</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 	</dependencies>
 </project>
