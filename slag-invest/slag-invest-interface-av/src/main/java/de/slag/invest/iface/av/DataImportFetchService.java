@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -14,12 +15,14 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import de.slag.common.base.AdmCache;
 import de.slag.common.base.BaseException;
+import de.slag.common.reflect.engine.SimpleReflectionEngine;
 import de.slag.common.utils.CsvUtils;
 import de.slag.common.utils.SleepUtils;
 import de.slag.invest.iface.av.api.AvStockValueDto;
@@ -37,7 +40,7 @@ class DataImportFetchService {
 			.getRecordNumber() != 0;
 
 	private static final int DEFAULT_CALLS_PER_MINUTE = 5;
-	
+
 	@Resource
 	private AdmCache admCache;
 
@@ -83,6 +86,7 @@ class DataImportFetchService {
 	private AvStockValueDto stockValueDtoOf(AvStock stock, String isin) {
 		final AvStockValueDto stockValueDto = new AvStockValueDto();
 		stockValueDto.setIsin(isin);
+
 		stockValueDto.setDate(stock.getDate());
 		stockValueDto.setOpen(stock.getOpen());
 		stockValueDto.setHigh(stock.getHigh());
@@ -105,6 +109,12 @@ class DataImportFetchService {
 		AvStockCallBuilder avStockCallBuilder = new AvStockCallBuilder();
 		avStockCallBuilder.apiKey(apiKey);
 		avStockCallBuilder.symbol(symbol);
+
+		final Optional<String> outputSizeFullOptional = admCache.getValue(AvProperties.OUTPUT_SIZE_FULL);
+		if (outputSizeFullOptional.isPresent()) {
+			Boolean outputSizeFull = Boolean.valueOf(outputSizeFullOptional.get());
+			avStockCallBuilder.outputSizeFull(BooleanUtils.isTrue(outputSizeFull));
+		}
 
 		return avStockCallBuilder.build();
 
