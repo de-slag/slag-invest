@@ -37,7 +37,7 @@ public class InvestApp {
 		}
 		final String configFilePath = cliArgs.getOptionValue("config");
 		if (StringUtils.isBlank(configFilePath)) {
-			throw new BaseException("");
+			throw new BaseException("argument not setted: '%s'","config");
 		}
 		LOG.warn("config: " + configFilePath);
 		System.setProperty(InvestAppAdmCacheImpl.CONFIG, configFilePath);
