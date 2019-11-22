@@ -39,7 +39,7 @@ public class InvestApp {
 		if (StringUtils.isBlank(configFilePath)) {
 			throw new BaseException("");
 		}
-		System.setProperty(InvestAppAdmService.CONFIG, configFilePath);
+		System.setProperty(InvestAppAdmCacheImpl.CONFIG, configFilePath);
 
 		investAppService = SlagContext.getBean(InvestAppService.class);
 		LOG.info(String.format("initialized: '%s'", investAppService));

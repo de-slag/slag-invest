@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import de.slag.common.base.AdmService;
+import de.slag.common.base.AdmCache;
 import de.slag.invest.appservice.dataimport.DataImportSerivce;
 import de.slag.invest.appservice.report.ReportService;
 
@@ -16,7 +16,7 @@ public class InvestAppService {
 	private static final Log LOG = LogFactory.getLog(InvestAppService.class);
 	
 	@Resource
-	private AdmService admService;
+	private AdmCache admCache;
 	
 	@Resource
 	private DataImportSerivce dataImportSerivce;

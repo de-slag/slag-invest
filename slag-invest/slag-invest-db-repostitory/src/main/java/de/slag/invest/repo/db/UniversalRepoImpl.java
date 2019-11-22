@@ -6,11 +6,9 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
 
-import de.slag.common.base.AdmService;
+import de.slag.common.base.AdmCache;
 import de.slag.common.context.SubClassesUtils;
 import de.slag.common.db.HibernateSupport;
 import de.slag.common.db.HibernateSupportBuilder;
@@ -23,7 +21,7 @@ import de.slag.invest.repo.UniversalRepo;
 public class UniversalRepoImpl implements UniversalRepo {
 
 	@Resource
-	private AdmService admService;
+	private AdmCache admCache;
 
 	private HibernateSupport hibernateSupport;
 

@@ -14,15 +14,16 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import de.slag.common.base.AdmService;
+import de.slag.common.base.AdmCache;
 import de.slag.common.base.BaseException;
 
-@Service
-public class InvestAppAdmService implements AdmService {
+@Component
+public class InvestAppAdmCacheImpl implements AdmCache {
 
-	private static final Log LOG = LogFactory.getLog(InvestAppAdmService.class);
+	private static final Log LOG = LogFactory.getLog(InvestAppAdmCacheImpl.class);
 
 	public static final String CONFIG = "de.slag.configfile";
 
