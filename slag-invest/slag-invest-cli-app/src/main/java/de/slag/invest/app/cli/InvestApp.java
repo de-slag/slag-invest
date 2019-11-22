@@ -18,8 +18,13 @@ public class InvestApp {
 	public static void main(String[] args) {
 		final InvestApp investApp = new InvestApp();
 		investApp.setUp(args);
-		investApp.run();
-		
+		try {
+			investApp.run();
+		} catch (Throwable t) {
+			LOG.error("error run application", t);
+			System.exit(1);
+		}
+
 		LOG.info("all done, Exit!");
 		System.exit(0);
 	}
@@ -37,7 +42,7 @@ public class InvestApp {
 		}
 		final String configFilePath = cliArgs.getOptionValue("config");
 		if (StringUtils.isBlank(configFilePath)) {
-			throw new BaseException("argument not setted: '%s'","config");
+			throw new BaseException("argument not setted: '%s'", "config");
 		}
 		LOG.warn("config: " + configFilePath);
 		System.setProperty(InvestAppAdmCacheImpl.CONFIG, configFilePath);

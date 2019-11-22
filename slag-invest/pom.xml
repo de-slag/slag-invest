@@ -27,6 +27,11 @@
 		<module>slag-invest-data-import</module>
 		<module>slag-invest-report</module>
 		<module>slag-invest-cli-app</module>
+		<module>slag-invest-iface-av-api</module>
+		<module>slag-invest-iface-av</module>
+		<module>slag-invest-domain-model-dto</module>
+		<module>slag-invest-import-cache-api</module>
+		<module>slag-invest-import-file-cache</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>

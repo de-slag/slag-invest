@@ -61,5 +61,17 @@
 			<version>${project.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>slag-invest-interface-av</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>slag-invest-import-file-cache</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 	</dependencies>
 </project>
