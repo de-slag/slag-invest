@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import de.slag.common.base.AdmCache;
+import de.slag.common.reflect.engine.SimpleReflectionEngine;
 import de.slag.invest.dtomodel.StockValueDto;
 import de.slag.invest.dtoservice.StockValueDtoService;
 import de.slag.invest.iface.av.api.AvDataFetchService;
@@ -52,8 +53,6 @@ public class DataImportServiceImpl implements DataImportSerivce {
 
 		Collection<ImpStockValueDto> newest = dataImportConsolidateService.newestForThisDay(dtos);
 
-		// TODO: filter doubles form dto
-
 		// TODO: filter doubles from database
 
 		saveAll(newest);
@@ -62,14 +61,9 @@ public class DataImportServiceImpl implements DataImportSerivce {
 	private void storeToCache(Collection<ImpStockValueDto> fetchDataFromInterface) {
 		importCacheService.storeData(fetchDataFromInterface.stream().map(dto -> {
 			final ImportCacheStockValueDto toDto = new ImportCacheStockValueDto();
-			toDto.setIsin(dto.getIsin());
-			toDto.setDate(dto.getDate());
-			toDto.setOpen(dto.getOpen());
-			toDto.setHigh(dto.getHigh());
-			toDto.setLow(dto.getLow());
-			toDto.setClose(dto.getClose());
-			toDto.setVolume(dto.getVolume());
-			toDto.setTimestamp(dto.getTimestamp());
+			
+			new SimpleReflectionEngine().mapValues(dto, toDto);
+			
 
 			return toDto;
 		}).collect(Collectors.toList()));
@@ -97,42 +91,19 @@ public class DataImportServiceImpl implements DataImportSerivce {
 
 	private ImpStockValueDto of(AvStockValueDto dto) {
 		ImpStockValueDto toDto = new ImpStockValueDto();
-		toDto.setIsin(dto.getIsin());
-		toDto.setDate(dto.getDate());
-		toDto.setOpen(dto.getOpen());
-		toDto.setHigh(dto.getHigh());
-		toDto.setLow(dto.getLow());
-		toDto.setClose(dto.getClose());
-		toDto.setVolume(dto.getVolume());
-		toDto.setTimestamp(dto.getTimestamp());
+		new SimpleReflectionEngine().mapValues(dto, toDto);
 		return toDto;
 	}
 
 	private StockValueDto of(ImpStockValueDto dto) {
 		StockValueDto toDto = new StockValueDto();
-		toDto.setIsin(dto.getIsin());
-		toDto.setIsin(dto.getIsin());
-		toDto.setDate(dto.getDate());
-		toDto.setOpen(dto.getOpen());
-		toDto.setHigh(dto.getHigh());
-		toDto.setLow(dto.getLow());
-		toDto.setClose(dto.getClose());
-		toDto.setVolume(dto.getVolume());
-		toDto.setTimestamp(dto.getTimestamp());
+		new SimpleReflectionEngine().mapValues(dto, toDto);
 		return toDto;
 	}
 
 	private ImpStockValueDto of(ImportCacheStockValueDto dto) {
 		ImpStockValueDto toDto = new ImpStockValueDto();
-		toDto.setIsin(dto.getIsin());
-		toDto.setIsin(dto.getIsin());
-		toDto.setDate(dto.getDate());
-		toDto.setOpen(dto.getOpen());
-		toDto.setHigh(dto.getHigh());
-		toDto.setLow(dto.getLow());
-		toDto.setClose(dto.getClose());
-		toDto.setVolume(dto.getVolume());
-		toDto.setTimestamp(dto.getTimestamp());
+		new SimpleReflectionEngine().mapValues(dto, toDto);
 		return toDto;
 	}
 

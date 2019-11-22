@@ -70,12 +70,20 @@
 				<artifactId>slag-common-database</artifactId>
 				<version>${slag.common.version}</version>
 			</dependency>
-			
-				<dependency>
+
+			<dependency>
 				<groupId>de.slag.common</groupId>
 				<artifactId>slag-common-context</artifactId>
 				<version>${slag.common.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>de.slag.common</groupId>
+				<artifactId>slag-common-reflect</artifactId>
+				<version>${slag.common.version}</version>
+			</dependency>
+
+
 
 			<!-- junit at last! -->
 			<dependency>
