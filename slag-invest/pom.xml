@@ -32,6 +32,7 @@
 		<module>slag-invest-domain-model-dto</module>
 		<module>slag-invest-import-cache-api</module>
 		<module>slag-invest-import-file-cache</module>
+		<module>slag-invest-portfolio-import-api</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>
