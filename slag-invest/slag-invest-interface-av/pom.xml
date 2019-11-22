@@ -7,39 +7,21 @@
 		<artifactId>slag-invest</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>slag-invest-data-import</artifactId>
+	<artifactId>slag-invest-interface-av</artifactId>
+
 	<properties>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
+
 	<dependencies>
 
 		<!-- invest -->
 		<dependency>
 			<groupId>de.slag.invest</groupId>
-			<artifactId>slag-invest-data-import-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>de.slag.invest</groupId>
 			<artifactId>slag-invest-iface-av-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>de.slag.invest</groupId>
-			<artifactId>slag-invest-import-cache-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>de.slag.invest</groupId>
-			<artifactId>slag-invest-domain-service</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-
 
 		<!-- common -->
 		<dependency>
@@ -68,6 +50,6 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
-	</dependencies>
 
+	</dependencies>
 </project>

@@ -1,5 +1,7 @@
 package de.slag.invest.appservice.dataimport;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +12,10 @@ import org.springframework.stereotype.Service;
 import de.slag.common.base.AdmCache;
 import de.slag.invest.dtomodel.StockValueDto;
 import de.slag.invest.dtoservice.StockValueDtoService;
+import de.slag.invest.iface.av.api.AvDataFetchService;
+import de.slag.invest.iface.av.api.AvStockValueDto;
+import de.slag.invest.imp.cache.ImportCacheService;
+import de.slag.invest.imp.cache.ImportCacheStockValueDto;
 import de.slag.invest.model.StockValue;
 import de.slag.invest.service.StockValueService;
 
@@ -24,21 +30,110 @@ public class DataImportServiceImpl implements DataImportSerivce {
 
 	@Resource
 	private AdmCache admCache;
-	
+
 	@Resource
-	private DataImportFetchService dataImportFetchService;	
+	private AvDataFetchService avDataFetchService;
+
+	@Resource
+	private ImportCacheService importCacheService;
+
+	@Resource
+	private DataImportConsolidateService dataImportConsolidateService;
 
 	public void importData() {
 
-		final List<StockValueDto> allStockValueDtos = dataImportFetchService.fetchData();
+		final Collection<ImpStockValueDto> dtos = new ArrayList<>();
 
-		final List<StockValue> allStockValues = allStockValueDtos.stream()
-				.map(dto -> stockValueDtoService.stockValueOf(dto)).collect(Collectors.toList());
-		
-		allStockValues.forEach(sv -> stockValueService.save(sv));
+		Collection<ImpStockValueDto> fetchDataFromInterface = fetchDataFromInterface();
+		dtos.addAll(fetchDataFromInterface);
+		dtos.addAll(fetchDataFromCache());
+
+		storeToCache(fetchDataFromInterface);
+
+		Collection<ImpStockValueDto> newest = dataImportConsolidateService.newestForThisDay(dtos);
+
+		// TODO: filter doubles form dto
+
+		// TODO: filter doubles from database
+
+		saveAll(newest);
+	}
+
+	private void storeToCache(Collection<ImpStockValueDto> fetchDataFromInterface) {
+		importCacheService.storeData(fetchDataFromInterface.stream().map(dto -> {
+			final ImportCacheStockValueDto toDto = new ImportCacheStockValueDto();
+			toDto.setIsin(dto.getIsin());
+			toDto.setDate(dto.getDate());
+			toDto.setOpen(dto.getOpen());
+			toDto.setHigh(dto.getHigh());
+			toDto.setLow(dto.getLow());
+			toDto.setClose(dto.getClose());
+			toDto.setVolume(dto.getVolume());
+			toDto.setTimestamp(dto.getTimestamp());
+
+			return toDto;
+		}).collect(Collectors.toList()));
 
 	}
 
-	
+	private void saveAll(final Collection<ImpStockValueDto> dtos) {
+		List<StockValueDto> collect2 = dtos.stream().map(dto -> of(dto)).collect(Collectors.toList());
+
+		final List<StockValue> allStockValues = collect2.stream().map(dto -> stockValueDtoService.stockValueOf(dto))
+				.collect(Collectors.toList());
+
+		allStockValues.forEach(sv -> stockValueService.save(sv));
+	}
+
+	private Collection<ImpStockValueDto> fetchDataFromCache() {
+		Collection<ImportCacheStockValueDto> cachedData = importCacheService.fetchData();
+		return cachedData.stream().map(dto -> of(dto)).collect(Collectors.toList());
+	}
+
+	private Collection<ImpStockValueDto> fetchDataFromInterface() {
+		final Collection<AvStockValueDto> fetchData = avDataFetchService.fetchData();
+		return fetchData.stream().map(dto -> of(dto)).collect(Collectors.toList());
+	}
+
+	private ImpStockValueDto of(AvStockValueDto dto) {
+		ImpStockValueDto toDto = new ImpStockValueDto();
+		toDto.setIsin(dto.getIsin());
+		toDto.setDate(dto.getDate());
+		toDto.setOpen(dto.getOpen());
+		toDto.setHigh(dto.getHigh());
+		toDto.setLow(dto.getLow());
+		toDto.setClose(dto.getClose());
+		toDto.setVolume(dto.getVolume());
+		toDto.setTimestamp(dto.getTimestamp());
+		return toDto;
+	}
+
+	private StockValueDto of(ImpStockValueDto dto) {
+		StockValueDto toDto = new StockValueDto();
+		toDto.setIsin(dto.getIsin());
+		toDto.setIsin(dto.getIsin());
+		toDto.setDate(dto.getDate());
+		toDto.setOpen(dto.getOpen());
+		toDto.setHigh(dto.getHigh());
+		toDto.setLow(dto.getLow());
+		toDto.setClose(dto.getClose());
+		toDto.setVolume(dto.getVolume());
+		toDto.setTimestamp(dto.getTimestamp());
+		return toDto;
+	}
+
+	private ImpStockValueDto of(ImportCacheStockValueDto dto) {
+		ImpStockValueDto toDto = new ImpStockValueDto();
+		toDto.setIsin(dto.getIsin());
+		toDto.setIsin(dto.getIsin());
+		toDto.setDate(dto.getDate());
+		toDto.setOpen(dto.getOpen());
+		toDto.setHigh(dto.getHigh());
+		toDto.setLow(dto.getLow());
+		toDto.setClose(dto.getClose());
+		toDto.setVolume(dto.getVolume());
+		toDto.setTimestamp(dto.getTimestamp());
+		return toDto;
+	}
 
 }
