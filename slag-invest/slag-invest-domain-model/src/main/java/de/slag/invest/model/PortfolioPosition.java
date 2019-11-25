@@ -1,22 +1,20 @@
 package de.slag.invest.model;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class PortfolioPosition extends DomainBean {
 
-	@ManyToOne
-	private Portfolio portfolio;
+	@Basic
+	private String portfolioNumber;
 
-	public Portfolio getPortfolio() {
-		return portfolio;
+	public String getPortfolioNumber() {
+		return portfolioNumber;
 	}
 
-	public void setPortfolio(Portfolio portfolio) {
-		this.portfolio = portfolio;
+	public void setPortfolioNumber(String portfolioNumber) {
+		this.portfolioNumber = portfolioNumber;
 	}
-	
-	
 
 }
