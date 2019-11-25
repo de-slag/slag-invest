@@ -34,6 +34,8 @@
 		<module>slag-invest-import-file-cache</module>
 		<module>slag-invest-portfolio-import-api</module>
 		<module>slag-invest-portfolio-import</module>
+		<module>slag-invest-file-repository</module>
+		<module>slag-invest-file-repository-impl</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>
