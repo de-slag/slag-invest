@@ -73,5 +73,11 @@
 			<version>${project.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>slag-invest-file-repository-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 	</dependencies>
 </project>

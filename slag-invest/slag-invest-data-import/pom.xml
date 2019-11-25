@@ -39,6 +39,14 @@
 			<version>${project.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>slag-invest-file-repository</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+
 
 
 		<!-- common -->
@@ -46,7 +54,7 @@
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-context</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-reflect</artifactId>
