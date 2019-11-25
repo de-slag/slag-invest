@@ -4,6 +4,6 @@ import java.util.Collection;
 
 public interface PortfolioPositionFileRepoService {
 	
-	Collection<PortfolioPositionDto> loadAll();
+	Collection<PortfolioPositionDto> findAll();
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import de.slag.common.base.AdmCache;
 import de.slag.invest.appservice.dataimport.DataImportSerivce;
+import de.slag.invest.appservice.dataimport.PortfolioUpdateService;
 import de.slag.invest.appservice.report.ReportService;
 
 @Service
@@ -23,10 +24,17 @@ public class InvestAppService {
 	
 	@Resource
 	private ReportService reportService;
+	
+	@Resource
+	private PortfolioUpdateService portfolioUpdateService;
 
 
 	public void importData() {
 		dataImportSerivce.importData();
+	}
+	
+	public void updatePortfolios() {
+		portfolioUpdateService.updatePortfolios();
 	}
 	
 	public void report() {
