@@ -21,29 +21,25 @@ public class PortfolioPositionFileRepoServiceImpl implements PortfolioPositionFi
 
 	private static final String PORTFOLIO = "PORTFOLIO";
 
-	private static final String DE_SLAG_INVEST_FILEREPO = "de.slag.invest.filerepo";
-
 	@Resource
 	private AdmCache admCache;
 
 	@PostConstruct
 	public void setUp() {
-		final String fileRepoPathName = admCache.getValue(DE_SLAG_INVEST_FILEREPO)
-				.orElseThrow(() -> new BaseException("not configured: '%s'", DE_SLAG_INVEST_FILEREPO));
+		final String fileRepoPathName = admCache.getValue(FileRepoProperties.DE_SLAG_INVEST_FILEREPO).orElseThrow(
+				() -> new BaseException("not configured: '%s'", FileRepoProperties.DE_SLAG_INVEST_FILEREPO));
 		if (!new File(fileRepoPathName).exists()) {
 			throw new BaseException("path to file repo does not exists: '%s'", fileRepoPathName);
 		}
 	}
 
 	public Collection<PortfolioPositionDto> findAll() {
-		final File fileRepoFolder = new File(admCache.getValue(DE_SLAG_INVEST_FILEREPO).get());
+		final File fileRepoFolder = new File(admCache.getValue(FileRepoProperties.DE_SLAG_INVEST_FILEREPO).get());
 		final List<File> portfolioFiles = Arrays.asList(fileRepoFolder.listFiles()).stream()
 				.filter(file -> file.getName().startsWith(PORTFOLIO)).collect(Collectors.toList());
-		
-		return portfolioFiles.stream()
-				.map(file -> toPortfolioDto(file))
-				.flatMap(portfolioPostionDtos -> portfolioPostionDtos.stream())
-				.collect(Collectors.toList());
+
+		return portfolioFiles.stream().map(file -> toPortfolioDto(file))
+				.flatMap(portfolioPostionDtos -> portfolioPostionDtos.stream()).collect(Collectors.toList());
 	}
 
 	private Collection<PortfolioPositionDto> toPortfolioDto(File portfolioFile) {
