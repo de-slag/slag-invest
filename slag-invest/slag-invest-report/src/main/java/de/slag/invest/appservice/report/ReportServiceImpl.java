@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import de.slag.invest.service.PortfolioPositionService;
+import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
 
 @Service
@@ -17,13 +17,13 @@ public class ReportServiceImpl implements ReportService {
 	private StockValueService stockValueService;
 
 	@Resource
-	private PortfolioPositionService portfolioPositionService;
+	private PortfolioTransactionService portfolioTransactionService;
 
 	public String testReport() {
 		List<String> report = new ArrayList<>();
 		report.add("Test-Report:");
 		report.add(stockValueService.findAllIds().size() + " stock datasets found");
-		report.add(portfolioPositionService.findAllIds().size() + " portfolio positions found");
+		report.add(portfolioTransactionService.findAllIds().size() + " portfolio transactions found");
 
 		return String.join("\n", report);
 	}
