@@ -1,6 +1,7 @@
 package de.slag.invest.service;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import de.slag.invest.model.DomainBean;
 
@@ -13,5 +14,9 @@ public interface DomainService<T extends DomainBean> {
 	void delete(T bean);
 	
 	Collection<Long> findAllIds();
+	
+	default Collection<T> findAll() {
+		return findAllIds().stream().map(id -> loadById(id)).collect(Collectors.toList());
+	}
 
 }
