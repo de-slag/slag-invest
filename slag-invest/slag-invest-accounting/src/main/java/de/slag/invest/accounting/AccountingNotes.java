@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.slag.common.base.BaseException;
+
 public class AccountingNotes {
 
 	private BigDecimal cash = BigDecimal.ZERO;
@@ -23,19 +25,26 @@ public class AccountingNotes {
 		isinMap.put(isin, isinMap.get(isin) - count);
 		add(cash);
 	}
-	
+
 	public void add(String isin, Integer count, BigDecimal cash) {
 		assertIsin(isin);
 		isinMap.put(isin, isinMap.get(isin) + count);
 		sub(cash);
 	}
 
-
 	private void assertIsin(String isin) {
-		if(isinMap.containsKey(isin)) {
+		if (isinMap.containsKey(isin)) {
 			return;
 		}
 		isinMap.put(isin, 0);
+	}
+
+	public BigDecimal getCash() {
+		return cash;
+	}
+
+	public Map<String, Integer> getIsinMap() {
+		return isinMap;
 	}
 
 }
