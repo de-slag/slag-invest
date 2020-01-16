@@ -6,15 +6,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import de.slag.common.base.BaseException;
-import de.slag.invest.model.Portfolio;
+import de.slag.invest.facades.PortfolioFacade;
 import de.slag.invest.model.PortfolioTransaction;
 import de.slag.invest.model.PortfolioTransaction.PortfolioTransactionType;
 
 @Service
 public class PortfolioAccountingServiceImpl implements PortfolioAccoutingService {
 
-	public void account(Portfolio portfolio) {
-		final List<PortfolioTransaction> transactions = new ArrayList<>(portfolio.getTransactions());
+	public void account(PortfolioFacade portfolioFacade) {
+		final List<PortfolioTransaction> transactions = getTransactions(portfolioFacade);
 		AccountingNotes accountingNotes = new AccountingNotes();
 		AccountingNotesValidator validator = new AccountingNotesValidator();
 		transactions.forEach(t -> {
@@ -23,10 +23,12 @@ public class PortfolioAccountingServiceImpl implements PortfolioAccoutingService
 				throw new BaseException(validator.toString());
 			}
 		});
-		portfolio.setCash(accountingNotes.getCash());
-		
-		
-		
+		portfolioFacade.getPortfolio().setCash(accountingNotes.getCash());
+
+	}
+
+	private List<PortfolioTransaction> getTransactions(PortfolioFacade portfolioFacade) {
+		return new ArrayList<PortfolioTransaction>(portfolioFacade.getTransactions());
 	}
 
 	private void account(AccountingNotes notes, PortfolioTransaction transaction) {

@@ -13,12 +13,14 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 	<dependencies>
+	
 		<!-- invest -->
 		<dependency>
 			<groupId>de.slag.invest</groupId>
 			<artifactId>slag-invest-file-repository</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 		<!-- common -->
 		<dependency>
 			<groupId>de.slag.common</groupId>
@@ -28,6 +30,13 @@
 		<dependency>
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-utils</artifactId>
+		</dependency>
+
+		<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

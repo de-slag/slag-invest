@@ -7,22 +7,14 @@ import javax.persistence.ManyToOne;
 @Entity
 public class PortfolioPosition extends DomainBean {
 	
-	@ManyToOne
-	private Portfolio portfolio;
+	@Basic
+	private String portfolioNumber;
 	
 	@Basic
 	private String isin;
 	
 	@Basic
 	private Integer count;
-
-	public Portfolio getPortfolio() {
-		return portfolio;
-	}
-
-	public void setPortfolio(Portfolio portfolio) {
-		this.portfolio = portfolio;
-	}
 
 	public String getIsin() {
 		return isin;
@@ -38,6 +30,14 @@ public class PortfolioPosition extends DomainBean {
 
 	public void setCount(Integer count) {
 		this.count = count;
+	}
+
+	public String getPortfolioNumber() {
+		return portfolioNumber;
+	}
+
+	public void setPortfolioNumber(String portfolioNumber) {
+		this.portfolioNumber = portfolioNumber;
 	}
 
 }

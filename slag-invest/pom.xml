@@ -89,7 +89,13 @@
 				<version>${slag.common.version}</version>
 			</dependency>
 
-
+			<!-- test -->
+			<dependency>
+				<groupId>de.slag.common</groupId>
+				<artifactId>slag-common-test-support</artifactId>
+				<version>${slag.common.version}</version>
+				<scope>test</scope>
+			</dependency>
 
 			<!-- junit at last! -->
 			<dependency>

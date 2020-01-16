@@ -65,4 +65,12 @@ public class PortfolioTransactionDto {
 		this.portfolioNumber = portfolioNumber;
 	}
 
+	@Override
+	public String toString() {
+		return "PortfolioTransactionDto [portfolioNumber=" + portfolioNumber + ", isin=" + isin + ", date=" + date
+				+ ", totalPrice=" + totalPrice + ", count=" + count + ", type=" + type + "]";
+	}
+	
+	
+
 }
