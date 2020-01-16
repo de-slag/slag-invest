@@ -12,8 +12,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class PortfolioTransaction extends DomainBean {
 	
-	@ManyToOne
-	private Portfolio portfolio;
+	@Basic
+	private String portfolioNumber;
 
 	@Basic
 	private String isin;
@@ -84,12 +84,12 @@ public class PortfolioTransaction extends DomainBean {
 		YIELD;
 	}
 
-	public Portfolio getPortfolio() {
-		return portfolio;
+	public String getPortfolioNumber() {
+		return portfolioNumber;
 	}
 
-	public void setPortfolio(Portfolio portfolio) {
-		this.portfolio = portfolio;
+	public void setPortfolioNumber(String portfolioNumber) {
+		this.portfolioNumber = portfolioNumber;
 	}
 
 }

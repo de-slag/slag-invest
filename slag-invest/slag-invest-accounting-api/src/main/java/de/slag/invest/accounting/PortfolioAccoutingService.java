@@ -1,9 +1,9 @@
 package de.slag.invest.accounting;
 
-import de.slag.invest.model.Portfolio;
+import de.slag.invest.facades.PortfolioFacade;
 
 public interface PortfolioAccoutingService {
 	
-	public void account(Portfolio portfolio);
+	public void account(PortfolioFacade portfolio);
 
 }

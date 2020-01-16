@@ -16,15 +16,38 @@
 
 		<!-- invest -->
 		<dependency>
-			<groupId>de.slag.invest</groupId>
 			<artifactId>slag-invest-accounting-api</artifactId>
+			<groupId>de.slag.invest</groupId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<artifactId>slag-invest-domain-service</artifactId>
+			<groupId>de.slag.invest</groupId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<!-- common -->
 		<dependency>
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-context</artifactId>
 		</dependency>
+
+		<!-- test -->
+
+		<dependency>
+			<artifactId>slag-invest-domain-service-impl</artifactId>
+			<groupId>de.slag.invest</groupId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>de.slag.common</groupId>
+			<artifactId>slag-common-test-support</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<properties>

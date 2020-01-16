@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Repository;
 
 import de.slag.common.base.AdmCache;
+import de.slag.common.base.BaseException;
 import de.slag.common.context.SubClassesUtils;
 import de.slag.common.db.HibernateSupport;
 import de.slag.common.db.HibernateSupportBuilder;
@@ -27,11 +28,14 @@ public class UniversalRepoImpl implements UniversalRepo {
 
 	@PostConstruct
 	public void init() {
+		if (hibernateSupport != null) {
+			throw new BaseException("already initialized");
+		}
 		SubClassesUtils.findAllSubclassesOf(DomainBean.class);
-		hibernateSupport = new HibernateSupportBuilder()
-				.registerClasses(SubClassesUtils.findAllSubclassesOf(DomainBean.class))
+		HibernateSupport hibernateSupport = new HibernateSupportBuilder().registerClasses(SubClassesUtils.findAllSubclassesOf(DomainBean.class))
 				.hibernateDialect(InMemoryProperties.DIALECT).url(InMemoryProperties.URL).user(InMemoryProperties.USER)
 				.driver(InMemoryProperties.DRIVER).password(InMemoryProperties.PASSWORD).build();
+		this.hibernateSupport = hibernateSupport;
 	}
 
 	public void save(DomainBean bean) {

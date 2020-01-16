@@ -8,14 +8,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.slag.invest.facades.PortfolioFacade;
 import de.slag.invest.model.Portfolio;
 import de.slag.invest.model.PortfolioTransaction;
 import de.slag.invest.model.PortfolioTransaction.PortfolioTransactionType;
 
 public class PortfolioAccountingServiceImplTest {
 
-	
 	private static final PortfolioTransactionType BUY = PortfolioTransactionType.BUY;
+
 	private PortfolioAccountingServiceImpl portfolioAccountingServiceImpl;
 
 	@Before
@@ -26,21 +27,19 @@ public class PortfolioAccountingServiceImplTest {
 	@Test
 	public void it() {
 		Portfolio portfolio = new Portfolio();
-		
+		final PortfolioFacade portfolioFacade = new PortfolioFacade(portfolio);
+		final Collection<PortfolioTransaction> transactions = portfolioFacade.getTransactions();
 
-		portfolio.add(createTransaction(portfolio, "", date(1, 1), 1, 5000,
-				PortfolioTransactionType.CASH_IN));
-		portfolio.add(
-				createTransaction(portfolio, "ISIN_A", date(1, 2), 50, 2500, BUY));
+		transactions.add(createTransaction(portfolio, "", date(1, 1), 1, 5000, PortfolioTransactionType.CASH_IN));
+		transactions.add(createTransaction(portfolio, "ISIN_A", date(1, 2), 50, 2500, BUY));
 
-		portfolioAccountingServiceImpl.account(portfolio);
+		portfolioAccountingServiceImpl.account(portfolioFacade);
 		Assert.assertTrue(BigDecimal.valueOf(2500).equals(portfolio.getCash()));
 	}
 
 	private PortfolioTransaction createTransaction(Portfolio portfolio, String isin, LocalDate localDate, Integer count,
 			Integer totalPrice, PortfolioTransactionType type) {
 		PortfolioTransaction portfolioTransaction = new PortfolioTransaction();
-		portfolioTransaction.setPortfolio(portfolio);
 		portfolioTransaction.setIsin(isin);
 		portfolioTransaction.setDate(localDate);
 		portfolioTransaction.setCount(count);
@@ -48,7 +47,7 @@ public class PortfolioAccountingServiceImplTest {
 		portfolioTransaction.setTotalPrice(BigDecimal.valueOf(totalPrice));
 		return portfolioTransaction;
 	}
-	
+
 	private LocalDate date(int month, int dayOfMonth) {
 		return LocalDate.of(2010, month, dayOfMonth);
 	}

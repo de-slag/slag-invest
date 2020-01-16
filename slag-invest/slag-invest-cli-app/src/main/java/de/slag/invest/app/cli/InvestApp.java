@@ -6,7 +6,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.impl.LogFactoryImpl;
 
 import de.slag.common.base.BaseException;
 import de.slag.common.context.SlagContext;
@@ -53,6 +52,7 @@ public class InvestApp {
 	}
 
 	private void run() {
+		investAppService.importPortfolioTransactions();
 //		investAppService.importData();
 		investAppService.updatePortfolios();
 		investAppService.report();

@@ -1,23 +1,25 @@
 package de.slag.invest.appservice.dataimport;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
-import de.slag.common.reflect.engine.SimpleReflectionEngine;
-import de.slag.invest.filerepo.PortfolioTransactionDto;
 import de.slag.invest.filerepo.PortfolioTransactionFileRepo;
+import de.slag.invest.model.Portfolio;
 import de.slag.invest.model.PortfolioTransaction;
-import de.slag.invest.model.PortfolioTransaction.PortfolioTransactionType;
 import de.slag.invest.service.PortfolioService;
 import de.slag.invest.service.PortfolioTransactionService;
 
 @Service
 public class PortfolioUpdateServiceImpl implements PortfolioUpdateService {
-	
+
+	private static final Log LOG = LogFactory.getLog(PortfolioUpdateServiceImpl.class);
+
 	@Resource
 	private PortfolioService portfolioService;
 
@@ -29,17 +31,26 @@ public class PortfolioUpdateServiceImpl implements PortfolioUpdateService {
 
 	@Override
 	public void updatePortfolios() {
-		updateTransactions();	}
+		updateTransactions();
+	}
 
 	private void updateTransactions() {
-		final Collection<PortfolioTransactionDto> findAll = portfolioTransactionFileRepo.findAll();
-		findAll.forEach(dto -> {
-			PortfolioTransaction portfolioTransaction = new PortfolioTransaction();
+		final Collection<Long> portfolioTransactionIds = portfolioTransactionService.findAllIds();
+		portfolioTransactionIds.forEach(id -> updatePortfolio(id));
+	}
 
-			portfolioTransaction.setType(PortfolioTransactionType.valueOf(dto.getType().toUpperCase()));
-			new SimpleReflectionEngine().mapValues(dto, portfolioTransaction, Arrays.asList("TYPE"));
-			portfolioTransactionService.save(portfolioTransaction);
-		});
+	private void updatePortfolio(Long id) {
+		final PortfolioTransaction transaction = portfolioTransactionService.loadById(id);
+		final String portfolioNumber = transaction.getPortfolioNumber();
+		final Optional<Portfolio> loadBy = portfolioService.loadBy(portfolioNumber);
+		if (!loadBy.isEmpty()) {
+			LOG.info(String.format("portfolio with number '%s' already exists", portfolioNumber));
+			return;
+		}
+		final Portfolio portfolio = new Portfolio();
+		portfolio.setPortfolioNumber(portfolioNumber);
+		portfolioService.save(portfolio);
+
 	}
 
 }

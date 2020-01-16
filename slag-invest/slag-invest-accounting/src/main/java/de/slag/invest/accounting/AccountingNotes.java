@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.slag.common.base.BaseException;
-
 public class AccountingNotes {
 
 	private BigDecimal cash = BigDecimal.ZERO;
