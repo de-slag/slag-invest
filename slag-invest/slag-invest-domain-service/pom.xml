@@ -22,7 +22,7 @@
 
 		<dependency>
 			<groupId>de.slag.invest</groupId>
-			<artifactId>slag-invest-domain-repository</artifactId>
+			<artifactId>domain-repo-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

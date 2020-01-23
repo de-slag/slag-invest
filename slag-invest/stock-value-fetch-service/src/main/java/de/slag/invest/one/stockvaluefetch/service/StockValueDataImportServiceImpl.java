@@ -1,4 +1,4 @@
-package de.slag.invest.appservice.dataimport;
+package de.slag.invest.one.stockvaluefetch.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,13 +15,15 @@ import de.slag.invest.dtomodel.StockValueDto;
 import de.slag.invest.dtoservice.StockValueDtoService;
 import de.slag.invest.iface.av.api.AvDataFetchService;
 import de.slag.invest.iface.av.api.AvStockValueDto;
-import de.slag.invest.imp.cache.ImportCacheService;
-import de.slag.invest.imp.cache.ImportCacheStockValueDto;
+import de.slag.invest.iface.av.api.StockValueDataImportService;
+import de.slag.invest.imp.filecache.ImpStockValueDto;
+import de.slag.invest.imp.filecache.ImportCacheService;
+import de.slag.invest.imp.filecache.ImportCacheStockValueDto;
 import de.slag.invest.model.StockValue;
 import de.slag.invest.service.StockValueService;
 
 @Service
-public class DataImportServiceImpl implements DataImportSerivce {
+public class StockValueDataImportServiceImpl implements StockValueDataImportService {
 
 	@Resource
 	private StockValueService stockValueService;

@@ -16,7 +16,7 @@
 		<!-- invest -->
 		<dependency>
 			<groupId>de.slag.invest</groupId>
-			<artifactId>slag-invest-data-import-api</artifactId>
+			<artifactId>transaction-import-service-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -39,7 +39,7 @@
 		<!-- remove this direct dependencies -->
 		<dependency>
 			<groupId>de.slag.invest</groupId>
-			<artifactId>slag-invest-data-import</artifactId>
+			<artifactId>transaction-import-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -51,7 +51,7 @@
 
 		<dependency>
 			<groupId>de.slag.invest</groupId>
-			<artifactId>slag-invest-db-repostitory</artifactId>
+			<artifactId>domain-repo</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -61,23 +61,31 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<dependency>
+ 		<dependency>
 			<groupId>de.slag.invest</groupId>
-			<artifactId>slag-invest-interface-av</artifactId>
+			<artifactId>stock-value-fetch-service-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
-		<dependency>
+<!-- 		<dependency>
 			<groupId>de.slag.invest</groupId>
 			<artifactId>slag-invest-import-file-cache</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency> -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>de.slag.invest</groupId>
 			<artifactId>slag-invest-file-repository-impl</artifactId>
 			<version>${project.version}</version>
+		</dependency> -->
+
+
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<artifactId>stock-value-fetch-service</artifactId>
+			<version>${project.version}</version>
 		</dependency>
+
 
 	</dependencies>
 </project>

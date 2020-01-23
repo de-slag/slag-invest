@@ -83,5 +83,7 @@ public class PortfolioTransactionFileRepoImpl implements PortfolioTransactionFil
 			return dto;
 		}).collect(Collectors.toList());
 	}
+	
+	
 
 }
