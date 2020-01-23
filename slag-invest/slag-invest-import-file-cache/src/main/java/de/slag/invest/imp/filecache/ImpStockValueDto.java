@@ -1,10 +1,10 @@
-package de.slag.invest.imp.cache;
+package de.slag.invest.imp.filecache;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class ImportCacheStockValueDto {
+public class ImpStockValueDto {
 	
 	private String isin;
 	
@@ -85,4 +85,12 @@ public class ImportCacheStockValueDto {
 	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
 	}
+
+	@Override
+	public String toString() {
+		return "ImpStockValueDto [isin=" + isin + ", date=" + date + ", close=" + close + ", high=" + high + ", low="
+				+ low + ", open=" + open + ", volume=" + volume + ", timestamp=" + timestamp + "]";
+	}
+	
+	
 }

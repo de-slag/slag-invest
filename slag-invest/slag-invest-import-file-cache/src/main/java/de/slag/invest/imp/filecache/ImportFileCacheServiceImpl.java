@@ -25,8 +25,6 @@ import de.slag.common.base.AdmCache;
 import de.slag.common.base.BaseException;
 import de.slag.common.utils.CsvUtils;
 import de.slag.common.utils.DateUtils;
-import de.slag.invest.imp.cache.ImportCacheService;
-import de.slag.invest.imp.cache.ImportCacheStockValueDto;
 
 @Service
 public class ImportFileCacheServiceImpl implements ImportCacheService {

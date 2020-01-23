@@ -16,7 +16,7 @@
 
 		<!-- invest -->
 		<dependency>
-			<artifactId>slag-invest-accounting-api</artifactId>
+			<artifactId>accounting-service-api</artifactId>
 			<groupId>de.slag.invest</groupId>
 			<version>${project.version}</version>
 		</dependency>

@@ -5,5 +5,5 @@
     <artifactId>slag-invest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>slag-invest-data-import-api</artifactId>
+  <artifactId>transaction-import-service-api</artifactId>
 </project>

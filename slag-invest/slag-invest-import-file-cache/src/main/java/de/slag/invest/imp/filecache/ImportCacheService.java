@@ -1,4 +1,4 @@
-package de.slag.invest.imp.cache;
+package de.slag.invest.imp.filecache;
 
 import java.util.Collection;
 
