@@ -92,4 +92,12 @@ public class PortfolioTransaction extends DomainBean {
 		this.portfolioNumber = portfolioNumber;
 	}
 
+	@Override
+	public String toString() {
+		return "PortfolioTransaction [portfolioNumber=" + portfolioNumber + ", isin=" + isin + ", date=" + date
+				+ ", totalPrice=" + totalPrice + ", count=" + count + ", type=" + type + "]";
+	}
+	
+	
+
 }
