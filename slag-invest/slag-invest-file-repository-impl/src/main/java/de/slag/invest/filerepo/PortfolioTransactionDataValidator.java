@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.slag.common.base.BaseException;
 import de.slag.common.base.validation.Validator;
 
 public class PortfolioTransactionDataValidator implements Validator<Collection<Map<String, String>>> {
