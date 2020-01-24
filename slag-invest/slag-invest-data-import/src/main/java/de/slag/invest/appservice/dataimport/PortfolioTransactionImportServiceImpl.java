@@ -1,6 +1,7 @@
 package de.slag.invest.appservice.dataimport;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class PortfolioTransactionImportServiceImpl implements PortfolioTransacti
 		LOG.info("update or create: " + dto);
 		final String portfolioNumber = dto.getPortfolioNumber();
 		final PortfolioTransactionType type = typeOf(dto.getType());
-		final LocalDate date = dto.getDate();
+		final LocalDateTime date = dto.getDate();
 		final String isin = dto.getIsin();
 
 		final PortfolioTransaction transaction = loadTransactionBy(portfolioNumber, type, date, isin)
@@ -49,7 +50,7 @@ public class PortfolioTransactionImportServiceImpl implements PortfolioTransacti
 		
 		transaction.setPortfolioNumber(portfolioNumber);
 		transaction.setType(type);
-		transaction.setDate(date);
+		transaction.setTimestamp(date);
 		transaction.setIsin(isin);
 		
 		transaction.setCount(dto.getCount());
@@ -61,7 +62,7 @@ public class PortfolioTransactionImportServiceImpl implements PortfolioTransacti
 	}
 
 	private Optional<PortfolioTransaction> loadTransactionBy(String portfolioNumber, PortfolioTransactionType type,
-			LocalDate date, String isin) {
+			LocalDateTime date, String isin) {
 		return Optional.empty();
 
 	}

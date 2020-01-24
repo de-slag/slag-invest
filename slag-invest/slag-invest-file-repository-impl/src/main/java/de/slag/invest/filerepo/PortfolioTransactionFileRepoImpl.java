@@ -97,7 +97,7 @@ public class PortfolioTransactionFileRepoImpl implements PortfolioTransactionFil
 				timestamp = DateUtils.toLocalDateTime(parse);
 			}
 
-			dto.setDate(timestamp.toLocalDate());
+			dto.setDate(timestamp);
 			dto.setIsin(rec.get("ISIN_WKN"));
 
 			final String countAsSTring = rec.get("COUNT");
