@@ -2,6 +2,7 @@ package de.slag.invest.filerepo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PortfolioTransactionDto {
 	
@@ -9,7 +10,7 @@ public class PortfolioTransactionDto {
 	
 	private String isin;
 	
-	private LocalDate date;
+	private LocalDateTime date;
 	
 	private BigDecimal totalPrice;
 	
@@ -25,11 +26,11 @@ public class PortfolioTransactionDto {
 		this.isin = isin;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 

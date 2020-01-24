@@ -2,6 +2,7 @@ package de.slag.invest.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class PortfolioTransaction extends DomainBean {
 	private String isin;
 
 	@Basic
-	private LocalDate date;
+	private LocalDateTime timestamp;
 
 	@Basic
 	private BigDecimal totalPrice;
@@ -35,14 +36,6 @@ public class PortfolioTransaction extends DomainBean {
 
 	public void setIsin(String isin) {
 		this.isin = isin;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
 	}
 
 	public BigDecimal getTotalPrice() {
@@ -97,10 +90,19 @@ public class PortfolioTransaction extends DomainBean {
 		this.portfolioNumber = portfolioNumber;
 	}
 
+
+	public LocalDateTime getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(LocalDateTime timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	@Override
 	public String toString() {
-		return "PortfolioTransaction [portfolioNumber=" + portfolioNumber + ", isin=" + isin + ", date=" + date
-				+ ", totalPrice=" + totalPrice + ", count=" + count + ", type=" + type + "]";
+		return "PortfolioTransaction [portfolioNumber=" + portfolioNumber + ", isin=" + isin + ", timestamp="
+				+ timestamp + ", totalPrice=" + totalPrice + ", count=" + count + ", type=" + type + "]";
 	}
 
 }

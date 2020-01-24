@@ -2,6 +2,7 @@ package de.slag.invest.accounting;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import org.junit.Assert;
@@ -30,18 +31,18 @@ public class PortfolioAccountingServiceImplTest {
 		final PortfolioFacade portfolioFacade = new PortfolioFacade(portfolio);
 		final Collection<PortfolioTransaction> transactions = portfolioFacade.getTransactions();
 
-		transactions.add(createTransaction(portfolio, "", date(1, 1), 1, 5000, PortfolioTransactionType.CASH_IN));
-		transactions.add(createTransaction(portfolio, "ISIN_A", date(1, 2), 50, 2500, BUY));
+		transactions.add(createTransaction(portfolio, "", date(1, 1).atStartOfDay(), 1, 5000, PortfolioTransactionType.CASH_IN));
+		transactions.add(createTransaction(portfolio, "ISIN_A", date(1, 2).atStartOfDay(), 50, 2500, BUY));
 
 		portfolioAccountingServiceImpl.account(portfolioFacade);
 		Assert.assertTrue(BigDecimal.valueOf(2500).equals(portfolio.getCash()));
 	}
 
-	private PortfolioTransaction createTransaction(Portfolio portfolio, String isin, LocalDate localDate, Integer count,
+	private PortfolioTransaction createTransaction(Portfolio portfolio, String isin, LocalDateTime localDate, Integer count,
 			Integer totalPrice, PortfolioTransactionType type) {
 		PortfolioTransaction portfolioTransaction = new PortfolioTransaction();
 		portfolioTransaction.setIsin(isin);
-		portfolioTransaction.setDate(localDate);
+		portfolioTransaction.setTimestamp(localDate);
 		portfolioTransaction.setCount(count);
 		portfolioTransaction.setType(type);
 		portfolioTransaction.setTotalPrice(BigDecimal.valueOf(totalPrice));
