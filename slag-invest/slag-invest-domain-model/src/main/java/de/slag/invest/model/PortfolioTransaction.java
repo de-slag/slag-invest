@@ -10,7 +10,7 @@ import javax.persistence.Enumerated;
 
 @Entity
 public class PortfolioTransaction extends DomainBean {
-	
+
 	@Basic
 	private String portfolioNumber;
 
@@ -68,19 +68,25 @@ public class PortfolioTransaction extends DomainBean {
 	public void setType(PortfolioTransactionType type) {
 		this.type = type;
 	}
-	
+
 	public enum PortfolioTransactionType {
 		BUY,
 
 		SELL,
 
+		@Deprecated
 		CASH_IN,
 
+		@Deprecated
 		CASH_OUT,
 
 		COST,
 
-		YIELD;
+		YIELD,
+
+		IN,
+
+		OUT;
 	}
 
 	public String getPortfolioNumber() {
@@ -96,7 +102,5 @@ public class PortfolioTransaction extends DomainBean {
 		return "PortfolioTransaction [portfolioNumber=" + portfolioNumber + ", isin=" + isin + ", date=" + date
 				+ ", totalPrice=" + totalPrice + ", count=" + count + ", type=" + type + "]";
 	}
-	
-	
 
 }
