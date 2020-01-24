@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
@@ -69,21 +71,55 @@ public class PortfolioTransactionFileRepoImpl implements PortfolioTransactionFil
 			PortfolioTransactionDto dto = new PortfolioTransactionDto();
 			dto.setPortfolioNumber(portfolioNumber);
 
-			Date date;
-			try {
-				date = new SimpleDateFormat("yyyy-MM-dd").parse(rec.get("DATE"));
-			} catch (ParseException e) {
-				throw new BaseException(e);
+			final LocalDateTime timestamp;
+			if (!rec.isMapped("TIMESTAMP")) {
+				if (!rec.isMapped("DATE")) {
+					throw new BaseException("not mapped: DATE or TIMESTAMP, file " + file);
+				}
+				final String string = rec.get("DATE");
+				Date date;
+				try {
+					date = new SimpleDateFormat("yyyy-MM-dd").parse(string);
+				} catch (ParseException e) {
+					throw new BaseException(e);
+				}
+				timestamp = DateUtils.toLocalDateTime(date);
+
+			} else {
+				final String string = rec.get("TIMESTAMP");
+				final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+				Date parse;
+				try {
+					parse = simpleDateFormat.parse(string);
+				} catch (ParseException e) {
+					throw new BaseException(e);
+				}
+				timestamp = DateUtils.toLocalDateTime(parse);
 			}
-			dto.setIsin(rec.get("ISIN"));
-			dto.setCount(Integer.valueOf(rec.get("COUNT")));
-			dto.setDate(DateUtils.toLocalDate(date));
-			dto.setTotalPrice(BigDecimal.valueOf(Double.valueOf(rec.get("TOTAL_PRICE"))));
+
+			dto.setDate(timestamp.toLocalDate());
+			dto.setIsin(rec.get("ISIN_WKN"));
+
+			final String countAsSTring = rec.get("COUNT");
+			dto.setCount(StringUtils.isBlank(countAsSTring) ? null : Integer.valueOf(countAsSTring));
+
+			final String totalPriceAsString = getOneOrTheOther(rec, file.getAbsolutePath(), "AMOUNT", "TOTAL_PRICE");
+			dto.setTotalPrice(StringUtils.isBlank(totalPriceAsString) ? null
+					: BigDecimal.valueOf(Double.valueOf(totalPriceAsString)));
 			dto.setType(rec.get("TYPE"));
 			return dto;
 		}).collect(Collectors.toList());
 	}
-	
-	
+
+	private String getOneOrTheOther(CSVRecord rec, String filename, String one, String other) {
+		if (rec.isMapped(one)) {
+			return rec.get(one);
+		}
+		if (rec.isMapped(other)) {
+			return rec.get(other);
+		}
+		throw new BaseException("file '%s' does not mapping '%s' nor '%s'", filename, one, other);
+
+	}
 
 }
