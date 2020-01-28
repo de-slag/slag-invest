@@ -20,7 +20,7 @@ public class InvestAppService {
 	private AdmCache admCache;
 
 	@Resource
-	private StockValueDataImportService dataImportSerivce;
+	private StockValueDataImportService stockValueDataImportService;
 
 	@Resource
 	private ReportService reportService;
@@ -30,9 +30,12 @@ public class InvestAppService {
 
 	@Resource
 	private PortfolioTransactionImportService portfolioTransactionImportService;
+	
+	@Resource
+	private InvestAppStatisticService investAppStatisticService;
 
-	public void importData() {
-		dataImportSerivce.importData();
+	public void importStockData() {
+		stockValueDataImportService.importData();
 	}
 
 	public void importPortfolioTransactions() {
@@ -41,6 +44,10 @@ public class InvestAppService {
 
 	public void updatePortfolios() {
 //		portfolioUpdateService.updatePortfolios();
+	}
+	
+	public void printStatistics() {
+		LOG.info(investAppStatisticService.printStatistics());
 	}
 
 	public void report() {

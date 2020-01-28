@@ -3,6 +3,8 @@ package de.slag.invest.model;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import de.slag.common.model.EntityBean;
 
 @Entity
