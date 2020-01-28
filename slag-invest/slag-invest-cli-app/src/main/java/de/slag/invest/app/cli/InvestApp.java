@@ -52,9 +52,12 @@ public class InvestApp {
 	}
 
 	private void run() {
-		investAppService.importPortfolioTransactions();
+		investAppService.importStockData();
+//		investAppService.importPortfolioTransactions();
 //		investAppService.importData();
-		investAppService.updatePortfolios();
-		investAppService.report();
+//		investAppService.updatePortfolios();
+//		investAppService.report();
+		investAppService.printStatistics();
+		
 	}
 }
