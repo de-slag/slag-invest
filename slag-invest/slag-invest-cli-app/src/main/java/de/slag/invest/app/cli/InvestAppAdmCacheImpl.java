@@ -59,12 +59,9 @@ public class InvestAppAdmCacheImpl implements AdmCache {
 
 	}
 
-	public Optional<String> getValue(String key) {
-		final String property = properties.getProperty(key);
-		if (property == null) {
-			return Optional.empty();
-		}
-		return Optional.of(property);
+	@Override
+	public String get(String key) {
+		return properties.getProperty(key);
 	}
 
 }
