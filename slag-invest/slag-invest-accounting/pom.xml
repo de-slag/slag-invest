@@ -8,11 +8,13 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>slag-invest-accounting</artifactId>
+
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
+
 
 		<!-- invest -->
 		<dependency>
@@ -32,8 +34,8 @@
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-context</artifactId>
 		</dependency>
-		
-				<dependency>
+
+		<dependency>
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-utils</artifactId>
 		</dependency>
@@ -53,10 +55,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
 	</dependencies>
 
-	<properties>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
-	</properties>
+
 </project>
