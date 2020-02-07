@@ -17,7 +17,7 @@
 	<dependencies>
 
 		<!-- invest -->
-		
+
 		<dependency>
 			<groupId>de.slag.invest</groupId>
 			<artifactId>stock-value-fetch-service-api</artifactId>
@@ -55,6 +55,20 @@
 			<!-- needet for alphavantage4j -->
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
+		</dependency>
+
+		<!-- test -->
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.28.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 		</dependency>
 
 	</dependencies>
