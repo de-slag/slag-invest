@@ -126,7 +126,8 @@ class DataImportFetchService {
 	}
 
 	private String getAdmValue(String key) {
-		return admCache.getValue(key).orElseThrow(() -> new BaseException("not configured: " + key));
+		final Optional<String> value = admCache.getValue(key);
+		return value.orElseThrow(() -> new BaseException("not configured: " + key));
 	}
 
 }
