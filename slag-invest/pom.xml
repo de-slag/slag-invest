@@ -39,6 +39,8 @@
 		<module>slag-invest-accounting-api</module>
 		<module>slag-invest-accounting</module>
 		<module>stock-value-fetch-service</module>
+		<module>invest-webservice</module>
+		<module>slag-invest-webservice</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>
