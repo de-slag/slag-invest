@@ -13,6 +13,10 @@ public interface DomainService<T extends DomainBean> {
 	
 	void delete(T bean);
 	
+	default void deleteBy(Long id) {
+		delete(loadById(id));
+	}
+	
 	Collection<Long> findAllIds();
 	
 	default Collection<T> findAll() {
