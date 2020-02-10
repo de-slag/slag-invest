@@ -44,12 +44,45 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- slag-invest -->
+
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>stock-value-fetch-service</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>de.slag.invest</groupId>
+			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>domain-repo</artifactId>
+		</dependency>
+
+		<dependency>
+
+			<groupId>de.slag.invest</groupId>
+			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>slag-invest-domain-service-impl</artifactId>
+
+		</dependency>
+
+
+
 		<!-- slag-common -->
 		<dependency>
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-base</artifactId>
 			<version>0.2.1-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>de.slag.common</groupId>
+			<artifactId>slag-common-database</artifactId>
+			<version>0.2.1-SNAPSHOT</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>
