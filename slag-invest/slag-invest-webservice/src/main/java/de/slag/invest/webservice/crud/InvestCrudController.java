@@ -1,4 +1,4 @@
-package de.slag.invest.webservice;
+package de.slag.invest.webservice.crud;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import de.slag.invest.service.DomainService;
 import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
+import de.slag.invest.webservice.response.HtmlDecorator;
+import de.slag.invest.webservice.response.SimpleHtmlResponse;
 
 @RestController
 @RequestMapping("/crud")

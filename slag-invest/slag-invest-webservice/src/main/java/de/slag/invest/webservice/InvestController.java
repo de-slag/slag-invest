@@ -23,6 +23,8 @@ import de.slag.common.base.AdmCache;
 import de.slag.invest.iface.av.api.StockValueDataImportService;
 import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
+import de.slag.invest.webservice.response.HtmlDecorator;
+import de.slag.invest.webservice.response.SimpleHtmlResponse;
 
 @RestController
 public class InvestController {
@@ -85,5 +87,7 @@ public class InvestController {
 	public String getTest(@RequestParam(required = false) String param) {
 		return "test, param: " + param;
 	}
+	
+	
 
 }

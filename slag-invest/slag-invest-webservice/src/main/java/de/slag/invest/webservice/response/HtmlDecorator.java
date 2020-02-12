@@ -1,4 +1,4 @@
-package de.slag.invest.webservice;
+package de.slag.invest.webservice.response;
 
 import java.util.Arrays;
 import java.util.Collection;
