@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.apache.catalina.connector.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +26,7 @@ import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
 import de.slag.invest.webservice.response.HtmlDecorator;
 import de.slag.invest.webservice.response.SimpleHtmlResponse;
+import de.slag.invest.webservice.response.WsResponse;
 
 @RestController
 public class InvestController {
@@ -44,7 +46,7 @@ public class InvestController {
 	private StockValueService stockValueService;
 
 	@GetMapping("/fetchStockValues")
-	public Collection<String> getFetchStockValues() {		
+	public Collection<String> getFetchStockValues() {
 		stockValueDataImportService.importData();
 
 		final ArrayList<String> arrayList = new ArrayList<String>();
@@ -55,9 +57,7 @@ public class InvestController {
 
 	@GetMapping("/status")
 	public String getStatus() {
-	
-		
-		
+
 		final List<String> asList = new ArrayList<>();
 		asList.add("start time: " + new Date(ManagementFactory.getRuntimeMXBean().getStartTime()));
 		asList.add("portfolio transactions: " + portfolioTransactionService.findAllIds().size());
@@ -66,7 +66,7 @@ public class InvestController {
 
 		asList.add(String.format("mem: %s M (%s M)", (runtime.totalMemory() - runtime.freeMemory()) / (1000 * 1000),
 				runtime.totalMemory() / 1000000));
-		
+
 		return new SimpleHtmlResponse("Status", "", asList).toString();
 	}
 
@@ -76,7 +76,7 @@ public class InvestController {
 		final List<String> responseList = new ArrayList<>();
 		responseList.add(htmlDecorator.h1("CALLS"));
 
-		final List<String> calls = Arrays.asList("status", "fetchStockValues", "test","crud");
+		final List<String> calls = Arrays.asList("status", "fetchStockValues", "test", "crud");
 
 		responseList.addAll(calls.stream().map(c -> htmlDecorator.a(c)).collect(Collectors.toList()));
 
@@ -84,10 +84,16 @@ public class InvestController {
 	}
 
 	@GetMapping("/test")
-	public String getTest(@RequestParam(required = false) String param) {
+	public Object getTest(@RequestParam(required = false) String param) {
+		if ("response".equalsIgnoreCase(param)) {
+			return Response.SC_OK;
+		}
+		if ("wsresponse".equalsIgnoreCase(param)) {
+			final WsResponse wsResponse = new WsResponse();
+			wsResponse.setMessage("param: " + param);
+			return wsResponse;
+		}
 		return "test, param: " + param;
 	}
-	
-	
 
 }
