@@ -14,7 +14,7 @@ public class BasicWsIntegrationTest extends AbstractWsIntegrationTest {
 
 	@Test
 	void testBase() {
-		final String string = webTarget.request().get(String.class);
+		final String string = getWebTarget("").request().get(String.class);
 		Assertions.assertNotNull(string);
 	}
 
