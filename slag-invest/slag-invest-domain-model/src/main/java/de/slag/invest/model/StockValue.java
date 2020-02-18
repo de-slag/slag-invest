@@ -3,13 +3,10 @@ package de.slag.invest.model;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 
-import org.apache.commons.lang3.StringUtils;
-
-import de.slag.common.model.EntityBean;
-
 @Entity
-public class StockValue extends DomainBean {
+public class StockValue extends MandantBean {
 	
+
 	@Basic
 	private String isin;
 	
@@ -18,6 +15,14 @@ public class StockValue extends DomainBean {
 	
 	@Basic
 	private String wkn;
+	
+	public StockValue(Mandant mandant) {
+		super(mandant);
+	}
+	
+	StockValue() {
+		this(null);
+	}
 
 	public String getIsin() {
 		return isin;

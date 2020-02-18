@@ -6,6 +6,7 @@ import javax.persistence.Transient;
 
 import de.slag.common.model.EntityBean;
 
+
 public abstract class DomainBean extends EntityBean {
 
 	@Transient
