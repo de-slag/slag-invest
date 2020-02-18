@@ -27,7 +27,7 @@ public class PortfolioAccountingServiceImplTest {
 
 	@Test
 	public void it() {
-		Portfolio portfolio = new Portfolio();
+		Portfolio portfolio = new Portfolio(null);
 		final PortfolioFacade portfolioFacade = new PortfolioFacade(portfolio);
 		final Collection<PortfolioTransaction> transactions = portfolioFacade.getTransactions();
 
@@ -40,7 +40,7 @@ public class PortfolioAccountingServiceImplTest {
 
 	private PortfolioTransaction createTransaction(Portfolio portfolio, String isin, LocalDateTime localDate, Integer count,
 			Integer totalPrice, PortfolioTransactionType type) {
-		PortfolioTransaction portfolioTransaction = new PortfolioTransaction();
+		PortfolioTransaction portfolioTransaction = new PortfolioTransaction(null);
 		portfolioTransaction.setIsin(isin);
 		portfolioTransaction.setTimestamp(localDate);
 		portfolioTransaction.setCount(count);

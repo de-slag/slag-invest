@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -19,14 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.slag.common.base.AdmCache;
 import de.slag.invest.iface.av.api.StockValueDataImportService;
+import de.slag.invest.model.Mandant;
+import de.slag.invest.model.User;
+import de.slag.invest.service.MandantService;
 import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
+import de.slag.invest.service.UserService;
 import de.slag.invest.webservice.response.HtmlDecorator;
 import de.slag.invest.webservice.response.SimpleHtmlResponse;
+import de.slag.invest.webservice.response.WebserviceResponse2;
 import de.slag.invest.webservice.response.WsResponse;
 
 @RestController
-public class InvestController {
+public class InvestController extends AbstractInvController {
 
 	private static final Log LOG = LogFactory.getLog(InvestController.class);
 
@@ -41,6 +47,12 @@ public class InvestController {
 
 	@Resource
 	private StockValueService stockValueService;
+
+	@Resource
+	private UserService userService;
+
+	@Resource
+	private MandantService mandantService;
 
 	@GetMapping("/fetchStockValues")
 	public Collection<String> getFetchStockValues() {
@@ -91,6 +103,44 @@ public class InvestController {
 			return wsResponse;
 		}
 		return "test, param: " + param;
+	}
+
+	@GetMapping("/login")
+	public Object login(@RequestParam String username, @RequestParam String password) {
+		return getCredentialsComponent().login(username, password);
+	}
+
+	@GetMapping("/adduser")
+	public Object addUser(@RequestParam String username, @RequestParam String password,
+			@RequestParam(name = "mandant") String mandantName, String token) {
+		final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
+		final Mandant mandant = loadBy.get();
+		User newUser = new User(mandant);
+		newUser.setUsername(username);
+		newUser.setPassword(password);
+
+		userService.save(newUser);
+
+		return "OK";
+	}
+
+	@GetMapping("/addmandant")
+	public WebserviceResponse2 addMandant(@RequestParam String token, @RequestParam(name = "mandant") String mandantName) {
+		final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
+		if (loadBy.isPresent()) {
+			final WebserviceResponse2 response = new WebserviceResponse2();
+			response.setMessage("a mandant whith the given name already exists: " + mandantName);
+			return response;
+		}
+
+		final Mandant mandant = new Mandant();
+
+		mandant.setName(mandantName);
+		mandantService.save(mandant);
+		final WebserviceResponse2 response = new WebserviceResponse2();
+		response.setSuccessful(true);
+		response.setMessage(String.format("Mandant '%s' succesful added.", mandantName));
+		return response;
 	}
 
 }
