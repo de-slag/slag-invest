@@ -46,7 +46,7 @@ public class PortfolioTransactionImportServiceImpl implements PortfolioTransacti
 		final String isin = dto.getIsin();
 
 		final PortfolioTransaction transaction = loadTransactionBy(portfolioNumber, type, date, isin)
-				.orElse(new PortfolioTransaction());
+				.orElse(new PortfolioTransaction(null));
 		
 		transaction.setPortfolioNumber(portfolioNumber);
 		transaction.setType(type);

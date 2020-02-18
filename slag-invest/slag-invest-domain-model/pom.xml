@@ -21,5 +21,6 @@
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-model</artifactId>
 		</dependency>
+
 	</dependencies>
 </project>

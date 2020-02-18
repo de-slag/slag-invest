@@ -6,13 +6,21 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 
 @Entity
-public class Portfolio extends DomainBean {
+public class Portfolio extends MandantBean {
 
 	@Basic
 	private String portfolioNumber;
 
 	@Basic
 	private BigDecimal cash;
+
+	public Portfolio(Mandant mandant) {
+		super(mandant);
+	}
+
+	Portfolio() {
+		this(null);
+	}
 
 	public BigDecimal getCash() {
 		return cash;

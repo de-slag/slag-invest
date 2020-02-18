@@ -1,7 +1,7 @@
 package de.slag.invest.webservice.response;
 
 public class WsResponse {
-	
+
 	private String message;
 
 	public String getMessage() {

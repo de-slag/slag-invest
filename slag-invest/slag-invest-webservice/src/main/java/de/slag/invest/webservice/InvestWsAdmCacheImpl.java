@@ -59,7 +59,7 @@ public class InvestWsAdmCacheImpl implements AdmCache {
 	}
 
 	@Override
-	public String get(String key) {
+	public String get(String key) {		
 		return properties.getProperty(key);
 	}
 

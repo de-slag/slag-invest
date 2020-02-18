@@ -14,7 +14,7 @@ public class TestCaseGenerator {
 	private static final PortfolioTransactionType CASH_IN = PortfolioTransactionType.CASH_IN;
 
 	public PortfolioFacade generateCase01() {
-		final Portfolio portfolio = new Portfolio();
+		final Portfolio portfolio = new Portfolio(null);
 		portfolio.setPortfolioNumber("testcase01");
 
 		final PortfolioFacade portfolioFacade = new PortfolioFacade(portfolio);
@@ -38,7 +38,7 @@ public class TestCaseGenerator {
 
 	private PortfolioTransaction transaction(String isin, Integer count, BigDecimal totalPrice,
 			PortfolioTransactionType type, String portfolioNumber) {
-		final PortfolioTransaction portfolioTransaction = new PortfolioTransaction();
+		final PortfolioTransaction portfolioTransaction = new PortfolioTransaction(null);
 		portfolioTransaction.setIsin(isin);
 		portfolioTransaction.setCount(count);
 		portfolioTransaction.setTotalPrice(totalPrice);

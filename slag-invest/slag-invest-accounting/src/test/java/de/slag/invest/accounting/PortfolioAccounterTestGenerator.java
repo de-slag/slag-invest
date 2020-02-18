@@ -69,7 +69,7 @@ public class PortfolioAccounterTestGenerator {
 
 	private PortfolioTransaction transaction(String isin, LocalDateTime date, Integer count, PortfolioTransactionType type,
 			Integer totalPrice) {
-		final PortfolioTransaction t = new PortfolioTransaction();
+		final PortfolioTransaction t = new PortfolioTransaction(null);
 
 		t.setIsin(isin);
 		t.setType(type);

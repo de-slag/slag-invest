@@ -10,7 +10,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Entity
-public class PortfolioTransaction extends DomainBean {
+public class PortfolioTransaction extends MandantBean {
+
 
 	@Basic
 	private String portfolioNumber;
@@ -29,6 +30,14 @@ public class PortfolioTransaction extends DomainBean {
 
 	@Enumerated(EnumType.STRING)
 	private PortfolioTransactionType type;
+
+	public PortfolioTransaction(Mandant mandant) {
+		super(mandant);
+	}
+	
+	PortfolioTransaction() {
+		this(null);
+	}
 
 	public String getIsin() {
 		return isin;
