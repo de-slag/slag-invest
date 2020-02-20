@@ -13,7 +13,7 @@ import de.slag.common.core.SlagDevelopment;
 import de.slag.invest.service.UserService;
 
 @Component
-public class InvCredentialsComponent {
+public class IwsCredentialComponent {
 
 	private static final long TOKEN_TIMEOUT = 15000;
 

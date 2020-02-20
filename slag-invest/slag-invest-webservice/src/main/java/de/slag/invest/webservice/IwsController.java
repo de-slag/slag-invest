@@ -32,9 +32,9 @@ import de.slag.invest.webservice.response.WebserviceResponse2;
 import de.slag.invest.webservice.response.WsResponse;
 
 @RestController
-public class InvestController extends AbstractInvController {
+public class IwsController extends AbstractIwsController {
 
-	private static final Log LOG = LogFactory.getLog(InvestController.class);
+	private static final Log LOG = LogFactory.getLog(IwsController.class);
 
 	@Resource
 	private AdmCache admCache;
