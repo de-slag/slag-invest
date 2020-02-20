@@ -15,23 +15,28 @@ import de.slag.invest.service.UserService;
 @Component
 public class IwsCredentialComponent {
 
-	private static final long TOKEN_TIMEOUT = 15000;
+	private static final long TOKEN_TIMEOUT_IN_MILLISECONDS = 15000;
 
 	@Resource
 	private UserService userService;
 
 	private Map<String, String> users = new HashMap<>();
 
-	private Map<String, Long> tokens = new HashMap<>();
+	private Map<IwsCredentialToken, Long> tokens = new HashMap<>();
 
-	private Map<String, String> userTokens = new HashMap<>();
+	private Map<String, IwsCredentialToken> userTokens = new HashMap<>();
 
 	@PostConstruct
 	public void setUp() {
 		users.put("test", "test");
 	}
 
-	public void logout(String token) {
+	@Deprecated
+	public void logout(String tokenString) {
+		tokens.remove(IwsCredentialToken.of(tokenString));
+	}
+	
+	public void logout(IwsCredentialToken token) {
 		tokens.remove(token);
 	}
 
@@ -39,24 +44,29 @@ public class IwsCredentialComponent {
 		if (!users.containsKey(username)) {
 			return null;
 		}
-		final String token = token();
+		final IwsCredentialToken token = token();
 		userTokens.put(username, token);
 		useToken(token);
-		return token;
+		return token.getTokenString();
+	}
+	
+	@Deprecated
+	public void useToken(String tokenString) {
+		useToken(IwsCredentialToken.of(tokenString));
 	}
 
-	public void useToken(String token) {
+	public void useToken(IwsCredentialToken token) {
 		if (!isValid(token)) {
 			throw new BaseException("token invalid: " + token);
 		}
-		tokens.put(token, System.currentTimeMillis() + TOKEN_TIMEOUT);
+		tokens.put(token, System.currentTimeMillis() + TOKEN_TIMEOUT_IN_MILLISECONDS);
 	}
 
-	private String token() {
-		return String.valueOf(System.nanoTime());
+	private IwsCredentialToken token() {
+		return IwsCredentialToken.of(String.valueOf(System.nanoTime()));
 	}
 
-	public boolean isValid(String token) {
+	public boolean isValid(IwsCredentialToken token) {
 		if (token == null) {
 			return false;
 		}
