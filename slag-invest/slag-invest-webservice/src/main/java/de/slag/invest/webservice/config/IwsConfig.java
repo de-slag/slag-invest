@@ -5,6 +5,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("de.slag")
-public class InvestWsConfig {
+public class IwsConfig {
 
 }

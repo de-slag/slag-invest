@@ -19,9 +19,9 @@ import de.slag.common.base.AdmCache;
 import de.slag.common.base.BaseException;
 
 @Component
-public class InvestWsAdmCacheImpl implements AdmCache {
+public class IwsAdmCacheImpl implements AdmCache {
 
-	private static final Log LOG = LogFactory.getLog(InvestWsAdmCacheImpl.class);
+	private static final Log LOG = LogFactory.getLog(IwsAdmCacheImpl.class);
 
 	public static final String CONFIG = "de.slag.configfile";
 

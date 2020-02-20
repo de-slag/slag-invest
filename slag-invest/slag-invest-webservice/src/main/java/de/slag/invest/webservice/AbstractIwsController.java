@@ -2,12 +2,12 @@ package de.slag.invest.webservice;
 
 import javax.annotation.Resource;
 
-public abstract class AbstractInvController {
+public abstract class AbstractIwsController {
 	
 	@Resource
-	private InvCredentialsComponent invCredentialsComponent;
+	private IwsCredentialComponent invCredentialsComponent;
 	
-	protected InvCredentialsComponent getCredentialsComponent() {
+	protected IwsCredentialComponent getCredentialsComponent() {
 		return invCredentialsComponent;
 	}
 	

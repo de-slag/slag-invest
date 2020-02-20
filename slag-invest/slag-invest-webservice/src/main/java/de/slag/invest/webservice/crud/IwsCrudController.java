@@ -19,7 +19,7 @@ import de.slag.invest.webservice.response.SimpleHtmlResponse;
 
 @RestController
 @RequestMapping("/crud")
-public class InvestCrudController {
+public class IwsCrudController {
 
 	@Resource
 	private PortfolioTransactionService portfolioTransactionService;
