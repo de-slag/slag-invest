@@ -52,7 +52,5 @@ public abstract class AbstractDomainServiceImpl<T extends DomainBean> implements
 			throw new BaseException("more than 1 result: " + findBy);
 		}
 		return Optional.of(new ArrayList<>(findBy).get(0));
-
 	}
-
 }
