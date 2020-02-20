@@ -2,15 +2,15 @@ package de.slag.invest.webservice;
 
 import java.util.Objects;
 
-public class IwsCredentialToken implements Comparable<IwsCredentialToken> {
+public class CredentialToken implements Comparable<CredentialToken> {
 
 	private final String tokenString;
 
-	public static IwsCredentialToken of(String tokenString) {
-		return new IwsCredentialToken(tokenString);
+	public static CredentialToken of(String tokenString) {
+		return new CredentialToken(tokenString);
 	}
 
-	private IwsCredentialToken(String tokenString) {
+	private CredentialToken(String tokenString) {
 		super();
 		this.tokenString = Objects.requireNonNull(tokenString, "token string is not setted");
 	}
@@ -20,7 +20,7 @@ public class IwsCredentialToken implements Comparable<IwsCredentialToken> {
 	}
 
 	@Override
-	public int compareTo(IwsCredentialToken o) {
+	public int compareTo(CredentialToken o) {
 		return this.tokenString.compareTo(o.getTokenString());
 	}
 
@@ -40,7 +40,7 @@ public class IwsCredentialToken implements Comparable<IwsCredentialToken> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IwsCredentialToken other = (IwsCredentialToken) obj;
+		CredentialToken other = (CredentialToken) obj;
 		if (tokenString == null) {
 			if (other.tokenString != null)
 				return false;

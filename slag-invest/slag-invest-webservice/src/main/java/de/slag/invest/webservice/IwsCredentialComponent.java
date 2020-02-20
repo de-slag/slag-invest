@@ -6,67 +6,78 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import de.slag.common.base.BaseException;
 import de.slag.common.core.SlagDevelopment;
+import de.slag.invest.dtomodel.UserDto;
+import de.slag.invest.model.Mandant;
+import de.slag.invest.model.User;
 import de.slag.invest.service.UserService;
 
 @Component
 public class IwsCredentialComponent {
+
+	private static final Log LOG = LogFactory.getLog(IwsCredentialComponent.class);
 
 	private static final long TOKEN_TIMEOUT_IN_MILLISECONDS = 15000;
 
 	@Resource
 	private UserService userService;
 
-	private Map<String, String> users = new HashMap<>();
+	private Map<CredentialToken, Long> tokens = new HashMap<>();
 
-	private Map<IwsCredentialToken, Long> tokens = new HashMap<>();
-
-	private Map<String, IwsCredentialToken> userTokens = new HashMap<>();
-
-	@PostConstruct
-	public void setUp() {
-		users.put("test", "test");
-	}
+	private Map<UserDto, CredentialToken> userTokens = new HashMap<>();
 
 	@Deprecated
 	public void logout(String tokenString) {
-		tokens.remove(IwsCredentialToken.of(tokenString));
+		tokens.remove(CredentialToken.of(tokenString));
 	}
-	
-	public void logout(IwsCredentialToken token) {
+
+	public void logout(CredentialToken token) {
 		tokens.remove(token);
 	}
 
-	public String login(String username, String password) {
-		if (!users.containsKey(username)) {
-			return null;
-		}
-		final IwsCredentialToken token = token();
-		userTokens.put(username, token);
-		useToken(token);
-		return token.getTokenString();
-	}
-	
 	@Deprecated
-	public void useToken(String tokenString) {
-		useToken(IwsCredentialToken.of(tokenString));
+	public String login(String username, String password) {
+		throw new BaseException("deprecated");
 	}
 
-	public void useToken(IwsCredentialToken token) {
+	public CredentialToken login(String username, String password, Mandant mandant) {
+		final User user = userService.loadBy(username, mandant).orElseThrow(() -> new BaseException(
+				String.format("user not found '%s', mandant '%s'", username, mandant.getName())));
+
+		if (!userService.isPasswordCorrect(user, password)) {
+			return null;
+		}
+		
+		final UserDto userDto = userService.createDto(user);
+
+		final CredentialToken token = token();
+		userTokens.put(userDto, token);
+		useToken(token);
+		return token;
+	}
+
+	@Deprecated
+	public void useToken(String tokenString) {
+		useToken(CredentialToken.of(tokenString));
+	}
+
+	public void useToken(CredentialToken token) {
 		if (!isValid(token)) {
 			throw new BaseException("token invalid: " + token);
 		}
 		tokens.put(token, System.currentTimeMillis() + TOKEN_TIMEOUT_IN_MILLISECONDS);
 	}
 
-	private IwsCredentialToken token() {
-		return IwsCredentialToken.of(String.valueOf(System.nanoTime()));
+	private CredentialToken token() {
+		return CredentialToken.of(String.valueOf(System.nanoTime()));
 	}
 
-	public boolean isValid(IwsCredentialToken token) {
+	public boolean isValid(CredentialToken token) {
 		if (token == null) {
 			return false;
 		}

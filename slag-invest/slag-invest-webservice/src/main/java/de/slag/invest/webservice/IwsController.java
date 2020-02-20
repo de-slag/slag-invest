@@ -106,13 +106,32 @@ public class IwsController extends AbstractIwsController {
 	}
 
 	@GetMapping("/login")
-	public Object login(@RequestParam String username, @RequestParam String password) {
-		return getCredentialsComponent().login(username, password);
+	public WebserviceResponse2 login(@RequestParam String username, @RequestParam String password,
+			@RequestParam(name = "mandant", required = false) String mandantName) {
+
+		final Mandant mandant;
+		if (mandantName == null) {
+			mandant = null;
+		} else {
+			final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
+			if (loadBy.isEmpty()) {
+				return new WebserviceResponse2();
+			}
+			mandant = loadBy.get();
+		}
+		final CredentialToken login = getCredentialsComponent().login(username, password, mandant);
+		if (login == null) {
+			return new WebserviceResponse2();
+		}
+		final WebserviceResponse2 response = new WebserviceResponse2();
+		response.setMessage(login.getTokenString());
+		return response;
 	}
 
 	@GetMapping("/adduser")
 	public Object addUser(@RequestParam String username, @RequestParam String password,
 			@RequestParam(name = "mandant") String mandantName, String token) {
+
 		final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
 		final Mandant mandant = loadBy.get();
 		User newUser = new User(mandant);
@@ -121,11 +140,15 @@ public class IwsController extends AbstractIwsController {
 
 		userService.save(newUser);
 
-		return "OK";
+		final WebserviceResponse2 webserviceResponse2 = new WebserviceResponse2();
+		webserviceResponse2.setSuccessful(true);
+		webserviceResponse2.setMessage("adduser succsessful: " + username + ", mandant: " + mandantName);
+		return webserviceResponse2;
 	}
 
 	@GetMapping("/addmandant")
-	public WebserviceResponse2 addMandant(@RequestParam String token, @RequestParam(name = "mandant") String mandantName) {
+	public WebserviceResponse2 addMandant(@RequestParam String token,
+			@RequestParam(name = "mandant") String mandantName) {
 		final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
 		if (loadBy.isPresent()) {
 			final WebserviceResponse2 response = new WebserviceResponse2();

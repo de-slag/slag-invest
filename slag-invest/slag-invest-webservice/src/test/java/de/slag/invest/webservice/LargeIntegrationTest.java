@@ -27,18 +27,32 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 		assertEquals("200", getResponse(BASE_URL + "/test?param=response", String.class));
 
 		// USER + MANDANT tests
-		final String token0 = getResponse(BASE_URL + "/login?username=test&password=test", String.class);
-		assertTrue(StringUtils.isNotEmpty(token0));
+		final WebserviceResponse2 superLoginResponse = getResponse(
+				BASE_URL + "/login?username=sysadm&password=adm_User", WebserviceResponse2.class);
+		final String superUserToken = superLoginResponse.getMessage();
+		assertTrue(StringUtils.isNotEmpty(superUserToken));
 
-		final String urlAddMandant = String.format(BASE_URL + "/addmandant?token=%s&mandant=%s", token0,
+		final String urlAddMandant = String.format(BASE_URL + "/addmandant?token=%s&mandant=%s", superUserToken,
 				INT_TEST_MANDANT);
 		final WebserviceResponse2 response = getResponse(urlAddMandant, WebserviceResponse2.class);
 		assertTrue(response.getSuccessful());
+
 		final String expected = String.format("Mandant '%s' succesful added.", INT_TEST_MANDANT);
 		assertEquals(expected, response.getMessage());
 
 		final WebserviceResponse2 responseAgain = getResponse(urlAddMandant, WebserviceResponse2.class);
 		assertFalse(responseAgain.getSuccessful());
 		assertEquals("a mandant whith the given name already exists: " + INT_TEST_MANDANT, responseAgain.getMessage());
+
+		final String urlAdduser = BASE_URL + "/adduser?username=super&mandant=" + INT_TEST_MANDANT
+				+ "&password=super&token=" + superUserToken;
+		final WebserviceResponse2 responseAdduser = getResponse(urlAdduser, WebserviceResponse2.class);
+		assertTrue(responseAdduser.getSuccessful());
+		assertEquals("adduser succsessful: super, mandant: I_MANDANT", responseAdduser.getMessage());
+
+		final String urlLoginUser = String.format(BASE_URL + "/login?username=%s&password=%s&mandant=%s", "super",
+				"super", INT_TEST_MANDANT);
+		final WebserviceResponse2 loginMandantSuperUser = getResponse(urlLoginUser, WebserviceResponse2.class);
+		assertTrue(loginMandantSuperUser.getSuccessful());
 	}
 }

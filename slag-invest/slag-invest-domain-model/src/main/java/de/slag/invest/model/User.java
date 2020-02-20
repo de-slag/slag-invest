@@ -35,12 +35,12 @@ public class User extends MandantBean {
 		this.username = username;
 	}
 
-	public String getPasswordHash() {
-		return passwordHash;
+	public PasswordHash getPasswordHash() {
+		return new PasswordHash(passwordHash);
 	}
 
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
+	public void setPasswordHash(PasswordHash passwordHash) {
+		this.passwordHash = passwordHash.getHash();
 	}
 
 	public String getPassword() {
@@ -50,7 +50,5 @@ public class User extends MandantBean {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
 
 }
