@@ -2,6 +2,7 @@ package de.slag.invest.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -36,7 +37,8 @@ public abstract class AbstractDomainServiceImpl<T extends DomainBean> implements
 	protected abstract Class<T> getType();
 
 	public Collection<T> findAll() {
-		return findAllIds().stream().map(id -> loadById(id)).collect(Collectors.toList());
+		List<T> collect = findAllIds().stream().map(id -> loadById(id)).collect(Collectors.toList());
+		return collect;
 	}
 
 	protected Collection<T> findBy(Predicate<T> filter) {

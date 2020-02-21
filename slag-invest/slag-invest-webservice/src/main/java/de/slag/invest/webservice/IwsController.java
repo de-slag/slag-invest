@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.slag.common.base.AdmCache;
-import de.slag.invest.iface.av.api.StockValueDataImportService;
+//import de.slag.invest.iface.av.api.StockValueDataImportService;
 import de.slag.invest.model.Mandant;
 import de.slag.invest.model.User;
 import de.slag.invest.service.MandantService;
@@ -28,6 +29,7 @@ import de.slag.invest.service.StockValueService;
 import de.slag.invest.service.UserService;
 import de.slag.invest.webservice.response.HtmlDecorator;
 import de.slag.invest.webservice.response.SimpleHtmlResponse;
+import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
 import de.slag.invest.webservice.response.WsResponse;
 
@@ -42,8 +44,8 @@ public class IwsController extends AbstractIwsController {
 	@Resource
 	private PortfolioTransactionService portfolioTransactionService;
 
-	@Resource
-	private StockValueDataImportService stockValueDataImportService;
+//	@Resource
+//	private StockValueDataImportService stockValueDataImportService;
 
 	@Resource
 	private StockValueService stockValueService;
@@ -56,7 +58,7 @@ public class IwsController extends AbstractIwsController {
 
 	@GetMapping("/fetchStockValues")
 	public Collection<String> getFetchStockValues() {
-		stockValueDataImportService.importData();
+//		stockValueDataImportService.importData();
 
 		final ArrayList<String> arrayList = new ArrayList<String>();
 		arrayList.add("function: FETCH STOCK VALUES");
@@ -98,9 +100,9 @@ public class IwsController extends AbstractIwsController {
 			return Response.SC_OK;
 		}
 		if ("wsresponse".equalsIgnoreCase(param)) {
-			final WsResponse wsResponse = new WsResponse();
-			wsResponse.setMessage("param: " + param);
-			return wsResponse;
+			final WebserviceResponse2 response = new WebserviceResponse2();
+			response.setMessage("param: " + param);
+			return response;
 		}
 		return "test, param: " + param;
 	}
@@ -123,8 +125,10 @@ public class IwsController extends AbstractIwsController {
 		if (login == null) {
 			return new WebserviceResponse2();
 		}
-		final WebserviceResponse2 response = new WebserviceResponse2();
-		response.setMessage(login.getTokenString());
+		final StringWebserviceResponse2 response = new StringWebserviceResponse2();
+		response.setMessage("token created");
+		response.setSuccessful(true);
+		response.setValue(login.getTokenString());
 		return response;
 	}
 
@@ -140,10 +144,19 @@ public class IwsController extends AbstractIwsController {
 
 		userService.save(newUser);
 
+		assertNewUserOk(newUser.getId());
+
 		final WebserviceResponse2 webserviceResponse2 = new WebserviceResponse2();
 		webserviceResponse2.setSuccessful(true);
 		webserviceResponse2.setMessage("adduser succsessful: " + username + ", mandant: " + mandantName);
 		return webserviceResponse2;
+	}
+
+	private void assertNewUserOk(Long id) {
+		User loadById = userService.loadById(id);
+		Objects.requireNonNull(loadById.getUsername(), "username not setted");
+		Objects.requireNonNull(loadById.getMandant(), "mandant not setted");
+
 	}
 
 	@GetMapping("/addmandant")
