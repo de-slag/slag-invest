@@ -3,7 +3,6 @@ package de.slag.invest.webservice;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
@@ -22,7 +21,7 @@ public class IwsCredentialComponent {
 
 	private static final Log LOG = LogFactory.getLog(IwsCredentialComponent.class);
 
-	private static final long TOKEN_TIMEOUT_IN_MILLISECONDS = 15000;
+	private static final long TOKEN_TIMEOUT_IN_MILLISECONDS = 60000;
 
 	@Resource
 	private UserService userService;
@@ -52,7 +51,7 @@ public class IwsCredentialComponent {
 		if (!userService.isPasswordCorrect(user, password)) {
 			return null;
 		}
-		
+
 		final UserDto userDto = userService.createDto(user);
 
 		final CredentialToken token = token();
@@ -67,10 +66,7 @@ public class IwsCredentialComponent {
 		useToken(CredentialToken.of(tokenString));
 	}
 
-	public void useToken(CredentialToken token) {
-		if (!isValid(token)) {
-			throw new BaseException("token invalid: " + token);
-		}
+	private void useToken(CredentialToken token) {
 		tokens.put(token, System.currentTimeMillis() + TOKEN_TIMEOUT_IN_MILLISECONDS);
 	}
 
@@ -95,6 +91,7 @@ public class IwsCredentialComponent {
 		if (System.currentTimeMillis() > validUntil) {
 			return false;
 		}
+		useToken(token);
 		return true;
 	}
 }

@@ -1,14 +1,16 @@
 package de.slag.invest.webservice.response;
 
-public class StringWebserviceResponse2 extends WebserviceResponse2 {
-	
-	private String value;
+import java.util.List;
 
-	public String getValue() {
+public class StringWebserviceResponse2 extends WebserviceResponse2 {
+
+	private List<String> value;
+
+	public List<String> getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(List<String> value) {
 		this.value = value;
 	}
 
