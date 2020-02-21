@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
+import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
 import de.slag.invest.webservice.response.WsResponse;
 
@@ -27,9 +28,9 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 		assertEquals("200", getResponse(BASE_URL + "/test?param=response", String.class));
 
 		// USER + MANDANT tests
-		final WebserviceResponse2 superLoginResponse = getResponse(
-				BASE_URL + "/login?username=sysadm&password=adm_User", WebserviceResponse2.class);
-		final String superUserToken = superLoginResponse.getMessage();
+		final StringWebserviceResponse2 superLoginResponse = getResponse(
+				BASE_URL + "/login?username=sysadm&password=adm_User", StringWebserviceResponse2.class);
+		final String superUserToken = superLoginResponse.getValue();
 		assertTrue(StringUtils.isNotEmpty(superUserToken));
 
 		final String urlAddMandant = String.format(BASE_URL + "/addmandant?token=%s&mandant=%s", superUserToken,

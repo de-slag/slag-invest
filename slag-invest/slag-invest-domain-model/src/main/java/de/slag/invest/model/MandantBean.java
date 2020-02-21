@@ -1,7 +1,9 @@
 package de.slag.invest.model;
 
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public abstract class MandantBean extends DomainBean {
 
 	@ManyToOne
@@ -14,4 +16,5 @@ public abstract class MandantBean extends DomainBean {
 	public Mandant getMandant() {
 		return mandant;
 	}
+	
 }

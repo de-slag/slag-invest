@@ -57,6 +57,7 @@ public class IwsCredentialComponent {
 
 		final CredentialToken token = token();
 		userTokens.put(userDto, token);
+		tokens.put(token, System.currentTimeMillis());
 		useToken(token);
 		return token;
 	}

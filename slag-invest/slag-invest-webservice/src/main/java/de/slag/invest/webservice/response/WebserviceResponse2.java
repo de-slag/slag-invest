@@ -1,11 +1,15 @@
 package de.slag.invest.webservice.response;
 
+import java.util.Date;
+
 public class WebserviceResponse2 {
+	
+	private Date createdAt = new Date();
 
 	private String message;
-
+	
 	private Exception exception;
-
+	
 	private Boolean successful = false;
 
 	public String getMessage() {
@@ -32,4 +36,11 @@ public class WebserviceResponse2 {
 		this.successful = successful;
 	}
 
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
 }

@@ -46,11 +46,11 @@
 
 		<!-- slag-invest -->
 
-		<dependency>
+<!-- 		<dependency>
 			<groupId>de.slag.invest</groupId>
 			<version>0.0.1-SNAPSHOT</version>
 			<artifactId>stock-value-fetch-service</artifactId>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>de.slag.invest</groupId>
