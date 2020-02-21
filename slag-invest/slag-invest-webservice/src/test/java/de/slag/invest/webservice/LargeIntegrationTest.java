@@ -4,10 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.slag.invest.webservice.response.StringWebserviceResponse2;
@@ -15,6 +22,8 @@ import de.slag.invest.webservice.response.WebserviceResponse2;
 import de.slag.invest.webservice.response.WsResponse;
 
 public class LargeIntegrationTest extends AbstractWsIntegrationTest {
+
+	private static final Log LOG = LogFactory.getLog(LargeIntegrationTest.class);
 
 	private static final String MANDANT_SUPER_USER_NAME = "super";
 
@@ -26,11 +35,17 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 
 	private final IntegrationTestProperties integrationTestProperties = new IntegrationTestProperties();
 
+	private List<String> testProtocol;
+
+	private Long start;
+
 	@Test
 	public void testWithUrl() {
 
 		// base entdpoint URL-Test
+
 		assertEquals("slag-invest-webservice", getResponse(BASE_URL, String.class));
+		logResult("Base Endpoint URL-Test");
 
 		testTests();
 
@@ -47,7 +62,15 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 		assertNotNull(response);
 		assertTrue(response.getSuccessful());
 		assertTrue(response.getValue().size() == 5);
+		logResult("Get Status with Mandant User Token");
+	}
 
+	private void logResult(String testName) {
+		logResult(testName, TestResult.OK);
+	}
+
+	private void logResult(String testName, TestResult testResult) {
+		testProtocol.add(String.format("[%s] %s", testResult, testName));
 	}
 
 	private void adminUserTests() {
@@ -63,6 +86,7 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 		assertTrue(StringUtils.isNotEmpty(superUserToken));
 
 		integrationTestProperties.putToken(ADM_USER_NAME, superUserToken);
+		logResult("Admin User Login");
 	}
 
 	private void mandantTests() {
@@ -76,10 +100,13 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 
 		final String expected = String.format("Mandant '%s' succesful added.", INT_TEST_MANDANT);
 		assertEquals(expected, response.getMessage());
+		logResult("Add mandant");
 
 		final WebserviceResponse2 responseAgain = getResponse(urlAddMandant, WebserviceResponse2.class);
 		assertFalse(responseAgain.getSuccessful());
 		assertEquals("a mandant whith the given name already exists: " + INT_TEST_MANDANT, responseAgain.getMessage());
+		logResult("Add mandant, avoid second mandant with same name");
+
 	}
 
 	private void userTest() {
@@ -91,6 +118,7 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 
 		assertTrue(responseAdduser.getSuccessful());
 		assertEquals("adduser succsessful: super, mandant: I_MANDANT", responseAdduser.getMessage());
+		logResult("Mandant User Registration");
 
 		final String urlLoginUser = String.format(BASE_URL + "/login?username=%s&password=%s&mandant=%s",
 				MANDANT_SUPER_USER_NAME, MANDANT_SUPER_USER_NAME, INT_TEST_MANDANT);
@@ -102,12 +130,41 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 		assertTrue(!value.isEmpty());
 		final String mandantSuperUserToken = value.get(0);
 		integrationTestProperties.putToken(MANDANT_SUPER_USER_NAME, mandantSuperUserToken);
+		logResult("Mandant User Login");
 	}
 
 	private void testTests() {
 		assertEquals("test, param: null", getResponse(BASE_URL + "/test", String.class));
+		logResult("Test Call, no parameter");
+
 		assertEquals("test, param: 0815", getResponse(BASE_URL + "/test?param=0815", String.class));
+		logResult("Test Call, random parameter");
+
 		assertEquals(WsResponse.class, getResponse(BASE_URL + "/test?param=wsresponse", WsResponse.class).getClass());
+		logResult("Test Call, expect WsResponse");
+
 		assertEquals("200", getResponse(BASE_URL + "/test?param=response", String.class));
+		logResult("Test Call, expect '200' (http: ok)");
+	}
+
+	@BeforeEach
+	public void setUp() {
+		testProtocol = new ArrayList<>();
+		start = System.currentTimeMillis();
+	}
+
+	@AfterEach
+	public void tearDown() {
+		int size = testProtocol.size();
+		testProtocol.add(String.format("test count: %s", size));
+		testProtocol.add(String.format("runtime: %s seconds", (System.currentTimeMillis() - start) / 1000.0));
+		LOG.info("Results:\n" + String.join("\n", testProtocol));
+
+	}
+
+	private enum TestResult {
+		OK,
+
+		FAIL
 	}
 }

@@ -28,7 +28,6 @@ import de.slag.invest.service.MandantService;
 import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
 import de.slag.invest.service.UserService;
-import de.slag.invest.webservice.response.SimpleHtmlResponse;
 import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
 
