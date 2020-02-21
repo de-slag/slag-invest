@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
@@ -13,25 +16,29 @@ import de.slag.invest.webservice.response.WsResponse;
 
 public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 
+	private static final String ADM_USER_NAME = "sysadm";
+
 	private static final String INT_TEST_MANDANT = "I_MANDANT";
 
 	private static final String BASE_URL = "http://localhost:18080/slag-invest-webservice";
 
+	private final IntegrationTestProperties integrationTestProperties = new IntegrationTestProperties();
+
 	@Test
 	public void testWithUrl() {
 
-		// test calls
+		testTests();
 
-		assertEquals("test, param: null", getResponse(BASE_URL + "/test", String.class));
-		assertEquals("test, param: 0815", getResponse(BASE_URL + "/test?param=0815", String.class));
-		assertEquals(WsResponse.class, getResponse(BASE_URL + "/test?param=wsresponse", WsResponse.class).getClass());
-		assertEquals("200", getResponse(BASE_URL + "/test?param=response", String.class));
+		userAndMandantTests();
+	}
 
-		// USER + MANDANT tests
-		final StringWebserviceResponse2 superLoginResponse = getResponse(
-				BASE_URL + "/login?username=sysadm&password=adm_User", StringWebserviceResponse2.class);
+	private void userAndMandantTests() {
+		// final String url = BASE_URL + "/login?username=sysadm&password=adm_User";
+		final String url = String.format(BASE_URL + "/login?username=%s&password=%s", ADM_USER_NAME, "adm_User");
+		final StringWebserviceResponse2 superLoginResponse = getResponse(url, StringWebserviceResponse2.class);
 		final String superUserToken = superLoginResponse.getValue();
 		assertTrue(StringUtils.isNotEmpty(superUserToken));
+		integrationTestProperties.putToken(ADM_USER_NAME, superUserToken);
 
 		final String urlAddMandant = String.format(BASE_URL + "/addmandant?token=%s&mandant=%s", superUserToken,
 				INT_TEST_MANDANT);
@@ -55,5 +62,12 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 				"super", INT_TEST_MANDANT);
 		final WebserviceResponse2 loginMandantSuperUser = getResponse(urlLoginUser, WebserviceResponse2.class);
 		assertTrue(loginMandantSuperUser.getSuccessful());
+	}
+
+	private void testTests() {
+		assertEquals("test, param: null", getResponse(BASE_URL + "/test", String.class));
+		assertEquals("test, param: 0815", getResponse(BASE_URL + "/test?param=0815", String.class));
+		assertEquals(WsResponse.class, getResponse(BASE_URL + "/test?param=wsresponse", WsResponse.class).getClass());
+		assertEquals("200", getResponse(BASE_URL + "/test?param=response", String.class));
 	}
 }
