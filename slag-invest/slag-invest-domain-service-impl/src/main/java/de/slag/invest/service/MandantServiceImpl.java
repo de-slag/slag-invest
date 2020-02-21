@@ -16,7 +16,7 @@ public class MandantServiceImpl extends AbstractDomainServiceImpl<Mandant> imple
 
 	@Override
 	public Optional<Mandant> loadBy(String name) {
-		return loadBy(m -> name.equals(name));
+		return loadBy(m -> m.getName().equals(name));
 	}
 
 }

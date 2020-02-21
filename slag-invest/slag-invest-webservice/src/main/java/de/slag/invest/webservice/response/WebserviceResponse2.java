@@ -10,7 +10,7 @@ public class WebserviceResponse2 {
 	
 	private Exception exception;
 	
-	private Boolean successful = false;
+	private Boolean successful;
 
 	public String getMessage() {
 		return message;

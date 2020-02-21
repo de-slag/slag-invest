@@ -1,6 +1,7 @@
 package de.slag.invest.webservice;
 
 import java.lang.management.ManagementFactory;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.slag.common.base.AdmCache;
+import de.slag.common.base.BaseException;
 //import de.slag.invest.iface.av.api.StockValueDataImportService;
 import de.slag.invest.model.Mandant;
 import de.slag.invest.model.User;
@@ -27,11 +28,9 @@ import de.slag.invest.service.MandantService;
 import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
 import de.slag.invest.service.UserService;
-import de.slag.invest.webservice.response.HtmlDecorator;
 import de.slag.invest.webservice.response.SimpleHtmlResponse;
 import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
-import de.slag.invest.webservice.response.WsResponse;
 
 @RestController
 public class IwsController extends AbstractIwsController {
@@ -67,7 +66,10 @@ public class IwsController extends AbstractIwsController {
 	}
 
 	@GetMapping("/status")
-	public String getStatus() {
+	public WebserviceResponse2 getStatus(@RequestParam String token) {
+		if (!getCredentialsComponent().isValid(CredentialToken.of(token))) {
+			return null;
+		}
 
 		final List<String> asList = new ArrayList<>();
 		asList.add("start time: " + new Date(ManagementFactory.getRuntimeMXBean().getStartTime()));
@@ -78,20 +80,16 @@ public class IwsController extends AbstractIwsController {
 		asList.add(String.format("mem: %s M (%s M)", (runtime.totalMemory() - runtime.freeMemory()) / (1000 * 1000),
 				runtime.totalMemory() / 1000000));
 
-		return new SimpleHtmlResponse("Status", "", asList).toString();
+		asList.add(String.format("current time: %s", LocalDateTime.now()));
+		StringWebserviceResponse2 webserviceResponse2 = new StringWebserviceResponse2();
+		webserviceResponse2.setSuccessful(true);
+		webserviceResponse2.setValue(asList);
+		return webserviceResponse2;
 	}
 
 	@GetMapping
 	public String get() {
-		final HtmlDecorator htmlDecorator = new HtmlDecorator();
-		final List<String> responseList = new ArrayList<>();
-		responseList.add(htmlDecorator.h1("CALLS"));
-
-		final List<String> calls = Arrays.asList("status", "fetchStockValues", "test", "crud");
-
-		responseList.addAll(calls.stream().map(c -> htmlDecorator.a(c)).collect(Collectors.toList()));
-
-		return htmlDecorator.decorateList(responseList);
+		return "slag-invest-webservice";
 	}
 
 	@GetMapping("/test")
@@ -101,6 +99,7 @@ public class IwsController extends AbstractIwsController {
 		}
 		if ("wsresponse".equalsIgnoreCase(param)) {
 			final WebserviceResponse2 response = new WebserviceResponse2();
+			response.setSuccessful(true);
 			response.setMessage("param: " + param);
 			return response;
 		}
@@ -117,18 +116,22 @@ public class IwsController extends AbstractIwsController {
 		} else {
 			final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
 			if (loadBy.isEmpty()) {
-				return new WebserviceResponse2();
+				final WebserviceResponse2 response = new WebserviceResponse2();
+				response.setSuccessful(false);
+				return response; 
 			}
 			mandant = loadBy.get();
 		}
 		final CredentialToken login = getCredentialsComponent().login(username, password, mandant);
 		if (login == null) {
-			return new WebserviceResponse2();
+			final WebserviceResponse2 response = new WebserviceResponse2();
+			response.setSuccessful(false);
+			return response; 
 		}
 		final StringWebserviceResponse2 response = new StringWebserviceResponse2();
-		response.setMessage("token created");
 		response.setSuccessful(true);
-		response.setValue(login.getTokenString());
+		response.setMessage("token created");
+		response.setValue(Arrays.asList(login.getTokenString()));
 		return response;
 	}
 
@@ -137,7 +140,8 @@ public class IwsController extends AbstractIwsController {
 			@RequestParam(name = "mandant") String mandantName, String token) {
 
 		final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
-		final Mandant mandant = loadBy.get();
+		final Mandant mandant = loadBy
+				.orElseThrow(() -> new BaseException("no mandant found with name: " + mandantName));
 		User newUser = new User(mandant);
 		newUser.setUsername(username);
 		newUser.setPassword(password);
@@ -146,10 +150,10 @@ public class IwsController extends AbstractIwsController {
 
 		assertNewUserOk(newUser.getId());
 
-		final WebserviceResponse2 webserviceResponse2 = new WebserviceResponse2();
-		webserviceResponse2.setSuccessful(true);
-		webserviceResponse2.setMessage("adduser succsessful: " + username + ", mandant: " + mandantName);
-		return webserviceResponse2;
+		final WebserviceResponse2 response = new WebserviceResponse2();
+		response.setSuccessful(true);
+		response.setMessage("adduser succsessful: " + username + ", mandant: " + mandantName);
+		return response;
 	}
 
 	private void assertNewUserOk(Long id) {
@@ -165,6 +169,7 @@ public class IwsController extends AbstractIwsController {
 		final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
 		if (loadBy.isPresent()) {
 			final WebserviceResponse2 response = new WebserviceResponse2();
+			response.setSuccessful(false);
 			response.setMessage("a mandant whith the given name already exists: " + mandantName);
 			return response;
 		}
