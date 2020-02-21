@@ -2,6 +2,7 @@ package de.slag.invest.webservice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 
@@ -93,5 +94,19 @@ public class IwsCredentialComponent {
 		}
 		useToken(token);
 		return true;
+	}
+
+	public Mandant getMandant(CredentialToken token) {
+		if (!isValid(token)) {
+			return null;
+		}
+		final Optional<UserDto> findAny = userTokens.keySet().stream().filter(u -> userTokens.get(u).equals(token))
+				.findAny();
+		if (findAny.isEmpty()) {
+			return null;
+		}
+		final UserDto userDto = findAny.get();
+		User user = userService.loadById(userDto.getId());
+		return user.getMandant();
 	}
 }

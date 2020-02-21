@@ -1,7 +1,12 @@
 package de.slag.invest.service;
 
-import de.slag.invest.model.ConfigProperty;
+import java.util.Optional;
 
-public interface ConfigPropertyService extends DomainService<ConfigProperty>{
+import de.slag.invest.model.ConfigProperty;
+import de.slag.invest.model.Mandant;
+
+public interface ConfigPropertyService extends DomainService<ConfigProperty> {
+	
+	Optional<ConfigProperty> loadBy(String key, Mandant mandant);
 
 }
