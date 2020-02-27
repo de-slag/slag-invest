@@ -29,13 +29,16 @@
 		<h:inputText id="username" value="#{webGuiController.username}"
 			style="margin-left:8px" />
 		<h:outputLabel value="Password" />
-		<h:inputText id="password" value="#{webGuiController.password}"
+		<h:inputSecret id="password" value="#{webGuiController.password}"
 			style="margin-left:8px" />
 		<hr />
 		<t:div style="width:100%;">
 			<h:inputTextarea value="#{webGuiController.content}" readonly="true"
 				rows="32" cols="128" />
 		</t:div>
+		<h:outputLabel value="endpoint" />
+		<h:inputText id="endpoint" value="#{pc.endpoint}"
+			style="width:350px;margin-left:8px" />
 		<h:commandButton value="SUBMIT" action="#{webGuiController.submit}"></h:commandButton>
 	</h:form>
 </h:body>

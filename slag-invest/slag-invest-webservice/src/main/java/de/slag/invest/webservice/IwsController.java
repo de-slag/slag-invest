@@ -28,6 +28,9 @@ import de.slag.invest.service.MandantService;
 import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
 import de.slag.invest.service.UserService;
+import de.slag.invest.webcommon.WsResponse;
+import de.slag.invest.webcommon.WsResponseBuilder;
+import de.slag.invest.webcommon.WsStringResponse;
 import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
 
@@ -65,13 +68,17 @@ public class IwsController extends AbstractIwsController {
 	}
 
 	@GetMapping("/status")
-	public WebserviceResponse2 getStatus(@RequestParam String token) {
+	public WsStringResponse getStatus(@RequestParam String token) {
 		if (!getCredentialsComponent().isValid(CredentialToken.of(token))) {
 			return null;
 		}
 
 		final List<String> asList = new ArrayList<>();
-		asList.add("start time: " + new Date(ManagementFactory.getRuntimeMXBean().getStartTime()));
+		final long startTime = ManagementFactory.getRuntimeMXBean().getStartTime();
+		final long now = System.currentTimeMillis();
+		final Date uptime = new Date(now - startTime);
+		asList.add("uptime: " + uptime);
+
 		asList.add("portfolio transactions: " + portfolioTransactionService.findAllIds().size());
 		asList.add("stock values: " + stockValueService.findAllIds().size());
 		final Runtime runtime = Runtime.getRuntime();
@@ -80,10 +87,9 @@ public class IwsController extends AbstractIwsController {
 				runtime.totalMemory() / 1000000));
 
 		asList.add(String.format("current time: %s", LocalDateTime.now()));
-		StringWebserviceResponse2 webserviceResponse2 = new StringWebserviceResponse2();
-		webserviceResponse2.setSuccessful(true);
-		webserviceResponse2.setValue(asList);
-		return webserviceResponse2;
+
+		return (WsStringResponse) new WsResponseBuilder().withMessage("OK").withSuccess(true)
+				.withValue(String.join("\n", asList)).build();
 	}
 
 	@GetMapping
@@ -106,7 +112,7 @@ public class IwsController extends AbstractIwsController {
 	}
 
 	@GetMapping("/login")
-	public WebserviceResponse2 login(@RequestParam String username, @RequestParam String password,
+	public WsStringResponse login(@RequestParam String username, @RequestParam String password,
 			@RequestParam(name = "mandant", required = false) String mandantName) {
 
 		final Mandant mandant;
@@ -115,23 +121,20 @@ public class IwsController extends AbstractIwsController {
 		} else {
 			final Optional<Mandant> loadBy = mandantService.loadBy(mandantName);
 			if (loadBy.isEmpty()) {
-				final WebserviceResponse2 response = new WebserviceResponse2();
-				response.setSuccessful(false);
-				return response; 
+				return null;
+//				return new WsResponseBuilder().withSuccess(false).build();
 			}
 			mandant = loadBy.get();
 		}
 		final CredentialToken login = getCredentialsComponent().login(username, password, mandant);
 		if (login == null) {
-			final WebserviceResponse2 response = new WebserviceResponse2();
-			response.setSuccessful(false);
-			return response; 
+			return null;
+//			return new WsResponseBuilder().withSuccess(false).build();
 		}
-		final StringWebserviceResponse2 response = new StringWebserviceResponse2();
-		response.setSuccessful(true);
-		response.setMessage("token created");
-		response.setValue(Arrays.asList(login.getTokenString()));
-		return response;
+		final WsStringResponse build = (WsStringResponse) new WsResponseBuilder().withValue(login.getTokenString())
+				.withSuccess(true).withMessage("token created").build();
+		LOG.info("value:" + build.getValue());
+		return (WsStringResponse) build;
 	}
 
 	@GetMapping("/adduser")

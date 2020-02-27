@@ -21,6 +21,12 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>de.slag.invest	</groupId>
+			<artifactId>slag-invest-web-common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<!-- Webservice -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -46,11 +52,8 @@
 
 		<!-- slag-invest -->
 
-<!-- 		<dependency>
-			<groupId>de.slag.invest</groupId>
-			<version>0.0.1-SNAPSHOT</version>
-			<artifactId>stock-value-fetch-service</artifactId>
-		</dependency> -->
+		<!-- <dependency> <groupId>de.slag.invest</groupId> <version>0.0.1-SNAPSHOT</version> 
+			<artifactId>stock-value-fetch-service</artifactId> </dependency> -->
 
 		<dependency>
 			<groupId>de.slag.invest</groupId>
