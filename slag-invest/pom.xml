@@ -42,6 +42,7 @@
 		<module>invest-webservice</module>
 		<module>slag-invest-webservice</module>
 		<module>slag-invest-webgui</module>
+		<module>slag-invest-web-common</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>
