@@ -7,8 +7,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
+
+import org.apache.commons.lang3.StringUtils;
+
+import de.slag.invest.webcommon.WsResponseSupport;
 
 @ManagedBean
 @SessionScoped
@@ -22,35 +26,52 @@ public class WebGuiController {
 
 	private String password;
 
-	private String content;
+	private String endpoint;
+
+	private List<String> contentList = new ArrayList<>();
 
 	public String getAppName() {
 		return "SLAG-Invest WebGUI";
 	}
 
 	public String getContent() {
-		final List<String> strings = new ArrayList<String>();
-		strings.add("URL: " + url);
-		strings.add("Username: " + username);
-		strings.add("submits: " + submit);
-		strings.add("Content: " + content);
-		return String.join("\n", strings);
+		return String.join("\n", contentList);
 	}
 
 	public String submit() {
-		final String token = getToken();
-		final Client client = ClientBuilder.newClient();
-		final WebTarget target = client.target(url + "status").queryParam("token", token);
+		contentList.clear();
+		if (StringUtils.isBlank(endpoint)) {
+			contentList.add("no endpoint setted");
+			return null;
+		}
+
+		contentList.add("URL: " + url);
+		contentList.add("Username: " + username);
+		contentList.add("submits: " + submit);
+
 		final long start = System.currentTimeMillis();
-		content = target.request().get(String.class);
-		content += "took (ms): " + (System.currentTimeMillis() - start);
+		final String token = getToken();
+		contentList.add(token != null ? "recieved token" : "NO token recieved");
+
+		final Client client = ClientBuilder.newClient();
+		final WebTarget target = client.target(url + endpoint).queryParam("token", token);
+
+		final Builder request = target.request();
+		final String value = new WsResponseSupport().getValue(request, String.class);
+		contentList.add(value);
+
+		contentList.add("took (ms): " + (System.currentTimeMillis() - start));
 		submit++;
 		return null;
 	}
 
 	private String getToken() {
-		return ClientBuilder.newClient().target(url + "login").queryParam("username", username)
-				.queryParam("password", password).request().get(String.class);
+		final Builder request = ClientBuilder.newClient().target(url + "login").queryParam("username", username)
+				.queryParam("password", password).request();
+
+		final String value = new WsResponseSupport().getValue(request, String.class);
+		return value;
+
 	}
 
 	public String getUrl() {
@@ -75,6 +96,14 @@ public class WebGuiController {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
 	}
 
 }
