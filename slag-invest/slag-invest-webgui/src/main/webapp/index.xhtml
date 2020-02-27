@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+<f:loadBundle basename="com.jwt.jsf.properties.messages" var="msg" />
+
+<c:set var="pc" value="#{webGuiController}" />
+
+<h:head>
+	<title>SLAG-Invest WebGUI</title>
+</h:head>
+<h:body>
+	<h:form>
+		<t:div>
+			<h:outputLabel value="#{pc.appName}" />
+		</t:div>
+		<hr />
+		<h:outputLabel value="URL" />
+		<h:inputText id="url" value="#{webGuiController.url}"
+			style="width:350px;margin-left:8px" />
+		<h:outputLabel value="Username" />
+		<h:inputText id="username" value="#{webGuiController.username}"
+			style="margin-left:8px" />
+		<h:outputLabel value="Password" />
+		<h:inputText id="password" value="#{webGuiController.password}"
+			style="margin-left:8px" />
+		<hr />
+		<t:div style="width:100%;">
+			<h:inputTextarea value="#{webGuiController.content}" readonly="true"
+				rows="32" cols="128" />
+		</t:div>
+		<h:commandButton value="SUBMIT" action="#{webGuiController.submit}"></h:commandButton>
+	</h:form>
+</h:body>
+</html>

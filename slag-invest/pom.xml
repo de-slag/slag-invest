@@ -41,6 +41,7 @@
 		<module>stock-value-fetch-service</module>
 		<module>invest-webservice</module>
 		<module>slag-invest-webservice</module>
+		<module>slag-invest-webgui</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.2.1-SNAPSHOT</slag.common.version>
