@@ -3,7 +3,6 @@ package de.slag.invest.webservice;
 import java.lang.management.ManagementFactory;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
-import org.apache.catalina.connector.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +26,8 @@ import de.slag.invest.service.MandantService;
 import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
 import de.slag.invest.service.UserService;
-import de.slag.invest.webcommon.WsResponse;
 import de.slag.invest.webcommon.WsResponseBuilder;
 import de.slag.invest.webcommon.WsStringResponse;
-import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
 
 @RestController
@@ -95,20 +91,6 @@ public class IwsController extends AbstractIwsController {
 	@GetMapping
 	public String get() {
 		return "slag-invest-webservice";
-	}
-
-	@GetMapping("/test")
-	public Object getTest(@RequestParam(required = false) String param) {
-		if ("response".equalsIgnoreCase(param)) {
-			return Response.SC_OK;
-		}
-		if ("wsresponse".equalsIgnoreCase(param)) {
-			final WebserviceResponse2 response = new WebserviceResponse2();
-			response.setSuccessful(true);
-			response.setMessage("param: " + param);
-			return response;
-		}
-		return "test, param: " + param;
 	}
 
 	@GetMapping("/login")

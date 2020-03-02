@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import de.slag.invest.service.DomainService;
 import de.slag.invest.service.PortfolioTransactionService;
 import de.slag.invest.service.StockValueService;
+import de.slag.invest.webservice.AbstractIwsController;
 import de.slag.invest.webservice.response.HtmlDecorator;
 import de.slag.invest.webservice.response.SimpleHtmlResponse;
 
 @RestController
 @RequestMapping("/crud")
-public class IwsCrudController {
+public class IwsCrudController  extends AbstractIwsController {
 
 	@Resource
 	private PortfolioTransactionService portfolioTransactionService;
