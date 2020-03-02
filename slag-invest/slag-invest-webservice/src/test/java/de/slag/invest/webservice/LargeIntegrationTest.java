@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,7 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 	private static final Log LOG = LogFactory.getLog(LargeIntegrationTest.class);
 
 	private static final String MANDANT_SUPER_USER_NAME = "super";
-
+	
 	private static final String ADM_USER_NAME = "sysadm";
 
 	private static final String INT_TEST_MANDANT = "I_MANDANT";
@@ -61,7 +59,7 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 		StringWebserviceResponse2 response = getResponse(url, StringWebserviceResponse2.class);
 		assertNotNull(response);
 		assertTrue(response.getSuccessful());
-		assertTrue(response.getValue().size() == 5);
+		assertTrue(response.getValue().size() == 1);
 		logResult("Get Status with Mandant User Token");
 	}
 
