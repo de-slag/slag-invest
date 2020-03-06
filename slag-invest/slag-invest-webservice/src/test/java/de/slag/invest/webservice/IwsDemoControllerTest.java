@@ -11,11 +11,12 @@ import javax.ws.rs.core.Response;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+
+import de.slag.invest.webcommon.demo.DemoDto;
+
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
-import de.slag.invest.webcommon.DemoDto;
 
 @TestMethodOrder(OrderAnnotation.class)
 class IwsDemoControllerTest {
