@@ -1,4 +1,4 @@
-package de.slag.invest.webservice;
+package de.slag.invest.webservice.demo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 import de.slag.invest.webcommon.demo.DemoDto;
+import de.slag.invest.webservice.TestWebTargetUtils;
 
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
