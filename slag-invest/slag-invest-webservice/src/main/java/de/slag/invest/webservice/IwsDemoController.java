@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.slag.invest.webcommon.DemoDto;
+
 @RestController
 @RequestMapping("/demo")
 public class IwsDemoController extends AbstractIwsController {
@@ -23,5 +25,13 @@ public class IwsDemoController extends AbstractIwsController {
 	@GetMapping("/response")
 	public Response getResponse() {
 		return Response.ok().build();
+	}
+
+	@GetMapping("/dto")
+	public Object getDto() {
+		final DemoDto demoDto = new DemoDto();
+		demoDto.setId(1L);
+		demoDto.setName("Demo!");
+		return demoDto;
 	}
 }
