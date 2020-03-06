@@ -1,4 +1,4 @@
-package de.slag.invest.webservice;
+package de.slag.invest.webservice.demo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.slag.invest.webcommon.DemoDto;
+import de.slag.invest.webcommon.demo.DemoDto;
+import de.slag.invest.webservice.AbstractIwsController;
 
 @RestController
 @RequestMapping("/demo")

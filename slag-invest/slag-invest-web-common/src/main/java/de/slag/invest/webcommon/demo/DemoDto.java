@@ -1,4 +1,4 @@
-package de.slag.invest.webcommon;
+package de.slag.invest.webcommon.demo;
 
 public class DemoDto {
 	
