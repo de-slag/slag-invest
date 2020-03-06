@@ -17,9 +17,9 @@ public class IwsDemoController extends AbstractIwsController {
 
 	private static final Log LOG = LogFactory.getLog(IwsDemoController.class);
 
-	@GetMapping
-	public String get() {
-		return "demo";
+	@GetMapping("/dto")
+	public DemoDto getDto() {
+		return createDemoDto();
 	}
 
 	@GetMapping("/response")
@@ -27,8 +27,12 @@ public class IwsDemoController extends AbstractIwsController {
 		return Response.ok().build();
 	}
 
-	@GetMapping("/dto")
-	public Object getDto() {
+	@GetMapping
+	public String get() {
+		return "demo";
+	}
+
+	private DemoDto createDemoDto() {
 		final DemoDto demoDto = new DemoDto();
 		demoDto.setId(1L);
 		demoDto.setName("Demo!");
