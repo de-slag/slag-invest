@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 
 import de.slag.invest.model.ConfigProperty;
 import de.slag.invest.model.Mandant;
-import de.slag.invest.service.AbstractDomainServiceImpl;
+import de.slag.invest.service.AbstractMandantBeanServiceImpl;
 import de.slag.invest.service.ConfigPropertyService;
 
 @Service
-public class ConfigPropertyServiceImpl extends AbstractDomainServiceImpl<ConfigProperty>
+public class ConfigPropertyServiceImpl extends AbstractMandantBeanServiceImpl<ConfigProperty>
 		implements ConfigPropertyService {
 
 	@Override

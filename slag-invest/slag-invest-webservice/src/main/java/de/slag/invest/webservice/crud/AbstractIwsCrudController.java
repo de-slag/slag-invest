@@ -1,5 +1,6 @@
 package de.slag.invest.webservice.crud;
 
+import javax.annotation.Resource;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -10,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.slag.invest.webservice.CredentialToken;
+import de.slag.invest.webservice.IwsCredentialComponent;
 
 public abstract class AbstractIwsCrudController<T> {
+
+	@Resource
+	private IwsCredentialComponent iwsCredentialComponent;
 
 	protected abstract Long create0();
 
@@ -21,11 +26,11 @@ public abstract class AbstractIwsCrudController<T> {
 
 	protected abstract void delete0(long id);
 
-	protected abstract void validate0(CredentialToken token) throws IllegalAccessException;
-
 	protected void validate(String token) {
 		try {
-			validate0(CredentialToken.of(token));
+			if (!iwsCredentialComponent.isValid(CredentialToken.of(token))) {
+				throw new IllegalAccessException("credentials not valid");
+			}
 		} catch (IllegalAccessException e) {
 			throw new IllegalStateException(e);
 		}

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 @Entity
 public class ConfigProperty extends MandantBean {
 
-	public ConfigProperty() {
+	ConfigProperty() {
 		super(null);
 	}
 	
