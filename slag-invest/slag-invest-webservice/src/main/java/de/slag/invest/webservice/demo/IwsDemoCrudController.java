@@ -44,10 +44,8 @@ public class IwsDemoCrudController extends AbstractIwsCrudController<DemoDto> {
 	}
 
 	@Override
-	protected void validate0(CredentialToken token) throws IllegalAccessException {
-		// nothing to do at Demo
-		// TODO Auto-generated method stub
-		
+	protected void validate(String token) {
+		// nothing to do in this demo
 	}
 
 }

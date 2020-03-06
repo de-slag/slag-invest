@@ -11,7 +11,7 @@ public interface DomainService<T extends DomainBean> {
 	
 	T loadById(Long id);
 	
-	void delete(T bean);
+	void delete(T bean);	
 	
 	default void deleteBy(Long id) {
 		delete(loadById(id));
