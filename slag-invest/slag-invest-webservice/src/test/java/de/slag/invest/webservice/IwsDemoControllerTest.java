@@ -26,12 +26,10 @@ class IwsDemoControllerTest {
 	private WebTarget baseEndpoint;
 	private WebTarget responseEndpoint;
 	private WebTarget dtoEndpoint;
-
 	private WebTarget createEndpoint;
-
 	private WebTarget loadEndpoint;
-
 	private WebTarget saveEndpoint;
+	private WebTarget deleteEndpoint;
 
 	@BeforeEach
 	public void setUp() {
@@ -41,21 +39,25 @@ class IwsDemoControllerTest {
 		createEndpoint = TestWebTargetUtils.create(BASE_URL + "/create");
 		loadEndpoint = TestWebTargetUtils.create(BASE_URL + "/load");
 		saveEndpoint = TestWebTargetUtils.create(BASE_URL + "/save");
+		deleteEndpoint = TestWebTargetUtils.create(BASE_URL + "/delete");		
+	}
+	
+	@Test
+	@Order(8)
+	void deleteEndpointTest() {
+		final Response response = deleteEndpoint.queryParam("id", 1L).request().delete();
+		assertEquals(200, response.getStatus());
 	}
 
 	@Test
 	@Order(7)
 	void saveEndpointTest() {
-
 		final DemoDto demoDto = new DemoDto();
 		demoDto.setId(1L);
 		demoDto.setName("Demo Dto");
 
 		final Response response = saveEndpoint.request(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN_TYPE).post(Entity.json(demoDto));
 		assertEquals(200, response.getStatus());
-		
-		
-
 	}
 
 	@Test

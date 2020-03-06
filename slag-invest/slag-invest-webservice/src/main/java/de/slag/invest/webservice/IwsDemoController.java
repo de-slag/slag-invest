@@ -7,9 +7,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -32,6 +29,16 @@ public class IwsDemoController extends AbstractIwsController {
 	private static final Log LOG = LogFactory.getLog(IwsDemoController.class);
 
 	private Collection<DemoDto> dtos = new ArrayList<>();
+
+	@DeleteMapping(path = "/delete")
+	public String delete(@RequestParam long id) {
+		final DemoDto load = load(id);
+		if (load == null) {
+			return null;
+		}
+		dtos.remove(load);
+		return "deletion OK";
+	}
 
 	@PostMapping(path = "/test", consumes = MediaType.TEXT_PLAIN, produces = MediaType.TEXT_PLAIN)
 	public String save(@RequestBody String string) {
