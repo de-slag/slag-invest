@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.slag.invest.webcommon.demo.DemoDto;
+import de.slag.invest.webservice.CredentialToken;
 import de.slag.invest.webservice.crud.AbstractIwsCrudController;
 
 @RestController
@@ -43,8 +44,10 @@ public class IwsDemoCrudController extends AbstractIwsCrudController<DemoDto> {
 	}
 
 	@Override
-	protected void validate(String token) {
+	protected void validate0(CredentialToken token) throws IllegalAccessException {
 		// nothing to do at Demo
+		// TODO Auto-generated method stub
+		
 	}
 
 }

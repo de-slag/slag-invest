@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import de.slag.invest.webservice.CredentialToken;
+
 public abstract class AbstractIwsCrudController<T> {
 
 	protected abstract Long create0();
@@ -19,7 +21,15 @@ public abstract class AbstractIwsCrudController<T> {
 
 	protected abstract void delete0(long id);
 
-	protected abstract void validate(String token);
+	protected abstract void validate0(CredentialToken token) throws IllegalAccessException;
+
+	protected void validate(String token) {
+		try {
+			validate0(CredentialToken.of(token));
+		} catch (IllegalAccessException e) {
+			throw new IllegalStateException(e);
+		}
+	}
 
 	@GetMapping("/load")
 	public T load(@RequestParam("id") long id, @RequestParam(value = "token", required = false) String token) {
