@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import de.slag.invest.webcommon.demo.DemoDto;
 import de.slag.invest.webservice.crud.AbstractIwsCrudController;
 
-
 @RestController
 @RequestMapping("/democrud")
 public class IwsDemoCrudController extends AbstractIwsCrudController<DemoDto> {
@@ -41,6 +40,11 @@ public class IwsDemoCrudController extends AbstractIwsCrudController<DemoDto> {
 	@Override
 	protected void delete0(long id) {
 		map.remove(id);
+	}
+
+	@Override
+	protected void validate(String token) {
+		// nothing to do at Demo
 	}
 
 }

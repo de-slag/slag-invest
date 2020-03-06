@@ -19,25 +19,31 @@ public abstract class AbstractIwsCrudController<T> {
 
 	protected abstract void delete0(long id);
 
+	protected abstract void validate(String token);
+
 	@GetMapping("/load")
 	public T load(@RequestParam("id") long id, @RequestParam(value = "token", required = false) String token) {
+		validate(token);
 		return load0(id);
 	}
 
 	@PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON)
 	public Response save(@RequestBody T t, @RequestParam(value = "token", required = false) String token) {
+		validate(token);
 		save0(t);
 		return Response.ok().build();
 	}
 
 	@DeleteMapping(path = "/delete")
 	public Response delete(@RequestParam("id") long id, @RequestParam(value = "token", required = false) String token) {
+		validate(token);
 		delete0(id);
 		return Response.ok().build();
 	}
 
 	@GetMapping("/create")
 	public Long create(@RequestParam(value = "token", required = false) String token) {
+		validate(token);
 		return create0();
 	}
 
