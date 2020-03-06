@@ -1,7 +1,5 @@
 package de.slag.invest.webservice;
 
-import java.util.Objects;
-
 public class CredentialToken implements Comparable<CredentialToken> {
 
 	private final String tokenString;
@@ -12,7 +10,7 @@ public class CredentialToken implements Comparable<CredentialToken> {
 
 	private CredentialToken(String tokenString) {
 		super();
-		this.tokenString = Objects.requireNonNull(tokenString, "token string is not setted");
+		this.tokenString = tokenString;
 	}
 
 	public String getTokenString() {
