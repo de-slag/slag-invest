@@ -23,7 +23,18 @@ class IwsDemoControllerTest {
 		demoBaseEndpoint = TestWebTargetUtils.create(BASE_URL);
 		demoResponseEndpoint = TestWebTargetUtils.create(BASE_URL + "/response");
 		dtoResponseEndpoint = TestWebTargetUtils.create(BASE_URL + "/dto");
-	}	
+	}
+	
+	@Test
+	void demoDtoResponseEndpointUsingResponse() {
+		final Response response = dtoResponseEndpoint.request().get();
+		assertNotNull(response);
+		assertEquals(200, response.getStatus());
+		final DemoDto demoDto = response.readEntity(DemoDto.class);
+		assertNotNull(demoDto);
+		assertNotNull(demoDto.getId());
+		assertNotNull(demoDto.getName());
+	}
 
 	@Test
 	void demoDtoResponseEndpoint() {
