@@ -10,7 +10,7 @@ import de.slag.invest.model.Portfolio;
 import de.slag.invest.model.PortfolioTransaction;
 
 @Service
-public class PortfolioTransactionServiceImpl extends AbstractDomainServiceImpl<PortfolioTransaction>
+public class PortfolioTransactionServiceImpl extends AbstractMandantBeanServiceImpl<PortfolioTransaction>
 		implements PortfolioTransactionService {
 
 	@Override
