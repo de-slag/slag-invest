@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import de.slag.invest.model.ConfigProperty;
 import de.slag.invest.service.ConfigPropertyService;
 import de.slag.invest.webcommon.model.ConfigDto;
-import de.slag.invest.webservice.CredentialToken;
 import de.slag.invest.webservice.IwsCredentialComponent;
 
 @RestController
