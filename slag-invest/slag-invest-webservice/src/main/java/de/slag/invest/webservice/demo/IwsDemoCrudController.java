@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.slag.invest.model.Mandant;
 import de.slag.invest.webcommon.demo.DemoDto;
 import de.slag.invest.webservice.CredentialToken;
 import de.slag.invest.webservice.crud.AbstractIwsCrudController;
@@ -19,7 +20,7 @@ public class IwsDemoCrudController extends AbstractIwsCrudController<DemoDto> {
 	private Map<Long, DemoDto> map = new HashMap<>();
 
 	@Override
-	public Long create0() {
+	public Long create0(Mandant mandant) {
 		final Long id = ++seq;
 		final DemoDto value = new DemoDto();
 		value.setId(id);
@@ -28,18 +29,18 @@ public class IwsDemoCrudController extends AbstractIwsCrudController<DemoDto> {
 	}
 
 	@Override
-	protected DemoDto load0(long id) {
+	protected DemoDto load0(long id, Mandant mandant) {
 		return map.get(id);
 	}
 
 	@Override
-	protected void save0(DemoDto t) {
+	protected void save0(DemoDto t, Mandant mandant) {
 		map.put(t.getId(), t);
 
 	}
 
 	@Override
-	protected void delete0(long id) {
+	protected void delete0(long id, Mandant mandant) {
 		map.remove(id);
 	}
 
