@@ -1,4 +1,4 @@
-package de.slag.invest.webservice.config;
+package de.slag.invest.webservice.appconfig;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
