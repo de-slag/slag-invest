@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.slag.invest.model.ConfigProperty;
+import de.slag.invest.model.Mandant;
 import de.slag.invest.service.ConfigPropertyService;
 import de.slag.invest.webcommon.model.ConfigDto;
 import de.slag.invest.webservice.IwsCredentialComponent;
@@ -36,20 +37,20 @@ public class IwsConfigCrudController extends AbstractIwsCrudController<ConfigDto
 	private IwsCredentialComponent iwsCredentialComponent;
 
 	@Override
-	protected Long create0() {
-		final ConfigProperty bean = configPropertyService.create(null);
+	protected Long create0(Mandant mandant) {
+		final ConfigProperty bean = configPropertyService.create(mandant);
 		configPropertyService.save(bean);
 		return bean.getId();
 	}
 
 	@Override
-	protected ConfigDto load0(long id) {
+	protected ConfigDto load0(long id, Mandant mandant) {
 		final ConfigProperty configProperty = configPropertyService.loadById(id);
 		return PROPERTY_TO_DTO.apply(configProperty);
 	}
 
 	@Override
-	protected void save0(ConfigDto dto) {
+	protected void save0(ConfigDto dto, Mandant mandant) {
 		final ConfigProperty property = configPropertyService.loadById(dto.getId());
 		DTO_TO_PROPERTY.accept(dto, property);
 		configPropertyService.save(property);
@@ -57,7 +58,7 @@ public class IwsConfigCrudController extends AbstractIwsCrudController<ConfigDto
 	}
 
 	@Override
-	protected void delete0(long id) {
+	protected void delete0(long id, Mandant mandant) {
 		configPropertyService.deleteBy(id);
 	}
 
