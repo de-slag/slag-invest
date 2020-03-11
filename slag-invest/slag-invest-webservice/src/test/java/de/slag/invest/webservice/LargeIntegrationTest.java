@@ -11,20 +11,25 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
 import de.slag.invest.webservice.response.WsResponse;
 
+@TestMethodOrder(OrderAnnotation.class)
 public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 
 	private static final Log LOG = LogFactory.getLog(LargeIntegrationTest.class);
 
 	private static final String MANDANT_SUPER_USER_NAME = "super";
-	
+
 	private static final String ADM_USER_NAME = "sysadm";
 
 	private static final String INT_TEST_MANDANT = "I_MANDANT";
@@ -33,25 +38,61 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 
 	private final IntegrationTestProperties integrationTestProperties = new IntegrationTestProperties();
 
-	private List<String> testProtocol;
+	private static List<String> testProtocol;
 
-	private Long start;
+	private static Long start;
 
 	@Test
-	public void testWithUrl() {
-
+	@Order(0)
+	public void basicTest() {
 		// base entdpoint URL-Test
-
 		assertEquals("slag-invest-webservice", getResponse(BASE_URL, String.class));
 		logResult("Base Endpoint URL-Test");
+	}
 
+	@Test
+	@Order(1)
+	public void testTest() {
 		testTests();
+	}
 
+	@Test
+	@Order(2)
+	public void adminUserTest() {
 		adminUserTests();
+	}
 
+	@Test
+	@Order(3)
+	public void mandantTest() {
 		mandantTests();
+	}
 
-		userTest();
+	@Test
+	@Order(4)
+	public void userTest() {
+		userTests();
+	}
+
+	@BeforeAll
+	public static void setUp2() {
+		testProtocol = new ArrayList<>();
+		start = System.currentTimeMillis();
+	}
+
+	@AfterAll
+	public static void shutDown() {
+		int size = testProtocol.size();
+		testProtocol.add(String.format("test count: %s", size));
+		testProtocol.add(String.format("runtime: %s seconds", (System.currentTimeMillis() - start) / 1000.0));
+		LOG.info("Results:\n" + String.join("\n", testProtocol));
+
+		LOG.info("Test results:\n" + String.join("\n", testProtocol));
+	}
+
+	@Test
+	@Order(999)
+	public void testWithUrl() {
 
 		// status test
 		final String url = String.format(BASE_URL + "/status?token=%s",
@@ -107,7 +148,7 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 
 	}
 
-	private void userTest() {
+	private void userTests() {
 		final String superUserToken = integrationTestProperties.getToken(ADM_USER_NAME);
 
 		String urlAdduser2 = String.format(BASE_URL + "/adduser?username=%s&mandant=%s&password=%s&token=%s",
@@ -143,21 +184,6 @@ public class LargeIntegrationTest extends AbstractWsIntegrationTest {
 
 		assertEquals("200", getResponse(BASE_URL + "/test?param=response", String.class));
 		logResult("Test Call, expect '200' (http: ok)");
-	}
-
-	@BeforeEach
-	public void setUp() {
-		testProtocol = new ArrayList<>();
-		start = System.currentTimeMillis();
-	}
-
-	@AfterEach
-	public void tearDown() {
-		int size = testProtocol.size();
-		testProtocol.add(String.format("test count: %s", size));
-		testProtocol.add(String.format("runtime: %s seconds", (System.currentTimeMillis() - start) / 1000.0));
-		LOG.info("Results:\n" + String.join("\n", testProtocol));
-
 	}
 
 	private enum TestResult {
