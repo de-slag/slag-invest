@@ -9,7 +9,7 @@ public class CommonDto {
 
 	private DtoType type;
 
-	private Map<String, String> values = new HashMap<>();
+	private Map<String, Object> values = new HashMap<>();
 
 	public Long getId() {
 		return id;
@@ -27,11 +27,11 @@ public class CommonDto {
 		this.type = type;
 	}
 
-	public Map<String, String> getValues() {
+	public Map<String, Object> getValues() {
 		return values;
 	}
 
-	public void setValues(Map<String, String> values) {
+	public void setValues(Map<String, Object> values) {
 		this.values = values;
 	}
 
