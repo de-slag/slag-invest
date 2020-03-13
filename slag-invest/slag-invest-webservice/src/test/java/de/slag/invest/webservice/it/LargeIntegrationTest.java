@@ -1,4 +1,4 @@
-package de.slag.invest.webservice;
+package de.slag.invest.webservice.it;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,13 +12,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import de.slag.invest.webservice.IntegrationTestProperties;
 import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
 import de.slag.invest.webservice.response.WsResponse;

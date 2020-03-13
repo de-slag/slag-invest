@@ -7,6 +7,7 @@ import javax.ws.rs.client.WebTarget;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import de.slag.invest.webservice.it.AbstractWsIntegrationTest;
 import de.slag.invest.webservice.response.WsResponse;
 
 public class BasicWsIntegrationTest extends AbstractWsIntegrationTest {

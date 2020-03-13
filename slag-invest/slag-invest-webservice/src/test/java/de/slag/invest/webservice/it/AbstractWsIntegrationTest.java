@@ -1,4 +1,4 @@
-package de.slag.invest.webservice;
+package de.slag.invest.webservice.it;
 
 import java.util.Optional;
 
@@ -11,15 +11,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
 
+import de.slag.invest.webservice.WebTargetBuilder;
 
-abstract class AbstractWsIntegrationTest {
+
+public abstract class AbstractWsIntegrationTest {
 	
 	private static final Log LOG = LogFactory.getLog(AbstractWsIntegrationTest.class);
 
 	private Client client;
 	private WebTarget webTarget;
 
-	String getUri() {
+	protected String getUri() {
 		return "http://localhost:18080/slag-invest-webservice";
 	}
 
@@ -35,7 +37,7 @@ abstract class AbstractWsIntegrationTest {
 	}
 
 	@Deprecated
-	<T> T getResponse(Class<T> expectedResponseType) {
+	protected <T> T getResponse(Class<T> expectedResponseType) {
 		return getResponse(Optional.of(expectedResponseType), Optional.empty());
 	}
 
