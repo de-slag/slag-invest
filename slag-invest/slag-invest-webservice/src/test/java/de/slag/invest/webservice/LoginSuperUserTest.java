@@ -3,7 +3,6 @@ package de.slag.invest.webservice;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import de.slag.invest.webservice.it.AbstractWsIntegrationTest;
 import de.slag.invest.webservice.response.WebserviceResponse2;
 
 public class LoginSuperUserTest extends AbstractWsIntegrationTest {
