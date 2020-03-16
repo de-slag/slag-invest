@@ -1,4 +1,4 @@
-package de.slag.invest.webservice.it;
+package de.slag.invest.webservice;
 
 import java.util.Optional;
 
@@ -10,8 +10,6 @@ import javax.ws.rs.client.WebTarget;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
-
-import de.slag.invest.webservice.WebTargetBuilder;
 
 
 public abstract class AbstractWsIntegrationTest {

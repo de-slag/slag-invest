@@ -6,8 +6,6 @@ import javax.ws.rs.BadRequestException;
 
 import org.junit.jupiter.api.Test;
 
-import de.slag.invest.webservice.it.AbstractWsIntegrationTest;
-
 public class CrudReadWsIntegrationTest extends AbstractWsIntegrationTest {
 
 	@Override
