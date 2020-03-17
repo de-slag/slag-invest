@@ -5,12 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
@@ -18,7 +14,6 @@ import javax.ws.rs.client.WebTarget;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -36,12 +31,6 @@ public class LargeIntegrationTest {
 
 	private static final Log LOG = LogFactory.getLog(LargeIntegrationTest.class);
 
-	private static final String MANDANT_SUPER_USER_NAME = "super";
-
-	private static final String ADM_USER_NAME = "sysadm";
-
-	private static final String INT_TEST_MANDANT = "I_MANDANT";
-
 	private static final String BASE_URL = "http://localhost:18080/slag-invest-webservice";
 
 	private static List<String> testProtocol;
@@ -49,6 +38,8 @@ public class LargeIntegrationTest {
 	private static Long start;
 
 	private static LargeIntegrationTestProperties properties;
+
+	private static LitReporter reporter = new LitReporter();
 
 	private static WebTarget baseWebTarget;
 	private static WebTarget testWebTarget;
@@ -58,6 +49,7 @@ public class LargeIntegrationTest {
 
 	@BeforeAll
 	public static void setUpLit() {
+		reporter.start("setup");
 		start = System.currentTimeMillis();
 
 		baseWebTarget = new WebTargetBuilder().withUrl(BASE_URL).build();
@@ -67,6 +59,7 @@ public class LargeIntegrationTest {
 		adduserWebTaget = new WebTargetBuilder().withUrl(BASE_URL + "/adduser").build();
 
 		properties = new LargeIntegrationTestProperties(start);
+		reporter.end("setup");
 	}
 
 	@BeforeAll
@@ -77,13 +70,16 @@ public class LargeIntegrationTest {
 	@Test
 	@Order(0)
 	public void basicTest() {
+		reporter.start("basic test");
 		assertEquals("slag-invest-webservice", request(baseWebTarget).get(String.class));
 		logResult("Base Endpoint URL-Test");
+		reporter.end("basic test");
 	}
 
 	@Test
 	@Order(1)
 	public void testTest() {
+		reporter.start("test test");
 		final String response = request(testWebTarget).get(String.class);
 		assertEquals("test, param: null", response);
 		logResult("Test Call, no parameter");
@@ -97,13 +93,16 @@ public class LargeIntegrationTest {
 
 		assertEquals("200", request(testWebTarget.queryParam("param", "response")).get(String.class));
 		logResult("Test Call, expect '200' (http: ok)");
+		reporter.end("test test");
 	}
 
 	@Test
 	@Order(2)
-	public void adminUserTest() {		
-		final WebTarget queryParam = loginWebTarget.queryParam("username", ADM_USER_NAME)
-				.queryParam("password", "adm_User");
+	public void adminUserTest() {
+		reporter.start("admin user test");
+		final String admUserName = properties.getAdmUserName();
+		final WebTarget queryParam = loginWebTarget.queryParam("username", admUserName).queryParam("password",
+				"adm_User");
 		final StringWebserviceResponse2 superLoginResponse = request(queryParam).get(StringWebserviceResponse2.class);
 
 		List<String> value = superLoginResponse.getValue();
@@ -112,21 +111,22 @@ public class LargeIntegrationTest {
 		final String superUserToken = value.get(0);
 		assertTrue(StringUtils.isNotEmpty(superUserToken));
 
-		properties.putToken(ADM_USER_NAME, superUserToken);
+		properties.putToken(admUserName, superUserToken);
 		logResult("Admin User Login");
+		reporter.end("admin user test");
 	}
 
 	@Test
 	@Order(3)
 	public void mandantTest() {
-
-		final String superUserToken = properties.getToken(ADM_USER_NAME);		
+		reporter.start("mandant test");
+		final String superUserToken = properties.getToken(properties.getAdmUserName());
 		final String mandantName = properties.getMandantName();
 
-		final WebserviceResponse2 responseOnce = request(addmandantWebTarget.queryParam("token", superUserToken)
-				.queryParam("mandant", mandantName)).get(WebserviceResponse2.class);
-		
-		
+		final WebserviceResponse2 responseOnce = request(
+				addmandantWebTarget.queryParam("token", superUserToken).queryParam("mandant", mandantName))
+						.get(WebserviceResponse2.class);
+
 		assertTrue(responseOnce.getSuccessful());
 		assertNotNull(responseOnce.getMessage());
 		logResult("Add mandant");
@@ -137,12 +137,14 @@ public class LargeIntegrationTest {
 		assertFalse(responseAgain.getSuccessful());
 		assertNotNull(responseAgain.getMessage());
 		logResult("Add mandant, avoid second mandant with same name");
+		reporter.end("mandant test");
 	}
 
 	@Test
 	@Order(4)
 	public void userTest() {
-		final String superUserToken = properties.getToken(ADM_USER_NAME);
+		reporter.start("user test");
+		final String superUserToken = properties.getToken(properties.getAdmUserName());
 
 		final String mandantSuperUserName = properties.getMandantSuperUserName();
 		final String password = properties.getPassword(mandantSuperUserName);
@@ -168,26 +170,28 @@ public class LargeIntegrationTest {
 		final String mandantSuperUserToken = value.get(0);
 		properties.putToken(mandantSuperUserName, mandantSuperUserToken);
 		logResult("Mandant User Login");
+		reporter.end("user test");
 	}
 
 	@AfterAll
-	public static void shutDown() {
+	public static void shutDown() throws Exception {
 		int size = testProtocol.size();
 		testProtocol.add(String.format("test count: %s", size));
 		testProtocol.add(String.format("runtime: %s seconds", (System.currentTimeMillis() - start) / 1000.0));
 		LOG.info("Results:\n" + String.join("\n", testProtocol));
 
 		LOG.info("Test results:\n" + String.join("\n", testProtocol));
+		reporter.close();
+		LOG.info(reporter);
 	}
 
 	@Test
 	@Order(999)
 	public void testWithUrl() {
-
+		reporter.start("with url test");
 		// status test
 		final String mandantSuperUserName = properties.getMandantSuperUserName();
-		final String url = String.format(BASE_URL + "/status?token=%s",
-				properties.getToken(mandantSuperUserName));
+		final String url = String.format(BASE_URL + "/status?token=%s", properties.getToken(mandantSuperUserName));
 
 		final WebTarget build = new WebTargetBuilder().withUrl(url).build();
 		final StringWebserviceResponse2 response = request(build).get(StringWebserviceResponse2.class);
@@ -196,6 +200,7 @@ public class LargeIntegrationTest {
 		assertTrue(response.getSuccessful());
 		assertTrue(response.getValue().size() == 1);
 		logResult("Get Status with Mandant User Token");
+		reporter.end("with url test");
 	}
 
 	private Builder request(WebTarget wt) {
