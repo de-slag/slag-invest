@@ -34,6 +34,7 @@ public class PortfolioTransactionCrudController extends AbstractIwsCrudControlle
 			throw new RuntimeException();
 		}
 		final CommonDto dto = createDto();
+		dto.setId(t.getId());
 		final ValueMappingRunner valueMappingRunner = new ValueMappingRunner(t, dto);
 		valueMappingRunner.prepare();
 		valueMappingRunner.run();
