@@ -53,5 +53,9 @@ public class LargeIntegrationTestProperties {
 	public String getPassword(String user) {
 		return user + "_password";
 	}
+	
+	public void put(String key, String value) {
+		keyValues.put(key, value);
+	}
 
 }

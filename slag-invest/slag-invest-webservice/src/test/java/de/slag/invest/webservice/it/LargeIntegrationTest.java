@@ -30,6 +30,8 @@ import de.slag.invest.webservice.response.WsResponse;
 @TestMethodOrder(OrderAnnotation.class)
 public class LargeIntegrationTest {
 
+	private static final String FIRST_TRANSACTION_ID = "first_transaction_id";
+
 	private static final Log LOG = LogFactory.getLog(LargeIntegrationTest.class);
 
 	private static final String BASE_URL = "http://localhost:18080/slag-invest-webservice";
@@ -175,7 +177,7 @@ public class LargeIntegrationTest {
 		logResult("Mandant User Login");
 		reporter.end("user test");
 	}
-	
+
 	@Test
 	@Order(5)
 	public void createTransactionTest() {
@@ -187,9 +189,17 @@ public class LargeIntegrationTest {
 		assertEquals(200, response.getStatus());
 		final String newId = response.readEntity(String.class);
 		assertNotNull(newId);
-		
-		
+		properties.put(FIRST_TRANSACTION_ID, newId);
+
 		reporter.end("create transaction test");
+	}
+
+	@Test
+	@Order(6)
+	public void readTransactionTest() {
+		reporter.start("read transaction test");
+		
+		reporter.end("read transaction test");
 	}
 
 	@AfterAll
