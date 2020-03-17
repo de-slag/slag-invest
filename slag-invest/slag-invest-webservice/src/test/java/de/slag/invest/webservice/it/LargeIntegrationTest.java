@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -46,6 +47,7 @@ public class LargeIntegrationTest {
 	private static WebTarget loginWebTarget;
 	private static WebTarget addmandantWebTarget;
 	private static WebTarget adduserWebTaget;
+	private static WebTarget transactionCreateWebTarget;
 
 	@BeforeAll
 	public static void setUpLit() {
@@ -57,6 +59,7 @@ public class LargeIntegrationTest {
 		loginWebTarget = new WebTargetBuilder().withUrl(BASE_URL + "/login").build();
 		addmandantWebTarget = new WebTargetBuilder().withUrl(BASE_URL + "/addmandant").build();
 		adduserWebTaget = new WebTargetBuilder().withUrl(BASE_URL + "/adduser").build();
+		transactionCreateWebTarget = new WebTargetBuilder().withUrl(BASE_URL + "/portfoliotransaction/create").build();
 
 		properties = new LargeIntegrationTestProperties(start);
 		reporter.end("setup");
@@ -171,6 +174,22 @@ public class LargeIntegrationTest {
 		properties.putToken(mandantSuperUserName, mandantSuperUserToken);
 		logResult("Mandant User Login");
 		reporter.end("user test");
+	}
+	
+	@Test
+	@Order(5)
+	public void createTransactionTest() {
+		reporter.start("create transaction test");
+		final String mandantSuperUserName = properties.getMandantSuperUserName();
+		final String token = properties.getToken(mandantSuperUserName);
+		final Response response = request(transactionCreateWebTarget.queryParam("token", token)).get();
+		assertNotNull(response);
+		assertEquals(200, response.getStatus());
+		final String newId = response.readEntity(String.class);
+		assertNotNull(newId);
+		
+		
+		reporter.end("create transaction test");
 	}
 
 	@AfterAll
