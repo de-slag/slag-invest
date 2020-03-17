@@ -9,7 +9,7 @@ public class LargeIntegrationTestProperties {
 
 	private static final String INTEGRATION_TEST_MANDANT = "integration-test-mandant";
 
-	private static final String ADM_USER = "adm-user";
+	private static final String SYSADM = "sysadm";
 
 	private static final String _TOKEN = "_TOKEN";
 
@@ -35,7 +35,7 @@ public class LargeIntegrationTestProperties {
 	}
 
 	public String getAdmUserName() {
-		return ADM_USER;
+		return SYSADM;
 	}
 
 	public String getMandantName() {
