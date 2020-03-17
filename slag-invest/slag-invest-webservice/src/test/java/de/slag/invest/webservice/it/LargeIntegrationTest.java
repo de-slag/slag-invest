@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import de.slag.invest.webcommon.model.CommonDto;
 import de.slag.invest.webservice.WebTargetBuilder;
 import de.slag.invest.webservice.response.StringWebserviceResponse2;
 import de.slag.invest.webservice.response.WebserviceResponse2;
@@ -49,7 +50,12 @@ public class LargeIntegrationTest {
 	private static WebTarget loginWebTarget;
 	private static WebTarget addmandantWebTarget;
 	private static WebTarget adduserWebTaget;
+	
+	private static WebTarget configCreateWebTarget;
+	
+	
 	private static WebTarget transactionCreateWebTarget;
+	private static WebTarget transactionLoadWebTarget;
 
 	@BeforeAll
 	public static void setUpLit() {
@@ -61,7 +67,11 @@ public class LargeIntegrationTest {
 		loginWebTarget = new WebTargetBuilder().withUrl(BASE_URL + "/login").build();
 		addmandantWebTarget = new WebTargetBuilder().withUrl(BASE_URL + "/addmandant").build();
 		adduserWebTaget = new WebTargetBuilder().withUrl(BASE_URL + "/adduser").build();
+		
+		configCreateWebTarget =  new WebTargetBuilder().withUrl(BASE_URL + "/config/create").build();
+		
 		transactionCreateWebTarget = new WebTargetBuilder().withUrl(BASE_URL + "/portfoliotransaction/create").build();
+		transactionLoadWebTarget = new WebTargetBuilder().withUrl(BASE_URL + "/portfoliotransaction/load").build();
 
 		properties = new LargeIntegrationTestProperties(start);
 		reporter.end("setup");
@@ -177,13 +187,28 @@ public class LargeIntegrationTest {
 		logResult("Mandant User Login");
 		reporter.end("user test");
 	}
-
+	
 	@Test
 	@Order(5)
+	public void createConfigTest() {
+		reporter.start("create config test");
+		final String mandantSuperUserName = properties.getMandantSuperUserName();
+		final String token = properties.getToken(mandantSuperUserName);
+		final Response response = request(configCreateWebTarget.queryParam("token", token)).get();
+		assertNotNull(response);
+		assertEquals(200, response.getStatus());
+		final String readEntity = response.readEntity(String.class);
+		assertNotNull(readEntity);
+		reporter.end("create config test");
+	}
+
+	@Test
+	@Order(9)
 	public void createTransactionTest() {
 		reporter.start("create transaction test");
 		final String mandantSuperUserName = properties.getMandantSuperUserName();
 		final String token = properties.getToken(mandantSuperUserName);
+		
 		final Response response = request(transactionCreateWebTarget.queryParam("token", token)).get();
 		assertNotNull(response);
 		assertEquals(200, response.getStatus());
@@ -195,10 +220,17 @@ public class LargeIntegrationTest {
 	}
 
 	@Test
-	@Order(6)
+	@Order(10)
 	public void readTransactionTest() {
 		reporter.start("read transaction test");
+		final String mandantSuperUserName = properties.getMandantSuperUserName();
+		final String token = properties.getToken(mandantSuperUserName);		
+		String id = properties.get(FIRST_TRANSACTION_ID);
 		
+		final Response response = request(transactionLoadWebTarget.queryParam("id", id).queryParam("token", token)).get();
+		assertNotNull(response);
+		final CommonDto readEntity = response.readEntity(CommonDto.class);
+		assertNotNull(readEntity);
 		reporter.end("read transaction test");
 	}
 

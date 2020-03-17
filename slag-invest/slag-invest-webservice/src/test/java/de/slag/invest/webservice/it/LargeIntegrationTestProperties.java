@@ -57,5 +57,9 @@ public class LargeIntegrationTestProperties {
 	public void put(String key, String value) {
 		keyValues.put(key, value);
 	}
+	
+	public String get(String key) {
+		return keyValues.get(key);
+	}
 
 }
