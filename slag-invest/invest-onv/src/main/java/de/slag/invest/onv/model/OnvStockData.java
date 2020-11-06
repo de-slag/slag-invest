@@ -7,7 +7,7 @@ import java.util.List;
 public interface OnvStockData {
 
 	String DATUM = "Datum";
-	String DATUM_FORMAT = "dd.mm.yyyy";
+	String DATUM_FORMAT = "dd.MM.yyyy";
 
 	String EROEFFUNG = "Eroeffnung";
 	String HOCH = "Hoch";

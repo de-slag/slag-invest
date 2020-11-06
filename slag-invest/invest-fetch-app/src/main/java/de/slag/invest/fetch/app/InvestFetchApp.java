@@ -38,8 +38,11 @@ public class InvestFetchApp implements Runnable {
 		}
 
 		final OnvRunner runner = new OnvRunnerBuilder()
-				.withBaseUrl(properties.getProperty(InvestFetchProperty.BASE_URL)).withNotations(notations)
-				.withNotationWknIsinMap(notationWknIsinMap).build();
+				.withBaseUrl(properties.getProperty(InvestFetchProperty.BASE_URL))
+				.withNotations(notations)
+				.withNotationWknIsinMap(notationWknIsinMap)
+				.withOutputFolder(properties.getProperty(InvestFetchProperty.OUTPUT_FOLDER))
+				.build();
 
 		runner.run();
 
