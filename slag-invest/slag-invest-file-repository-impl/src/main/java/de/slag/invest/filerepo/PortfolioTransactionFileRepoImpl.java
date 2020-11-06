@@ -23,8 +23,8 @@ import org.springframework.stereotype.Repository;
 
 import de.slag.common.base.AdmCache;
 import de.slag.common.base.BaseException;
-import de.slag.common.utils.CsvUtils;
-import de.slag.common.utils.DateUtils;
+import de.slag.common.util.CsvUtils;
+import de.slag.common.util.DateUtils;
 
 @Repository
 public class PortfolioTransactionFileRepoImpl implements PortfolioTransactionFileRepo {

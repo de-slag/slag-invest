@@ -29,7 +29,7 @@
 
 		<dependency>
 			<groupId>de.slag.common</groupId>
-			<artifactId>slag-common-utils</artifactId>
+			<artifactId>slag-common-core</artifactId>
 		</dependency>
 
 		<!-- test -->

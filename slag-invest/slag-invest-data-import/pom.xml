@@ -63,12 +63,7 @@
 
 		<dependency>
 			<groupId>de.slag.common</groupId>
-			<artifactId>slag-common-reflect</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>de.slag.common</groupId>
-			<artifactId>slag-common-utils</artifactId>
+			<artifactId>slag-common-core</artifactId>
 		</dependency>
 
 		<!-- external -->
@@ -76,7 +71,7 @@
 			<!-- remove -->
 			<groupId>org.patriques</groupId>
 			<artifactId>alphavantage4j</artifactId>
-			<version>1.3-SNAPSHOT</version>
+			<version>1.4</version>
 			<!-- <scope>provided</scope> -->
 		</dependency>
 

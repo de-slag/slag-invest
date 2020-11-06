@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import de.slag.common.base.AdmCache;
 import de.slag.invest.appservice.dataimport.PortfolioTransactionImportService;
 import de.slag.invest.appservice.report.ReportService;
-import de.slag.invest.iface.av.api.StockValueDataImportService;
+//import de.slag.invest.iface.av.api.StockValueDataImportService;
 
 @Service
 public class InvestAppService {
@@ -20,7 +20,8 @@ public class InvestAppService {
 	private AdmCache admCache;
 
 	@Resource
-	private StockValueDataImportService stockValueDataImportService;
+//	private StockValueDataImportService stockValueDataImportService;
+	private Object stockValueDataImportService;
 
 	@Resource
 	private ReportService reportService;
@@ -35,7 +36,7 @@ public class InvestAppService {
 	private InvestAppStatisticService investAppStatisticService;
 
 	public void importStockData() {
-		stockValueDataImportService.importData();
+//		stockValueDataImportService.importData();
 	}
 
 	public void importPortfolioTransactions() {

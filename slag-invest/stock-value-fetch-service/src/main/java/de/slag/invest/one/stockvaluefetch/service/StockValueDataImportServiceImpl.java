@@ -13,9 +13,8 @@ import de.slag.common.base.AdmCache;
 import de.slag.common.reflect.engine.SimpleReflectionEngine;
 import de.slag.invest.dtomodel.StockValueDto;
 import de.slag.invest.dtoservice.StockValueDtoService;
-import de.slag.invest.iface.av.api.AvDataFetchService;
-import de.slag.invest.iface.av.api.AvStockValueDto;
-import de.slag.invest.iface.av.api.StockValueDataImportService;
+//import de.slag.invest.iface.av.api.AvDataFetchService;
+//import de.slag.invest.iface.av.api.AvStockValueDto;
 import de.slag.invest.imp.filecache.ImpStockValueDto;
 import de.slag.invest.imp.filecache.ImportCacheService;
 import de.slag.invest.imp.filecache.ImportCacheStockValueDto;
@@ -23,7 +22,9 @@ import de.slag.invest.model.StockValue;
 import de.slag.invest.service.StockValueService;
 
 @Service
-public class StockValueDataImportServiceImpl implements StockValueDataImportService {
+public class StockValueDataImportServiceImpl
+//implements StockValueDataImportService
+{
 
 	@Resource
 	private StockValueService stockValueService;
@@ -35,7 +36,8 @@ public class StockValueDataImportServiceImpl implements StockValueDataImportServ
 	private AdmCache admCache;
 
 	@Resource
-	private AvDataFetchService avDataFetchService;
+//	private AvDataFetchService avDataFetchService;
+	private Object avDataFetchService;
 
 	@Resource
 	private ImportCacheService importCacheService;
@@ -87,11 +89,13 @@ public class StockValueDataImportServiceImpl implements StockValueDataImportServ
 	}
 
 	private Collection<ImpStockValueDto> fetchDataFromInterface() {
-		final Collection<AvStockValueDto> fetchData = avDataFetchService.fetchData();
-		return fetchData.stream().map(dto -> of(dto)).collect(Collectors.toList());
+//		final Collection<AvStockValueDto> fetchData = avDataFetchService.fetchData();
+//		return fetchData.stream().map(dto -> of(dto)).collect(Collectors.toList());
+		return null;
 	}
 
-	private ImpStockValueDto of(AvStockValueDto dto) {
+//	private ImpStockValueDto of(AvStockValueDto dto) {
+	private ImpStockValueDto of(Object dto) {
 		ImpStockValueDto toDto = new ImpStockValueDto();
 		new SimpleReflectionEngine().mapValues(dto, toDto);
 		return toDto;

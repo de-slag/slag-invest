@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import de.slag.common.base.BaseException;
 import de.slag.common.context.SlagContext;
-import de.slag.common.utils.CliOptionsUtils;
+import de.slag.common.util.CliOptionsUtils;
 
 public class InvestApp {
 

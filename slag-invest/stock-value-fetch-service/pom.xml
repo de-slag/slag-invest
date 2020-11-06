@@ -16,11 +16,11 @@
 	
 		<!-- invest stock value fetching -->
 	
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>de.slag.invest</groupId>
 			<artifactId>alphavantage-interface</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>de.slag.invest</groupId>
@@ -59,14 +59,11 @@
 			<groupId>de.slag.common</groupId>
 			<artifactId>slag-common-base</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>de.slag.common</groupId>
-			<artifactId>slag-common-utils</artifactId>
+			<artifactId>slag-common-core</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>de.slag.common</groupId>
-			<artifactId>slag-common-reflect</artifactId>
-		</dependency>
 	</dependencies>
 </project>
