@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import de.slag.common.base.AdmCache;
 import de.slag.common.base.BaseException;
-import de.slag.common.utils.CsvUtils;
+import de.slag.common.util.CsvUtils;
 
 @Service
 public class PortfolioPositionFileRepoServiceImpl implements PortfolioPositionFileRepoService {

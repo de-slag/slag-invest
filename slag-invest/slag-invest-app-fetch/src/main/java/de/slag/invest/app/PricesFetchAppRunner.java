@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -16,14 +15,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import de.slag.common.base.BaseException;
-import de.slag.common.utils.CsvUtils;
-import de.slag.common.utils.DateUtils;
+import de.slag.common.util.CsvUtils;
+import de.slag.common.util.DateUtils;
 import de.slag.invest.api.FetchCsvModel;
-import de.slag.invest.av.AvProperties;
-import de.slag.invest.av.stock.AvStock;
-import de.slag.invest.av.stock.AvStockCall;
-import de.slag.invest.av.stock.AvStockCallBuilder;
-import de.slag.invest.av.stock.AvStockResponse;
 
 public class PricesFetchAppRunner implements Runnable {
 

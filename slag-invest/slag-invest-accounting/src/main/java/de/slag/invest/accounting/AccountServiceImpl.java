@@ -1,8 +1,6 @@
 package de.slag.invest.accounting;
 
 import java.time.LocalDate;
-import java.time.Month;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import de.slag.common.base.BaseException;
 import de.slag.common.base.NotSupportedException;
-import de.slag.common.utils.DateUtils;
+import de.slag.common.util.DateUtils;
 import de.slag.invest.accounting.model.AccPortfolio;
 import de.slag.invest.accounting.model.AccPortfolioStatement;
 import de.slag.invest.model.PortfolioTransaction;

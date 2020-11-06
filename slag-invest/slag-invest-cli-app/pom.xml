@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>de.slag.common</groupId>
-			<artifactId>slag-common-utils</artifactId>
+			<artifactId>slag-common-core</artifactId>
 		</dependency>
 
 		<!-- remove this direct dependencies -->
@@ -61,11 +61,11 @@
 			<version>${project.version}</version>
 		</dependency>
 
- 		<dependency>
+ <!-- 		<dependency>
 			<groupId>de.slag.invest</groupId>
 			<artifactId>stock-value-fetch-service-api</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+		</dependency> -->
 
 <!-- 		<dependency>
 			<groupId>de.slag.invest</groupId>
