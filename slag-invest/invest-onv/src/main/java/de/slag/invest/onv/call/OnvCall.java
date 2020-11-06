@@ -36,6 +36,7 @@ public class OnvCall implements Callable<List<OnvStockData>> {
 
 	@Override
 	public List<OnvStockData> call() throws Exception {
+		
 		Path tmpFile = Files.createTempFile("onv-call-", ".csv");
 		callAndSave(tmpFile);
 		Path fileWithValidLines = Files.createTempFile("onv-call-valid-lines-", ".csv");
