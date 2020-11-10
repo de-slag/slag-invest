@@ -1,16 +1,20 @@
 package de.slag.invest.backend.config;
 
-import java.time.LocalDateTime;
+import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import de.slag.invest.one.api.InvOneService;
+
 @Configuration
 public class InvConfiguration {
+	
+	@Resource
+	private InvOneService invOneService;
 
-	@Scheduled(fixedRate = 5000)
+	@Scheduled(cron = "0 * * * * *")
 	public void runScheduled() {
-		System.out.println("scheduled: " + LocalDateTime.now());
+		invOneService.runScheduled();
 	}
-
 }

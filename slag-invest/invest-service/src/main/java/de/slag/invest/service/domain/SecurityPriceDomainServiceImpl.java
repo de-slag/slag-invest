@@ -1,4 +1,4 @@
-package de.slag.invest.domain.service.impl;
+package de.slag.invest.service.domain;
 
 import java.util.Collection;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import de.slag.common.core.dao.Dao;
 import de.slag.invest.domain.model.security.Security;
 import de.slag.invest.domain.model.security.SecurityPrice;
-import de.slag.invest.domain.service.api.SecurityPriceDomainService;
 import de.slag.invest.persist.api.SecurityPriceDao;
+import de.slag.invest.service.domain.api.SecurityPriceDomainService;
 
 @Service
 public class SecurityPriceDomainServiceImpl extends AbstractDomainService<SecurityPrice>

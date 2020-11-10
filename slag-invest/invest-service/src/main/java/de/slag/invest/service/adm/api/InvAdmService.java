@@ -1,4 +1,4 @@
-package de.slag.invest.service.api;
+package de.slag.invest.service.adm.api;
 
 public interface InvAdmService {
 

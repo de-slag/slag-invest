@@ -1,4 +1,4 @@
-package de.slag.invest.service.impl;
+package de.slag.invest.service.business;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +23,11 @@ import de.slag.common.base.BaseException;
 import de.slag.common.util.CsvUtils;
 import de.slag.invest.domain.model.security.Security;
 import de.slag.invest.domain.model.security.SecurityPrice;
-import de.slag.invest.domain.service.api.SecurityDomainService;
-import de.slag.invest.domain.service.api.SecurityPriceDomainService;
-import de.slag.invest.service.adm.InvAdmParameter;
-import de.slag.invest.service.api.DataImportService;
-import de.slag.invest.service.api.InvAdmService;
+import de.slag.invest.service.adm.api.InvAdmParameter;
+import de.slag.invest.service.adm.api.InvAdmService;
+import de.slag.invest.service.business.api.DataImportService;
+import de.slag.invest.service.domain.api.SecurityDomainService;
+import de.slag.invest.service.domain.api.SecurityPriceDomainService;
 import de.slag.staging.model.SecurityCsv;
 
 @Service
