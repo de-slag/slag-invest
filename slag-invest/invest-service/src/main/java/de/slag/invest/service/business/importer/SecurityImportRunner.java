@@ -1,4 +1,4 @@
-package de.slag.invest.service.impl.importer;
+package de.slag.invest.service.business.importer;
 
 import java.util.function.Consumer;
 

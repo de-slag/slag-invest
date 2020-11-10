@@ -1,4 +1,4 @@
-package de.slag.invest.domain.service.impl;
+package de.slag.invest.service.domain;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import de.slag.common.base.BaseException;
 import de.slag.common.core.dao.Dao;
 import de.slag.invest.domain.model.security.Security;
-import de.slag.invest.domain.service.api.SecurityDomainService;
 import de.slag.invest.persist.api.SecurityDao;
+import de.slag.invest.service.domain.api.SecurityDomainService;
 
 @Service
 public class SecurityDomainServiceImpl extends AbstractDomainService<Security> implements SecurityDomainService {

@@ -1,4 +1,4 @@
-package de.slag.invest.domain.service.api;
+package de.slag.invest.service.domain.api;
 
 import de.slag.invest.domain.model.kpi.KeyPerformanceIndicator;
 import de.slag.invest.domain.model.security.Security;

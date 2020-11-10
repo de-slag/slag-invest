@@ -1,4 +1,4 @@
-package de.slag.invest.domain.service.impl;
+package de.slag.invest.service.domain;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import de.slag.common.base.BaseException;
 import de.slag.common.core.dao.Dao;
 import de.slag.common.model.EntityBean;
-import de.slag.invest.domain.service.api.DomainService;
+import de.slag.invest.service.domain.api.DomainService;
 
 public abstract class AbstractDomainService<E extends EntityBean> implements DomainService<E> {
 
