@@ -51,6 +51,7 @@
 		<module>invest-staging-model</module>
 		<module>invest-onv</module>
 		<module>invest-fetch-app</module>
+<module>invest-backend</module>
 	</modules>
 	<properties>
 		<slag.common.version>0.4.0-SNAPSHOT</slag.common.version>
