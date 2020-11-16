@@ -20,4 +20,9 @@ public class KeyPerformanceIndicatorDomainServiceImpl extends AbstractDomainServ
 	protected Dao<KeyPerformanceIndicator> getDao() {
 		return keyPerformanceIndicatorDao;
 	}
+
+	@Override
+	public KeyPerformanceIndicator create() {
+		return new KeyPerformanceIndicator();
+	}
 }

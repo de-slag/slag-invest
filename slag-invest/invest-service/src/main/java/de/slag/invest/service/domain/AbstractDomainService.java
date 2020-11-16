@@ -21,6 +21,10 @@ public abstract class AbstractDomainService<E extends EntityBean> implements Dom
 	public void save(E e) {
 		getDao().save(e);
 	}
+	
+	public void saveBean(Object o) {
+		save((E)o);
+	}
 
 	public Optional<E> load(Long id) {
 		return getDao().load(id);

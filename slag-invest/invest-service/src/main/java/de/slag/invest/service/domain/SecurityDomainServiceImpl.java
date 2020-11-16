@@ -41,4 +41,9 @@ public class SecurityDomainServiceImpl extends AbstractDomainService<Security> i
 		return collect.stream().findAny();
 	}
 
+	@Override
+	public Security create() {
+		return new Security();
+	}
+
 }

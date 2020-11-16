@@ -28,4 +28,9 @@ public class SecurityPriceDomainServiceImpl extends AbstractDomainService<Securi
 	public Collection<SecurityPrice> findBy(Security security) {
 		return securityPriceDao.findAllBy(sp -> security.equals(sp.getSecurity()));
 	}
+
+	@Override
+	public SecurityPrice create() {
+		return new SecurityPrice();
+	}
 }
