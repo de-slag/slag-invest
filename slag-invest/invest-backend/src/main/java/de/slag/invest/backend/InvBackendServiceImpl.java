@@ -3,9 +3,12 @@ package de.slag.invest.backend;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,22 +18,30 @@ import de.slag.basic.backend.api.BasicBackendService;
 import de.slag.basic.model.ConfigProperty;
 import de.slag.basic.model.EntityDto;
 import de.slag.basic.model.Token;
+import de.slag.common.core.flattener.Flattener;
+import de.slag.common.core.flattener.UnFlattener;
+import de.slag.common.model.EntityBean;
+import de.slag.invest.one.api.EntityType;
+import de.slag.invest.one.api.InvOneService;
 
 @Service
 public class InvBackendServiceImpl implements BasicBackendService {
 
 	private static final Log LOG = LogFactory.getLog(InvBackendServiceImpl.class);
-	
+
 	private static final String MEMBER = "Member";
 	private static final String SPECIES = "Species";
 	private static final String FAMILY = "Family";
 	private static final List<String> TYPES = Arrays.asList(FAMILY, SPECIES, MEMBER);
 
+	@Resource
+	private InvOneService invOneService;
+
 	@PostConstruct
 	public void init() {
 		LOG.info("initialized");
 	}
-	
+
 	@Override
 	public Token getLogin(String username, String password) {
 		Token token = new Token();
@@ -55,23 +66,41 @@ public class InvBackendServiceImpl implements BasicBackendService {
 
 	@Override
 	public EntityDto getEntity(String type, Long id) {
-		final EntityDto entityDto = new EntityDto();
+		final EntityType typeA = EntityType.valueOf(type.toUpperCase());
+		final EntityBean bean = invOneService.loadOrCreate(typeA, id);
+
+		final EntityDto domainEntity = new EntityDto();
+		domainEntity.setType(type);
+		domainEntity.setId(id);
+		domainEntity.setProperties(new ArrayList<String>());
+
+		Map<String, String> attributeValues = new HashMap<>();
+		new Flattener().accept(bean, attributeValues);
+		attributeValues.keySet().forEach(key -> {
+			String value = attributeValues.get(key);
+			domainEntity.getProperties().add(key + "=" + value);
+		});
+		
+		return domainEntity;
+
+	}
+
+	@Override
+	public BackendState save(EntityDto entityDto) {
+		final EntityType type = EntityType.valueOf(entityDto.getType().toUpperCase());
+		final EntityBean domainBean = invOneService.loadOrCreate(type, entityDto.getId());
 		final ArrayList<String> properties = entityDto.getProperties();
-		entityDto.setType(type);
-		entityDto.setId(id);
 
-		switch (type) {
-		case FAMILY:
-			properties.add(String.format("name=%s", id % 2 == 0 ? "bird" : "mammalian"));
-			break;
-		case SPECIES:
-			properties.add(String.format("name=%", id % 3 == 0 ? "A" : "B"));
-		case MEMBER:
-			properties.add(String.format("name=%-%", "Pit", id));
-		default:
-			return BasicBackendService.super.getEntity(type, id);
-		}
-		return entityDto;
+		final Map<String, String> attributeValues = new HashMap<>();
+		properties.forEach(property -> {
+			final String[] split = property.split("=");
+			final String key = split[0];
+			final String value = split[1];
+			attributeValues.put(key.toUpperCase(), value);
+		});
 
+		new UnFlattener().accept(attributeValues, domainBean);
+		invOneService.save(domainBean);
+		return BackendState.OK;
 	}
 }

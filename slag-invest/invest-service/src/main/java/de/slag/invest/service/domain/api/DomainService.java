@@ -10,6 +10,8 @@ public interface DomainService<E extends EntityBean> {
 	
 	void save(E e);
 	
+	public void saveBean(Object o);
+	
 	Optional<E> load(Long id);
 	
 	void delete(E e);
@@ -17,5 +19,7 @@ public interface DomainService<E extends EntityBean> {
 	Collection<E> findBy(Predicate<E> filter);
 	
 	Optional<E> loadBy(Predicate<E> filter);
-
+	
+	E create();
+	
 }
