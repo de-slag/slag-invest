@@ -1,14 +1,13 @@
 package de.slag.invest.one.calc;
 
-import java.math.BigDecimal;
 import java.util.concurrent.Callable;
 
-public interface Calculator extends Callable<BigDecimal>{
+public interface Calculator<T> extends Callable<T>{
 	
 	@Override
-	default BigDecimal call() throws Exception {
+	default T call() throws Exception {
 		return calculate();
 	}
 
-	BigDecimal calculate();
+	T calculate();
 }
