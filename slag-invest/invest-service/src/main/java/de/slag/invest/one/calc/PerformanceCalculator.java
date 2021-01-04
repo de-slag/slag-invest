@@ -22,14 +22,19 @@ public class PerformanceCalculator implements Calculator<BigDecimal> {
 
 	private int dateToleranceDays = 5;
 
+	public static PerformanceCalculator of(InvTimePeriod period, Map<LocalDate, BigDecimal> performanceValues,
+			int dateToleranceDays) {
+
+		return new PerformanceCalculator(period.getEnd(), period.getBegin(), performanceValues, dateToleranceDays);
+	}
+
 	public static PerformanceCalculator of(LocalDate date, InvTimePeriodType timePeriodType,
 			Map<LocalDate, BigDecimal> performanceValues, int dateToleranceDays) {
-		
+
 		final TimePeriodDeterminationCalculator timePeriodDeterminationCalculator = new TimePeriodDeterminationCalculator(
 				timePeriodType, date);
 		final InvTimePeriod period = timePeriodDeterminationCalculator.calculate();
-		return new PerformanceCalculator(period.getEnd(), period.getBegin(), performanceValues,
-				dateToleranceDays);
+		return new PerformanceCalculator(period.getEnd(), period.getBegin(), performanceValues, dateToleranceDays);
 	}
 
 	PerformanceCalculator(LocalDate forDate, LocalDate sinceDate, Map<LocalDate, BigDecimal> performanceValues,
