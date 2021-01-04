@@ -49,6 +49,6 @@ public class PerformanceCalculator implements Calculator {
 			}
 			date = d.minusDays(i);
 		}
-		throw new BaseException("'for day' not found");
+		throw new BaseException("day not found: " + d);
 	}
 }
