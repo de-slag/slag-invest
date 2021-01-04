@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import de.slag.common.model.EntityBean;
 import de.slag.common.util.SleepUtils;
+import de.slag.invest.domain.model.report.Report;
 import de.slag.invest.domain.model.security.Security;
 import de.slag.invest.one.api.EntityType;
 import de.slag.invest.one.api.InvOneService;
@@ -54,6 +55,7 @@ public class InvOneServiceImpl implements InvOneService {
 	@PostConstruct
 	public void init() {
 		CLASS_TYPE_MAP.put(Security.class, EntityType.SECURITY);
+		CLASS_TYPE_MAP.put(Report.class, EntityType.REPORT);
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import de.slag.basic.backend.api.BasicBackendService;
+import de.slag.basic.backend.api.BasicBackendServiceReturnValue;
 import de.slag.basic.model.ConfigProperty;
 import de.slag.basic.model.EntityDto;
 import de.slag.basic.model.Token;
@@ -50,8 +51,8 @@ public class InvBackendServiceImpl implements BasicBackendService {
 	}
 
 	@Override
-	public BackendState putConfigProperty(String token, ConfigProperty configProperty) {
-		return BackendState.OK;
+	public BasicBackendServiceReturnValue putConfigProperty(String token, ConfigProperty configProperty) {
+		return BasicBackendServiceReturnValue.of("ok");
 	}
 
 	@Override
@@ -80,17 +81,28 @@ public class InvBackendServiceImpl implements BasicBackendService {
 			String value = attributeValues.get(key);
 			domainEntity.getProperties().add(key + "=" + value);
 		});
-		
+
 		return domainEntity;
 
 	}
 
 	@Override
-	public BackendState save(EntityDto entityDto) {
+	public BasicBackendServiceReturnValue save(EntityDto entityDto) {
+		LOG.info(String.format("save entity type '%s' with id: '%s'... ", entityDto.getType(), entityDto.getId()));
 		final EntityType type = EntityType.valueOf(entityDto.getType().toUpperCase());
 		final EntityBean domainBean = invOneService.loadOrCreate(type, entityDto.getId());
 		final ArrayList<String> properties = entityDto.getProperties();
 
+		final Map<String, String> attributeValues = keyValueMapOf(properties);
+
+		new UnFlattener().accept(attributeValues, domainBean);
+		invOneService.save(domainBean);
+		final String msg = String.format("saved: '%s' with id '%s'", type, domainBean.getId());
+		LOG.info(msg);
+		return BasicBackendServiceReturnValue.of(msg);
+	}
+
+	private Map<String, String> keyValueMapOf(final ArrayList<String> properties) {
 		final Map<String, String> attributeValues = new HashMap<>();
 		properties.forEach(property -> {
 			final String[] split = property.split("=");
@@ -98,9 +110,6 @@ public class InvBackendServiceImpl implements BasicBackendService {
 			final String value = split[1];
 			attributeValues.put(key.toUpperCase(), value);
 		});
-
-		new UnFlattener().accept(attributeValues, domainBean);
-		invOneService.save(domainBean);
-		return BackendState.OK;
+		return attributeValues;
 	}
 }
