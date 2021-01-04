@@ -11,10 +11,13 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.BeforeAll;
@@ -59,7 +62,7 @@ class PerformanceCalculatorTest {
 	}
 
 	LocalDate localDateOf(String dateString) {
-		final SimpleDateFormat sdf = new SimpleDateFormat("mm.dd.yyyy");
+		final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		Date parse;
 		try {
 			parse = sdf.parse(dateString);
