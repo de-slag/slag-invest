@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import de.slag.common.base.pattern.Builder;
 import de.slag.invest.one.model.IsPortfolio;
 import de.slag.invest.one.model.IsSecurity;
 import de.slag.invest.one.model.IsSecurityPosition;
 
-public class IsPortfolioResolver implements IsResolver<IsPortfolio> {
+public class IsPortfolioBuilder implements Builder<IsPortfolio> {
 
 	private final Map<String, Integer> portfolioContent = new HashMap<>();
 
@@ -21,14 +22,15 @@ public class IsPortfolioResolver implements IsResolver<IsPortfolio> {
 
 	private final List<IsSecurityPosition> positions = new ArrayList<>();
 
-	private IsPortfolioResolver(IsSecurityProvider securityProvider, Map<String, Integer> portfolioContent) {
+	private IsPortfolioBuilder(IsSecurityProvider securityProvider, Map<String, Integer> portfolioContent) {
 		super();
 		this.securityProvider = securityProvider;
 		this.portfolioContent.putAll(portfolioContent);
 	}
 
-	public IsPortfolio resolve() {
-		portfolioContent.keySet().forEach(isinWkn -> resolve(isinWkn));
+	@Override
+	public IsPortfolio build() throws Exception {
+		portfolioContent.keySet().forEach(isinWkn -> build(isinWkn));
 
 		if (isErroneous()) {
 			throw new RuntimeException();
@@ -42,7 +44,7 @@ public class IsPortfolioResolver implements IsResolver<IsPortfolio> {
 		return !errors.isEmpty();
 	}
 
-	private void resolve(String isinWkn) {
+	private void build(String isinWkn) {
 		final Optional<IsSecurity> securityOptional = securityProvider.apply(isinWkn);
 		if (securityOptional.isEmpty()) {
 			errors.add("not found: " + isinWkn);
@@ -55,5 +57,4 @@ public class IsPortfolioResolver implements IsResolver<IsPortfolio> {
 		positions.add(new IsSecurityPosition(invSecurity, count, totalValue));
 
 	}
-
 }
