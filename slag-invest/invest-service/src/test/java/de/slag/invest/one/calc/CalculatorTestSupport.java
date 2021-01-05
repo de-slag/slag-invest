@@ -39,8 +39,7 @@ public class CalculatorTestSupport {
 		final String identifierOf = identifierOf(resourceFilePath);
 		final String filename = m.get(identifierOf);
 		
-		final Collection<String> header = CsvUtils.getHeader(filename);
-		final Collection<CSVRecord> records = CsvUtils.getRecords(filename, header, true);
+		final Collection<CSVRecord> records = CsvUtils.readRecords(filename);
 
 		Map<LocalDate, BigDecimal> resultMap = new HashMap<>();
 
