@@ -1,6 +1,6 @@
 package de.slag.invest.one.model;
 
-public enum InvTimePeriodType {
+public enum IsTimePeriodType {
 	
 	QUATER
 

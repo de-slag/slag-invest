@@ -2,13 +2,13 @@ package de.slag.invest.one.model;
 
 import java.time.LocalDate;
 
-public class InvTimePeriod {
+public class IsTimePeriod {
 	
 	private LocalDate begin;
 	
 	private LocalDate end;
 	
-	public InvTimePeriod(LocalDate begin, LocalDate end) {
+	public IsTimePeriod(LocalDate begin, LocalDate end) {
 		super();
 		this.begin = begin;
 		this.end = end;

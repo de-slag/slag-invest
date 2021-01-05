@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.slag.common.base.BaseException;
-import de.slag.invest.one.model.InvTimePeriod;
-import de.slag.invest.one.model.InvTimePeriodType;
+import de.slag.invest.one.model.IsTimePeriod;
+import de.slag.invest.one.model.IsTimePeriodType;
 
 public class PerformanceCalculator implements Calculator<BigDecimal> {
 
@@ -22,18 +22,18 @@ public class PerformanceCalculator implements Calculator<BigDecimal> {
 
 	private int dateToleranceDays = 5;
 
-	public static PerformanceCalculator of(InvTimePeriod period, Map<LocalDate, BigDecimal> performanceValues,
+	public static PerformanceCalculator of(IsTimePeriod period, Map<LocalDate, BigDecimal> performanceValues,
 			int dateToleranceDays) {
 
 		return new PerformanceCalculator(period.getEnd(), period.getBegin(), performanceValues, dateToleranceDays);
 	}
 
-	public static PerformanceCalculator of(LocalDate date, InvTimePeriodType timePeriodType,
+	public static PerformanceCalculator of(LocalDate date, IsTimePeriodType timePeriodType,
 			Map<LocalDate, BigDecimal> performanceValues, int dateToleranceDays) {
 
 		final TimePeriodDeterminationCalculator timePeriodDeterminationCalculator = new TimePeriodDeterminationCalculator(
 				timePeriodType, date);
-		final InvTimePeriod period = timePeriodDeterminationCalculator.calculate();
+		final IsTimePeriod period = timePeriodDeterminationCalculator.calculate();
 		return new PerformanceCalculator(period.getEnd(), period.getBegin(), performanceValues, dateToleranceDays);
 	}
 

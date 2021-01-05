@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import de.slag.invest.one.model.InvTimePeriod;
-import de.slag.invest.one.model.InvTimePeriodType;
+import de.slag.invest.one.model.IsTimePeriod;
+import de.slag.invest.one.model.IsTimePeriodType;
 
-public class MultiTimePeriodDeterminationCalculator implements Calculator<Collection<InvTimePeriod>> {
+public class MultiTimePeriodDeterminationCalculator implements Calculator<Collection<IsTimePeriod>> {
 
 	private LocalDate begin;
 	private LocalDate end;
-	private InvTimePeriodType type;
+	private IsTimePeriodType type;
 
-	public static MultiTimePeriodDeterminationCalculator of(LocalDate begin, LocalDate end, InvTimePeriodType type) {
+	public static MultiTimePeriodDeterminationCalculator of(LocalDate begin, LocalDate end, IsTimePeriodType type) {
 		return new MultiTimePeriodDeterminationCalculator(begin, end, type);
 	}
 
-	private MultiTimePeriodDeterminationCalculator(LocalDate begin, LocalDate end, InvTimePeriodType type) {
+	private MultiTimePeriodDeterminationCalculator(LocalDate begin, LocalDate end, IsTimePeriodType type) {
 		super();
 		this.begin = begin;
 		this.end = end;
@@ -26,8 +26,8 @@ public class MultiTimePeriodDeterminationCalculator implements Calculator<Collec
 	}
 
 	@Override
-	public Collection<InvTimePeriod> calculate() {
-		List<InvTimePeriod> result = new ArrayList<>();
+	public Collection<IsTimePeriod> calculate() {
+		List<IsTimePeriod> result = new ArrayList<>();
 		final TimePeriodDeterminationCalculator timePeriodDeterminationCalculator = new TimePeriodDeterminationCalculator(
 				type, begin);
 		result.add(timePeriodDeterminationCalculator.calculate());
@@ -36,13 +36,13 @@ public class MultiTimePeriodDeterminationCalculator implements Calculator<Collec
 			final LocalDate lastDate = lastDate(result);
 			final LocalDate plusDays = lastDate.plusDays(1);
 			final TimePeriodDeterminationCalculator calculator = new TimePeriodDeterminationCalculator(type, plusDays);
-			final InvTimePeriod period = calculator.calculate();
+			final IsTimePeriod period = calculator.calculate();
 			result.add(period);
 		}
 		return result;
 	}
 
-	private boolean isComplete(List<InvTimePeriod> result) {
+	private boolean isComplete(List<IsTimePeriod> result) {
 		final LocalDate lastDate = lastDate(result);
 		if (end.isEqual(lastDate)) {
 			return true;
@@ -50,7 +50,7 @@ public class MultiTimePeriodDeterminationCalculator implements Calculator<Collec
 		return end.isBefore(lastDate);
 	}
 
-	private LocalDate lastDate(List<InvTimePeriod> result) {
+	private LocalDate lastDate(List<IsTimePeriod> result) {
 		return result.stream().map(period -> period.getEnd()).max((a, b) -> a.compareTo(b)).get();
 	}
 

@@ -9,18 +9,18 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import de.slag.invest.one.model.InvTimePeriod;
-import de.slag.invest.one.model.InvTimePeriodType;
+import de.slag.invest.one.model.IsTimePeriod;
+import de.slag.invest.one.model.IsTimePeriodType;
 
 class MultiTimePeriodDeterminationCalculatorTest {
 
 	@Test
 	void tenYearsIntermediateTest() {
 		final MultiTimePeriodDeterminationCalculator calculator = MultiTimePeriodDeterminationCalculator
-				.of(LocalDate.of(2010, 1, 6), LocalDate.of(2019, 11, 11), InvTimePeriodType.QUATER);
-		final Collection<InvTimePeriod> result = calculator.calculate();
+				.of(LocalDate.of(2010, 1, 6), LocalDate.of(2019, 11, 11), IsTimePeriodType.QUATER);
+		final Collection<IsTimePeriod> result = calculator.calculate();
 		assertEquals(40, result.size());
-		List<InvTimePeriod> resultList = new ArrayList<>(result);
+		List<IsTimePeriod> resultList = new ArrayList<>(result);
 		assertEquals(LocalDate.of(2010, 1, 1), resultList.get(0).getBegin());
 		assertEquals(LocalDate.of(2010, 3, 31), resultList.get(0).getEnd());
 		assertEquals(LocalDate.of(2010, 4, 1), resultList.get(1).getBegin());
@@ -38,10 +38,10 @@ class MultiTimePeriodDeterminationCalculatorTest {
 	@Test
 	void firstThreeQuatersIntermediateTest() {
 		final MultiTimePeriodDeterminationCalculator calculator = MultiTimePeriodDeterminationCalculator
-				.of(LocalDate.of(2010, 2, 12), LocalDate.of(2010, 8, 28), InvTimePeriodType.QUATER);
-		final Collection<InvTimePeriod> result = calculator.calculate();
+				.of(LocalDate.of(2010, 2, 12), LocalDate.of(2010, 8, 28), IsTimePeriodType.QUATER);
+		final Collection<IsTimePeriod> result = calculator.calculate();
 		assertEquals(3, result.size());
-		List<InvTimePeriod> resultList = new ArrayList<>(result);
+		List<IsTimePeriod> resultList = new ArrayList<>(result);
 		assertEquals(LocalDate.of(2010, 1, 1), resultList.get(0).getBegin());
 		assertEquals(LocalDate.of(2010, 3, 31), resultList.get(0).getEnd());
 		assertEquals(LocalDate.of(2010, 4, 1), resultList.get(1).getBegin());
@@ -53,10 +53,10 @@ class MultiTimePeriodDeterminationCalculatorTest {
 	@Test
 	void firstTwoQuatersTest() {
 		final MultiTimePeriodDeterminationCalculator calculator = MultiTimePeriodDeterminationCalculator
-				.of(LocalDate.of(2010, 1, 1), LocalDate.of(2010, 6, 30), InvTimePeriodType.QUATER);
-		final Collection<InvTimePeriod> result = calculator.calculate();
+				.of(LocalDate.of(2010, 1, 1), LocalDate.of(2010, 6, 30), IsTimePeriodType.QUATER);
+		final Collection<IsTimePeriod> result = calculator.calculate();
 		assertEquals(2, result.size());
-		List<InvTimePeriod> resultList = new ArrayList<>(result);
+		List<IsTimePeriod> resultList = new ArrayList<>(result);
 		assertEquals(LocalDate.of(2010, 1, 1), resultList.get(0).getBegin());
 		assertEquals(LocalDate.of(2010, 3, 31), resultList.get(0).getEnd());
 		assertEquals(LocalDate.of(2010, 4, 1), resultList.get(1).getBegin());
@@ -66,22 +66,22 @@ class MultiTimePeriodDeterminationCalculatorTest {
 
 	@Test
 	void firstQuaterIntermediateTest() {
-		final Collection<InvTimePeriod> result = MultiTimePeriodDeterminationCalculator
-				.of(LocalDate.of(2010, 1, 25), LocalDate.of(2010, 3, 2), InvTimePeriodType.QUATER)
+		final Collection<IsTimePeriod> result = MultiTimePeriodDeterminationCalculator
+				.of(LocalDate.of(2010, 1, 25), LocalDate.of(2010, 3, 2), IsTimePeriodType.QUATER)
 				.calculate();
 		assertEquals(1, result.size());
-		List<InvTimePeriod> resultList = new ArrayList<>(result);
+		List<IsTimePeriod> resultList = new ArrayList<>(result);
 		assertEquals(LocalDate.of(2010, 1, 1), resultList.get(0).getBegin());
 		assertEquals(LocalDate.of(2010, 3, 31), resultList.get(0).getEnd());
 	}
 
 	@Test
 	void firstQuaterTest() {
-		final Collection<InvTimePeriod> result = MultiTimePeriodDeterminationCalculator
-				.of(LocalDate.of(2010, 1, 1), LocalDate.of(2010, 3, 31), InvTimePeriodType.QUATER)
+		final Collection<IsTimePeriod> result = MultiTimePeriodDeterminationCalculator
+				.of(LocalDate.of(2010, 1, 1), LocalDate.of(2010, 3, 31), IsTimePeriodType.QUATER)
 				.calculate();
 		assertEquals(1, result.size());
-		List<InvTimePeriod> resultList = new ArrayList<>(result);
+		List<IsTimePeriod> resultList = new ArrayList<>(result);
 		assertEquals(LocalDate.of(2010, 1, 1), resultList.get(0).getBegin());
 		assertEquals(LocalDate.of(2010, 3, 31), resultList.get(0).getEnd());
 	}

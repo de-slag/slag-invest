@@ -11,8 +11,8 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.slag.invest.one.model.InvTimePeriod;
-import de.slag.invest.one.model.InvTimePeriodType;
+import de.slag.invest.one.model.IsTimePeriod;
+import de.slag.invest.one.model.IsTimePeriodType;
 
 class PerformanceCalculatorTest {
 
@@ -29,7 +29,7 @@ class PerformanceCalculatorTest {
 		Map<LocalDate, BigDecimal> performanceValues = calculatorTestSupport.valuesOf("dax-2010-2014.csv");
 		int dateToleranceDays = 5;
 
-		final InvTimePeriod period = new InvTimePeriod(LocalDate.of(2010, 7, 1), LocalDate.of(2010, 9, 30));
+		final IsTimePeriod period = new IsTimePeriod(LocalDate.of(2010, 7, 1), LocalDate.of(2010, 9, 30));
 		final PerformanceCalculator performanceCalculator = PerformanceCalculator.of(period, performanceValues,
 				dateToleranceDays);
 
@@ -43,7 +43,7 @@ class PerformanceCalculatorTest {
 		int dateToleranceDays = 5;
 
 		final PerformanceCalculator performanceCalculator = PerformanceCalculator.of(LocalDate.of(2010, 4, 1),
-				InvTimePeriodType.QUATER, performanceValues, dateToleranceDays);
+				IsTimePeriodType.QUATER, performanceValues, dateToleranceDays);
 
 		final BigDecimal result = performanceCalculator.calculate();
 		assertEquals(-0.0433065, result.doubleValue());

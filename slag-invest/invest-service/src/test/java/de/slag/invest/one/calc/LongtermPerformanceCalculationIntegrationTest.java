@@ -16,8 +16,8 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import de.slag.invest.one.model.InvTimePeriod;
-import de.slag.invest.one.model.InvTimePeriodType;
+import de.slag.invest.one.model.IsTimePeriod;
+import de.slag.invest.one.model.IsTimePeriodType;
 
 class LongtermPerformanceCalculationIntegrationTest {
 
@@ -38,26 +38,26 @@ class LongtermPerformanceCalculationIntegrationTest {
 		LocalDate begin = LocalDate.of(2010, 1, 1);
 		LocalDate end = LocalDate.of(2014, 12, 31);
 		final MultiTimePeriodDeterminationCalculator multiTimePeriodDeterminationCalculator = MultiTimePeriodDeterminationCalculator
-				.of(begin, end, InvTimePeriodType.QUATER);
-		final Collection<InvTimePeriod> timePeriods = multiTimePeriodDeterminationCalculator.calculate();
+				.of(begin, end, IsTimePeriodType.QUATER);
+		final Collection<IsTimePeriod> timePeriods = multiTimePeriodDeterminationCalculator.calculate();
 
 		assertEquals(20, timePeriods.size());
 
-		final List<InvTimePeriod> timePeriodList = new ArrayList<>(timePeriods);
+		final List<IsTimePeriod> timePeriodList = new ArrayList<>(timePeriods);
 
-		final InvTimePeriod invTimePeriod0 = timePeriodList.get(0);
+		final IsTimePeriod invTimePeriod0 = timePeriodList.get(0);
 		final PerformanceCalculator performanceCalculator0 = PerformanceCalculator.of(invTimePeriod0, valuesOf, 5);
 		final BigDecimal performanceResult0 = performanceCalculator0.calculate();
 
 		assertEquals(0.032920, performanceResult0.doubleValue());
 
-		final InvTimePeriod invTimePeriod2 = timePeriodList.get(2);
+		final IsTimePeriod invTimePeriod2 = timePeriodList.get(2);
 		final PerformanceCalculator performanceCalculator2 = PerformanceCalculator.of(invTimePeriod2, valuesOf, 5);
 		final BigDecimal performanceResult2 = performanceCalculator2.calculate();
 
 		assertEquals(0.063439, performanceResult2.doubleValue());
 
-		final InvTimePeriod invTimePeriod11 = timePeriodList.get(11);
+		final IsTimePeriod invTimePeriod11 = timePeriodList.get(11);
 		final PerformanceCalculator performanceCalculator11 = PerformanceCalculator.of(invTimePeriod11, valuesOf, 5);
 		final BigDecimal performanceResult11 = performanceCalculator11.calculate();
 
@@ -71,8 +71,8 @@ class LongtermPerformanceCalculationIntegrationTest {
 		LocalDate begin = LocalDate.of(2018, 10, 1);
 		LocalDate end = LocalDate.of(2020, 9, 30);
 		final MultiTimePeriodDeterminationCalculator multiTimePeriodDeterminationCalculator = MultiTimePeriodDeterminationCalculator
-				.of(begin, end, InvTimePeriodType.QUATER);
-		final Collection<InvTimePeriod> timePeriods = multiTimePeriodDeterminationCalculator.calculate();
+				.of(begin, end, IsTimePeriodType.QUATER);
+		final Collection<IsTimePeriod> timePeriods = multiTimePeriodDeterminationCalculator.calculate();
 		StringBuilder sb = new StringBuilder();
 		timePeriods.forEach(period -> {
 			final PerformanceCalculator performanceCalculator = PerformanceCalculator.of(period, valuesOf, 5);
