@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import de.slag.common.util.CurrencyUtils;
 import de.slag.invest.one.model.IsPortfolioPoint;
 
-class IsPortfolioBuilderTest {
+class IsPortfolioPointBuilderTest {
 
 	static IsSecurityPointProvider securityPointProvider;
 
@@ -28,10 +28,10 @@ class IsPortfolioBuilderTest {
 		portfolioContent.put("846900", 10);
 		portfolioContent.put("555700", 125);
 
-		final IsPortfolioBuilder isPortfolioBuilder = new IsPortfolioBuilder(securityPointProvider, portfolioContent,
+		final IsPortfolioPointBuilder isPortfolioPointBuilder = new IsPortfolioPointBuilder(securityPointProvider, portfolioContent,
 				LocalDate.now());
 		
-		final IsPortfolioPoint portfolioPoint = isPortfolioBuilder.build();
+		final IsPortfolioPoint portfolioPoint = isPortfolioPointBuilder.build();
 		assertNotNull(portfolioPoint);
 		assertEquals(CurrencyUtils.newAmount(24080), portfolioPoint.getPointAmount());
 	}

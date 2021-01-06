@@ -11,12 +11,14 @@ import javax.money.MonetaryAmount;
 
 import de.slag.common.base.pattern.Builder;
 import de.slag.common.util.CurrencyUtils;
+import de.slag.invest.one.model.IsPortfolio;
 import de.slag.invest.one.model.IsPortfolioPoint;
+import de.slag.invest.one.model.IsSecurity;
 import de.slag.invest.one.model.IsSecurityPoint;
 import de.slag.invest.one.model.IsSecurityPointIdentifier;
 import de.slag.invest.one.model.IsSecurityPosition;
 
-public class IsPortfolioBuilder implements Builder<IsPortfolioPoint> {
+public class IsPortfolioPointBuilder implements Builder<IsPortfolioPoint> {
 
 	private final Map<String, Integer> portfolioContent = new HashMap<>();
 
@@ -28,7 +30,17 @@ public class IsPortfolioBuilder implements Builder<IsPortfolioPoint> {
 
 	private final LocalDate date;
 
-	public IsPortfolioBuilder(IsSecurityPointProvider securityPointProvider, Map<String, Integer> portfolioContent,
+	public static IsPortfolioPointBuilder of(IsSecurityPointProvider securityPointProvider, IsPortfolio portfolio,
+			LocalDate date) {
+		final Map<IsSecurity, Integer> currentHoldings = portfolio.getHoldingsFor(date);
+		final Map<String, Integer> portfolioContent = new HashMap<>();
+		currentHoldings.keySet()
+				.forEach(security -> portfolioContent.put(security.getWknIsin(), currentHoldings.get(security)));
+
+		return new IsPortfolioPointBuilder(securityPointProvider, portfolioContent, date);
+	}
+
+	public IsPortfolioPointBuilder(IsSecurityPointProvider securityPointProvider, Map<String, Integer> portfolioContent,
 			LocalDate date) {
 		super();
 		this.securityPointProvider = securityPointProvider;

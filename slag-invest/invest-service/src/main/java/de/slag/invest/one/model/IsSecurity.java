@@ -20,4 +20,11 @@ public class IsSecurity {
 		return description;
 	}
 
+	@Override
+	public String toString() {
+		return "IsSecurity [wknIsin=" + wknIsin + ", description=" + description + "]";
+	}
+	
+	
+
 }
