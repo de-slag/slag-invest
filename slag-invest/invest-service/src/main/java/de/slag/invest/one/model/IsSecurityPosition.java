@@ -2,30 +2,32 @@ package de.slag.invest.one.model;
 
 import java.math.BigDecimal;
 
+import javax.money.MonetaryAmount;
+
 public class IsSecurityPosition {
 	
-	private final IsSecurity security;
+	private final IsSecurityPoint securityPoint;
 	
 	private final Integer count;
 	
-	private final BigDecimal totalValue;
+	private final MonetaryAmount totalValue;
 
-	public IsSecurityPosition(IsSecurity security, Integer count, BigDecimal totalValue) {
+	public IsSecurityPosition(IsSecurityPoint securityPoint, Integer count, MonetaryAmount totalValue) {
 		super();
-		this.security = security;
+		this.securityPoint = securityPoint;
 		this.count = count;
 		this.totalValue = totalValue;
 	}
 
-	public IsSecurity getSecurity() {
-		return security;
+	public IsSecurityPoint getSecurityPoint() {
+		return securityPoint;
 	}
 
 	public Integer getCount() {
 		return count;
 	}
 
-	public BigDecimal getTotalValue() {
+	public MonetaryAmount getTotalValue() {
 		return totalValue;
 	}
 
