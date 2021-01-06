@@ -1,8 +1,7 @@
-package de.slag.invest.one.model;
+package de.slag.invest.one.calc;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,30 +12,38 @@ import java.util.stream.Collectors;
 
 import de.slag.common.base.BaseException;
 import de.slag.common.util.DateUtils;
+import de.slag.invest.one.model.IsPortfolio;
+import de.slag.invest.one.model.IsSecurity;
+import de.slag.invest.one.model.IsTransaction;
+import de.slag.invest.one.model.IsTransactionType;
 
-public class IsPortfolio {
+public class IsPortfolioHoldingsCalculator implements Calculator<Map<IsSecurity, Integer>> {
 
-	private List<IsTransaction> transactions = new ArrayList<>();
+	private IsPortfolio portfolio;
 
-	public IsPortfolio(Collection<IsTransaction> transactions) {
+	private LocalDate date;
+
+	public IsPortfolioHoldingsCalculator(IsPortfolio portfolio, LocalDate date) {
 		super();
-		this.transactions.addAll(transactions);
+		this.portfolio = portfolio;
+		this.date = date;
 	}
 
-	public Collection<IsTransaction> getTransactions() {
-		return transactions;
-	}
-
-	// TODO refactor this to another logic class
-	public Map<IsSecurity, Integer> getHoldingsFor(LocalDate date) {
-		List<IsTransaction> relevantTransactions = new ArrayList<IsTransaction>(transactions.stream()
+	@Override
+	public Map<IsSecurity, Integer> calculate() throws Exception {
+		List<IsTransaction> relevantTransactions = new ArrayList<IsTransaction>(portfolio.getTransactions()
+				.stream()
 				.filter(t -> DateUtils.isEqualOrBefore(date, t.getDate()))
 				.collect(Collectors.toList()));
 		Collections.sort(relevantTransactions, new Comparator<IsTransaction>() {
 
 			@Override
 			public int compare(IsTransaction arg0, IsTransaction arg1) {
-				return arg0.getDate().compareTo(arg1.getDate());
+				final int compareTo = arg0.getDate().compareTo(arg1.getDate());
+				if (compareTo != 0) {
+					return compareTo;
+				}
+				return arg0.getTransactionType().compareTo(arg1.getTransactionType());
 			}
 		});
 
@@ -62,7 +69,9 @@ public class IsPortfolio {
 			if (countAfter < 0) {
 				throw new BaseException(String.format("count < 0 for %s at transaction %s", security, transaction));
 			}
+			holdings.put(security, countAfter);
 		}
 		return holdings;
 	}
+
 }

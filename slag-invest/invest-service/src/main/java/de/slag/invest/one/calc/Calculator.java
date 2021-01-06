@@ -9,5 +9,5 @@ public interface Calculator<T> extends Callable<T>{
 		return calculate();
 	}
 
-	T calculate();
+	T calculate() throws Exception;
 }
