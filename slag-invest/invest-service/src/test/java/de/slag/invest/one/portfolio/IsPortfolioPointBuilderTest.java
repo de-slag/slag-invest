@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.slag.common.util.CurrencyUtils;
+import de.slag.invest.one.IsSecurityPointOpportunisticTestProvider;
 import de.slag.invest.one.model.IsPortfolioPoint;
 
 class IsPortfolioPointBuilderTest {
@@ -19,7 +20,7 @@ class IsPortfolioPointBuilderTest {
 
 	@BeforeAll
 	static void setUp() {
-		securityPointProvider = new IsSecurityOpportunisticTestProvider();
+		securityPointProvider = new IsSecurityPointOpportunisticTestProvider();
 	}
 
 	@Test

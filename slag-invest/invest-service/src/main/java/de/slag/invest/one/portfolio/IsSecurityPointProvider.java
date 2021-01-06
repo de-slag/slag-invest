@@ -8,6 +8,10 @@ import de.slag.invest.one.model.IsSecurityPoint;
 
 public interface IsSecurityPointProvider extends IsProvider<IsSecurityPoint> {
 
-	Optional<IsSecurityPoint> apply(IsIdentifier<IsSecurityPoint> identifier);
+	default Optional<IsSecurityPoint> apply(Object arg0) {
+		return apply0((IsIdentifier<IsSecurityPoint>)arg0);
+	}
+
+	Optional<IsSecurityPoint> apply0(IsIdentifier<IsSecurityPoint> identifier);
 
 }

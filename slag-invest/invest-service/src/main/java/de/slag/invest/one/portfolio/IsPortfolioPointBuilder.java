@@ -68,7 +68,7 @@ public class IsPortfolioPointBuilder implements Builder<IsPortfolioPoint> {
 	}
 
 	private void build(String isinWkn) {
-		final Optional<IsSecurityPoint> securityOptional = securityPointProvider.apply(new IsSecurityPointIdentifier() {
+		final Optional<IsSecurityPoint> securityOptional = securityPointProvider.apply0(new IsSecurityPointIdentifier() {
 
 			@Override
 			public String getIsinWkn() {

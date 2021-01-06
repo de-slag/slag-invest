@@ -1,4 +1,4 @@
-package de.slag.invest.one.portfolio;
+package de.slag.invest.one;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,8 +10,9 @@ import de.slag.invest.one.model.IsIdentifier;
 import de.slag.invest.one.model.IsSecurity;
 import de.slag.invest.one.model.IsSecurityPoint;
 import de.slag.invest.one.model.IsSecurityPointIdentifier;
+import de.slag.invest.one.portfolio.IsSecurityPointProvider;
 
-public class IsSecurityOpportunisticTestProvider implements IsSecurityPointProvider {
+public class IsSecurityPointOpportunisticTestProvider implements IsSecurityPointProvider {
 
 	static String alphaNumeric = "abcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -30,13 +31,13 @@ public class IsSecurityOpportunisticTestProvider implements IsSecurityPointProvi
 	}
 
 	@Override
-	public Optional<IsSecurityPoint> apply(IsIdentifier<IsSecurityPoint> i) {
+	public Optional<IsSecurityPoint> apply0(IsIdentifier<IsSecurityPoint> id) {
 
-		if (!(i instanceof IsSecurityPointIdentifier)) {
+		if (!(id instanceof IsSecurityPointIdentifier)) {
 			return Optional.empty();
 		}
 
-		IsSecurityPointIdentifier identifier = (IsSecurityPointIdentifier) i;
+		IsSecurityPointIdentifier identifier = (IsSecurityPointIdentifier) id;
 
 		final String isinWkn = identifier.getIsinWkn();
 		final LocalDate date = identifier.getDate();
@@ -50,4 +51,5 @@ public class IsSecurityOpportunisticTestProvider implements IsSecurityPointProvi
 		final IsSecurityPoint isSecurityPoint = new IsSecurityPoint(security, CurrencyUtils.newAmount(sum), date);
 		return Optional.of(isSecurityPoint);
 	}
+
 }
