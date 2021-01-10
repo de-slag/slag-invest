@@ -11,6 +11,7 @@ import de.slag.invest.one.model.IsSecurity;
 import de.slag.invest.one.model.IsSecurityPoint;
 import de.slag.invest.one.model.IsSecurityPointIdentifier;
 import de.slag.invest.one.portfolio.IsSecurityPointProvider;
+import de.slag.invest.one.portfolio.IsSecurityProvider;
 
 public class IsSecurityPointOpportunisticTestProvider implements IsSecurityPointProvider {
 
@@ -25,29 +26,34 @@ public class IsSecurityPointOpportunisticTestProvider implements IsSecurityPoint
 		}
 	}
 
-	public IsSecurity apply(String isinWkn) {
+	private IsSecurityProvider securityProvider;
 
-		return new IsSecurity(isinWkn, "synthetic-" + isinWkn);
+	public IsSecurityPointOpportunisticTestProvider(IsSecurityProvider securityProvider) {
+		super();
+		this.securityProvider = securityProvider;
+	}
+
+	public IsSecurityPointOpportunisticTestProvider() {
+		this(new IsSecurityOpportunisticTestProvider());
 	}
 
 	@Override
-	public Optional<IsSecurityPoint> apply0(IsIdentifier<IsSecurityPoint> id) {
-
-		if (!(id instanceof IsSecurityPointIdentifier)) {
+	public Optional<IsSecurityPoint> provide(IsSecurityPointIdentifier identifier) {
+		if (!(identifier instanceof IsSecurityPointIdentifier)) {
 			return Optional.empty();
 		}
-
-		IsSecurityPointIdentifier identifier = (IsSecurityPointIdentifier) id;
-
-		final String isinWkn = identifier.getIsinWkn();
-		final LocalDate date = identifier.getDate();
-
+		
+		IsSecurityPointIdentifier securityPointIdentifier = (IsSecurityPointIdentifier) identifier;
+		
+		final String isinWkn = securityPointIdentifier.getIsinWkn();
+		final LocalDate date = securityPointIdentifier.getDate();
+		
 		int sum = 0;
 		final char[] charArray = isinWkn.toCharArray();
 		for (char c : charArray) {
 			sum += an.indexOf(c);
 		}
-		final IsSecurity security = new IsSecurity(isinWkn, "synthetic-" + isinWkn);
+		final IsSecurity security = securityProvider.apply(isinWkn).get();
 		final IsSecurityPoint isSecurityPoint = new IsSecurityPoint(security, CurrencyUtils.newAmount(sum), date);
 		return Optional.of(isSecurityPoint);
 	}

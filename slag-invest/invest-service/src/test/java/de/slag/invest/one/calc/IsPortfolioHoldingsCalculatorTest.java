@@ -26,6 +26,7 @@ import de.slag.common.util.CsvUtils;
 import de.slag.common.util.DateUtils;
 import de.slag.common.util.ResourceUtils;
 import de.slag.invest.one.IsSecurityOpportunisticTestProvider;
+import de.slag.invest.one.TransactionLoadingTestSupport;
 import de.slag.invest.one.model.IsPortfolio;
 import de.slag.invest.one.model.IsSecurity;
 import de.slag.invest.one.model.IsTransaction;

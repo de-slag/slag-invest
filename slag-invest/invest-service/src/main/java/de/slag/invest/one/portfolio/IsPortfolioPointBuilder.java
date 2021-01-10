@@ -50,10 +50,10 @@ public class IsPortfolioPointBuilder implements Builder<IsPortfolioPoint> {
 
 	@Override
 	public IsPortfolioPoint build() throws Exception {
-		portfolioContent.keySet().forEach(isinWkn -> build(isinWkn));
+		portfolioContent.keySet().forEach(isinWkn -> build(isinWkn, date));
 
 		if (isErroneous()) {
-			throw new Exception("could not build:" + portfolioContent);
+			throw new Exception("could not build:" + portfolioContent + " :" + errors);
 		}
 		MonetaryAmount portfolioValue = CurrencyUtils.newAmount();
 		for (IsSecurityPosition p : positions) {
@@ -67,8 +67,8 @@ public class IsPortfolioPointBuilder implements Builder<IsPortfolioPoint> {
 		return !errors.isEmpty();
 	}
 
-	private void build(String isinWkn) {
-		final Optional<IsSecurityPoint> securityOptional = securityPointProvider.apply0(new IsSecurityPointIdentifier() {
+	private void build(String isinWkn, LocalDate date) {
+		final Optional<IsSecurityPoint> securityOptional = securityPointProvider.apply(new IsSecurityPointIdentifier() {
 
 			@Override
 			public String getIsinWkn() {
@@ -77,7 +77,7 @@ public class IsPortfolioPointBuilder implements Builder<IsPortfolioPoint> {
 
 			@Override
 			public LocalDate getDate() {
-				return LocalDate.now();
+				return date;
 			}
 		});
 		if (securityOptional.isEmpty()) {

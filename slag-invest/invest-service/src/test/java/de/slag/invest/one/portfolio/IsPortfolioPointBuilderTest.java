@@ -29,9 +29,9 @@ class IsPortfolioPointBuilderTest {
 		portfolioContent.put("846900", 10);
 		portfolioContent.put("555700", 125);
 
-		final IsPortfolioPointBuilder isPortfolioPointBuilder = new IsPortfolioPointBuilder(securityPointProvider, portfolioContent,
-				LocalDate.now());
-		
+		final IsPortfolioPointBuilder isPortfolioPointBuilder = new IsPortfolioPointBuilder(securityPointProvider,
+				portfolioContent, LocalDate.now());
+
 		final IsPortfolioPoint portfolioPoint = isPortfolioPointBuilder.build();
 		assertNotNull(portfolioPoint);
 		assertEquals(CurrencyUtils.newAmount(24080), portfolioPoint.getPointAmount());

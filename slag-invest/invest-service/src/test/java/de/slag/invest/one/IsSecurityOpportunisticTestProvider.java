@@ -12,7 +12,7 @@ public class IsSecurityOpportunisticTestProvider implements IsSecurityProvider {
 	private Map<String, IsSecurity> map = new HashMap<>();
 
 	@Override
-	public Optional<IsSecurity> apply0(String isinWkn) {
+	public Optional<IsSecurity> provide(String isinWkn) {
 		if (!map.containsKey(isinWkn)) {
 			map.put(isinWkn, new IsSecurity(isinWkn, "synthetic-" + isinWkn));
 		}
