@@ -1,4 +1,4 @@
-package de.slag.invest.staging.logic.fetch;
+package de.slag.invest.staging.logic.fetch.av;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -16,6 +16,7 @@ import de.slag.common.util.SleepUtils;
 import de.slag.invest.a4j.call.Alphavantage4jCallBuilder;
 import de.slag.invest.staging.logic.a4j.call.Alphavantage4jCallUtils;
 import de.slag.invest.staging.logic.a4j.call.AlphavantageStockDataModel;
+import de.slag.invest.staging.logic.fetch.SecurityPointsFetcher;
 import de.slag.invest.staging.logic.fetch.model.FetchSecurityPoint;
 import de.slag.invest.staging.logic.mapping.IsinWkn;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapper;
@@ -32,7 +33,7 @@ public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 
 	private int maxPerMinute;
 
-	public AvSecurityPointFetcher(String apiKey, Collection<String> isinWkns, IsinWknSybmolMapper sybmolMapper,
+	AvSecurityPointFetcher(String apiKey, Collection<String> isinWkns, IsinWknSybmolMapper sybmolMapper,
 			int maxPerMinute) {
 		super();
 

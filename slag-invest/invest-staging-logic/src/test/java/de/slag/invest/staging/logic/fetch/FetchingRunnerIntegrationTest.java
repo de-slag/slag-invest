@@ -2,12 +2,11 @@ package de.slag.invest.staging.logic.fetch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -24,7 +23,7 @@ class FetchingRunnerIntegrationTest {
 
 	private static final Log LOG = LogFactory.getLog(FetchingRunnerIntegrationTest.class);
 
-	private Map<String, String> configuration = new HashMap<>();
+	private Properties properties = new Properties();
 	private Collection<StaSecurityPoint> securityPoints = new ArrayList<>();
 
 	private Function<String, String> configurationProvider;
@@ -33,14 +32,12 @@ class FetchingRunnerIntegrationTest {
 
 	@BeforeEach
 	void setUp() throws IOException {
-		File fileFromResources = ResourceUtils.getFileFromResources("mapping.csv");
+		
+		properties.load(new FileInputStream(ResourceUtils.getFileFromResources("config.properties")));
 
-		configuration.put("staging.fetcher", "av");
-		configuration.put("staging.fetcher.av.apikey", "SEOG69AIA6X9PGR2");
-		configuration.put("staging.fetcher.av.isinWkns", "DE0007164600");
-		configuration.put("mapping.file", fileFromResources.toString());
+		properties.put("mapping.file", ResourceUtils.getFileFromResources("mapping.csv").toString());
 
-		configurationProvider = key -> configuration.get(key);
+		configurationProvider = key -> properties.getProperty(key);
 		securityPointPersister = point -> securityPoints.add(point);
 		newSecurityPointSupplier = () -> new StaSecurityPoint();
 

@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import de.slag.invest.staging.logic.fetch.av.AvSecurityPointFetcher;
+import de.slag.invest.staging.logic.fetch.av.AvSecurityPointFetcherBuilder;
 import de.slag.invest.staging.logic.fetch.model.FetchSecurityPoint;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapper;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapperBuilder;
@@ -108,10 +110,9 @@ public class FetchingRunner implements Runnable {
 
 		Integer maxPerMinute = Integer.valueOf(getConfig("staging.fetcher.av.maxPerMinute", "4"));
 
-		AvSecurityPointFetcher av = new AvSecurityPointFetcher(apikey, Arrays.asList(isinWkns), isinWknSybmolMapper,
-				maxPerMinute);
+		return Optional.of(new AvSecurityPointFetcherBuilder().withApiKey(apikey).withIsinWkns(Arrays.asList(isinWkns))
+				.withIsinWknSybmolMapper(isinWknSybmolMapper).withMaxPerMinute(maxPerMinute).build());
 
-		return Optional.of(av);
 	}
 
 	private String getConfig(String key) {
