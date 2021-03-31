@@ -97,10 +97,15 @@ public class FetchingRunner implements Runnable {
 		case "ov":
 			// TODO implement
 		case "xstu":
-			// TODO implement
+			return createXstuFetcher();
 		default:
 			return Optional.empty();
 		}
+	}
+
+	private Optional<SecurityPointsFetcher> createXstuFetcher() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private Optional<SecurityPointsFetcher> createAvFetcher() {
