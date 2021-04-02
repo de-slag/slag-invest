@@ -12,27 +12,23 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.slag.common.util.ResourceUtils;
 import de.slag.invest.staging.model.SecurityPointSource;
+import de.slag.invest.staging.model.StaSecurityBasePoint;
 import de.slag.invest.staging.model.StaSecurityPoint;
 
 class FetchingRunnerIntegrationTest {
 
-	private static final Log LOG = LogFactory.getLog(FetchingRunnerIntegrationTest.class);
-
 	private Properties properties = new Properties();
-	private Collection<StaSecurityPoint> securityPoints = new ArrayList<>();
+	private Collection<StaSecurityBasePoint> securityPoints = new ArrayList<>();
 
 	private Function<String, String> configurationProvider;
-	private Consumer<StaSecurityPoint> securityPointPersister;
-	private Supplier<StaSecurityPoint> newSecurityPointSupplier;
+	private Consumer<StaSecurityBasePoint> securityPointPersister;
+	private Supplier<StaSecurityBasePoint> newSecurityPointSupplier;
 
 	@BeforeEach
 	void setUp() throws IOException {
@@ -43,25 +39,31 @@ class FetchingRunnerIntegrationTest {
 
 		configurationProvider = key -> properties.getProperty(key);
 		securityPointPersister = point -> securityPoints.add(point);
-		newSecurityPointSupplier = () -> new StaSecurityPoint();
+		newSecurityPointSupplier = () -> new StaSecurityBasePoint();
 
 	}
 
 	@Test
 	void integrationTest() {
+		
 		FetchingRunner fetchingRunner = new FetchingRunner(configurationProvider, securityPointPersister,
 				newSecurityPointSupplier);
 
 		fetchingRunner.run();
 
-		List<StaSecurityPoint> avPoints = securityPoints.stream()
+		List<StaSecurityBasePoint> avPoints = securityPoints.stream()
 				.filter(p -> p.getSource() == SecurityPointSource.ALPHAVANTAGE).collect(Collectors.toList());
 
-		List<StaSecurityPoint> xstuPoints = securityPoints.stream()
+		List<StaSecurityBasePoint> xstuPoints = securityPoints.stream()
 				.filter(p -> p.getSource() == SecurityPointSource.BOERSE_STUTTGART).collect(Collectors.toList());
 
+		List<StaSecurityBasePoint> ovPoints = securityPoints.stream()
+				.filter(p -> p.getSource() == SecurityPointSource.ONVISTA).collect(Collectors.toList());
+
+		
 		assertEquals(100, avPoints.size());
-		assertEquals(50, xstuPoints.size());
+		assertEquals(40, xstuPoints.size());
+		assertEquals(253, ovPoints.size());
 	}
 
 }

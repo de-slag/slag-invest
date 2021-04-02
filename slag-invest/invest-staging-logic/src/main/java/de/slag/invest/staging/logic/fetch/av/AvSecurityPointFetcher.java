@@ -12,6 +12,9 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import de.slag.common.util.SleepUtils;
 import de.slag.invest.a4j.call.Alphavantage4jCallBuilder;
 import de.slag.invest.staging.logic.a4j.call.Alphavantage4jCallUtils;
@@ -24,6 +27,8 @@ import de.slag.invest.staging.logic.mapping.Symbol;
 import de.slag.invest.staging.model.SecurityPointSource;
 
 public class AvSecurityPointFetcher implements SecurityPointsFetcher {
+	
+	private static final Log LOG = LogFactory.getLog(AvSecurityPointFetcher.class);
 
 	private final Collection<IsinWkn> isinWkns = new ArrayList<>();
 
@@ -69,6 +74,10 @@ public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 			SleepUtils.sleepFor(60000);
 
 		}
+		
+
+
+		LOG.info("recieved points: " + arrayList.size());
 
 		return arrayList;
 	}

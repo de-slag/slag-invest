@@ -19,6 +19,8 @@ import java.util.Date;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.slag.common.util.CsvUtils;
 import de.slag.invest.staging.logic.fetch.SecurityPointsFetcher;
@@ -29,6 +31,8 @@ import de.slag.invest.staging.logic.mapping.XstuNotationId;
 import de.slag.invest.staging.model.SecurityPointSource;
 
 public class XstuSecurityPointFetcher implements SecurityPointsFetcher {
+
+	private static final Log LOG = LogFactory.getLog(XstuSecurityPointFetcher.class);
 
 	private static final LocalTime TARGET_TIME = LocalTime.of(18, 0, 0);
 
@@ -54,7 +58,7 @@ public class XstuSecurityPointFetcher implements SecurityPointsFetcher {
 		LocalDateTime timeFrom = getFromTimeInUtc();
 		LocalDateTime timeTo = getToTimeInUtc();
 
-		Collection<FetchSecurityPoint> points =new ArrayList<>();
+		Collection<FetchSecurityPoint> points = new ArrayList<>();
 		for (IsinWkn isinWkn : isinWkns) {
 			XstuNotationId notationId = mapper.apply(isinWkn);
 			String urlString = new XstuUrlStringBuilder().withTimeFrom(timeFrom).withTimeTo(timeTo)
@@ -75,24 +79,25 @@ public class XstuSecurityPointFetcher implements SecurityPointsFetcher {
 
 				BigDecimal briefValue = toBigDecimal(brief);
 				BigDecimal geldValue = toBigDecimal(geld);
-				
+
 				BigDecimal value = geldValue.add(briefValue).divide(BigDecimal.valueOf(2));
 
 				String datumAndUhrzeit = String.format("%s %s", datum, uhrzeit.split("\\.")[0]);
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 				Date timestamp = simpleDateFormat.parse(datumAndUhrzeit);
-				
+
 				FetchSecurityPoint fetchSecurityPoint = new FetchSecurityPoint();
 				fetchSecurityPoint.setCurrency("EUR");
 				fetchSecurityPoint.setSource(SecurityPointSource.BOERSE_STUTTGART);
 				fetchSecurityPoint.setIsinWkn(isinWkn.getValue());
 				fetchSecurityPoint.setTimestamp(timestamp);
 				fetchSecurityPoint.setValue(value);
-				
-				points.add(fetchSecurityPoint);		
+
+				points.add(fetchSecurityPoint);
 
 			}
 		}
+		LOG.info("recieved points: " + points.size());
 		return points;
 	}
 

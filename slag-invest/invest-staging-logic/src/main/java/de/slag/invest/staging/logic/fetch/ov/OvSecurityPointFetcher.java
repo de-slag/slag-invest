@@ -16,6 +16,8 @@ import java.util.Date;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.slag.common.util.CsvUtils;
 import de.slag.invest.staging.logic.fetch.SecurityPointsFetcher;
@@ -27,6 +29,8 @@ import de.slag.invest.staging.model.SecurityPointSource;
 
 public class OvSecurityPointFetcher implements SecurityPointsFetcher {
 
+	private static final Log LOG = LogFactory.getLog(OvSecurityPointFetcher.class);
+	
 	private IsinWknOvNotationIdMapper ovNotationIdMapper;
 
 	private Collection<IsinWkn> isinWkns = new ArrayList<>();
@@ -68,6 +72,7 @@ public class OvSecurityPointFetcher implements SecurityPointsFetcher {
 			}
 		}
 
+		LOG.info("recieved points: " + points.size());
 		return points;
 	}
 
