@@ -25,7 +25,7 @@ import de.slag.invest.staging.model.SecurityPointSource;
 
 public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 
-	private final Collection<String> isinWkns = new ArrayList<>();
+	private final Collection<IsinWkn> isinWkns = new ArrayList<>();
 
 	private final String apiKey;
 
@@ -33,7 +33,7 @@ public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 
 	private int maxPerMinute;
 
-	AvSecurityPointFetcher(String apiKey, Collection<String> isinWkns, IsinWknSybmolMapper sybmolMapper,
+	AvSecurityPointFetcher(String apiKey, Collection<IsinWkn> isinWkns, IsinWknSybmolMapper sybmolMapper,
 			int maxPerMinute) {
 		super();
 
@@ -49,13 +49,13 @@ public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 	public Collection<FetchSecurityPoint> fetchSecurityPoints() throws Exception {
 		ArrayList<FetchSecurityPoint> arrayList = new ArrayList<>();
 
-		List<List<String>> isinWknChunks = buildChunksOf(maxPerMinute, isinWkns);
+		List<List<IsinWkn>> isinWknChunks = buildChunksOf(maxPerMinute, isinWkns);
 
 		int count = 0;
 
-		for (List<String> isinWknChunk : isinWknChunks) {
-			for (String isinWkn : isinWknChunk) {
-				Symbol symbol = sybmolMapper.apply(IsinWkn.of(isinWkn));
+		for (List<IsinWkn> isinWknChunk : isinWknChunks) {
+			for (IsinWkn isinWkn : isinWknChunk) {
+				Symbol symbol = sybmolMapper.apply(isinWkn);
 				Alphavantage4jCallBuilder avCallBuilder = new Alphavantage4jCallBuilder();
 				avCallBuilder.withApiKey(apiKey);
 				avCallBuilder.withSymbol(symbol.getValue());
@@ -73,17 +73,17 @@ public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 		return arrayList;
 	}
 
-	private List<List<String>> buildChunksOf(int bunchSize, Collection<String> all) {
+	private List<List<IsinWkn>> buildChunksOf(int bunchSize, Collection<IsinWkn> all) {
 		final AtomicInteger counter = new AtomicInteger();
-		final Collection<List<String>> result = all.stream()
+		final Collection<List<IsinWkn>> result = all.stream()
 				.collect(Collectors.groupingBy(it -> counter.getAndIncrement() / bunchSize)).values();
-		return new ArrayList<List<String>>(result);
+		return new ArrayList<List<IsinWkn>>(result);
 
 	}
 
-	private FetchSecurityPoint createFetchSecurityPoint(Map<String, String> pointData, String isinWkn) {
+	private FetchSecurityPoint createFetchSecurityPoint(Map<String, String> pointData, IsinWkn isinWkn) {
 		FetchSecurityPoint fetchSecurityPoint = new FetchSecurityPoint();
-		fetchSecurityPoint.setIsinWkn(isinWkn);
+		fetchSecurityPoint.setIsinWkn(isinWkn.getValue());
 		fetchSecurityPoint.setSource(SecurityPointSource.ALPHAVANTAGE);
 
 		String string = pointData.get(AlphavantageStockDataModel.CLOSE);

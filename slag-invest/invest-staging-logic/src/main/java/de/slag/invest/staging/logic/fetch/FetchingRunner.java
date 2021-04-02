@@ -11,12 +11,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.slag.invest.staging.logic.fetch.av.AvSecurityPointFetcher;
 import de.slag.invest.staging.logic.fetch.av.AvSecurityPointFetcherBuilder;
 import de.slag.invest.staging.logic.fetch.model.FetchSecurityPoint;
+import de.slag.invest.staging.logic.fetch.xstu.XstuSecurityPointFetcherBuilder;
+import de.slag.invest.staging.logic.mapping.IsinWkn;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapper;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapperBuilder;
 import de.slag.invest.staging.logic.mapping.IsinWknXstuNotationIdMapper;
@@ -90,8 +92,8 @@ public class FetchingRunner implements Runnable {
 		return p;
 	}
 
-	private Optional<SecurityPointsFetcher> createFetchers(String c) {
-		switch (c) {
+	private Optional<SecurityPointsFetcher> createFetchers(String fetcherName) {
+		switch (fetcherName) {
 		case "av":
 			return createAvFetcher();
 		case "ov":
@@ -104,18 +106,31 @@ public class FetchingRunner implements Runnable {
 	}
 
 	private Optional<SecurityPointsFetcher> createXstuFetcher() {
-		// TODO Auto-generated method stub
-		return null;
+		String isinWknsConfig = getConfig("staging.fetcher.xstu.isinWkns");
+		if (StringUtils.isEmpty(isinWknsConfig)) {
+			return Optional.empty();
+		}
+
+		final List<IsinWkn> isinWkns = Arrays.asList(isinWknsConfig.split(";")).stream().map(e -> IsinWkn.of(e))
+				.collect(Collectors.toList());
+
+		return Optional.of(new XstuSecurityPointFetcherBuilder().withIsinWkns(isinWkns)
+				.withMapper(isinWknXstuNotationIdMapper).build());
 	}
 
 	private Optional<SecurityPointsFetcher> createAvFetcher() {
-		String apikey = getConfig("staging.fetcher.av.apikey");
+		String isinWknsConfig = getConfig("staging.fetcher.av.isinWkns");
+		if (StringUtils.isEmpty(isinWknsConfig)) {
+			return Optional.empty();
+		}
+		final List<IsinWkn> isinWkns = Arrays.asList(isinWknsConfig.split(";")).stream().map(e -> IsinWkn.of(e))
+				.collect(Collectors.toList());
 
-		String isinWkns = getConfig("staging.fetcher.av.isinWkns");
+		String apikey = getConfig("staging.fetcher.av.apikey");
 
 		Integer maxPerMinute = Integer.valueOf(getConfig("staging.fetcher.av.maxPerMinute", "4"));
 
-		return Optional.of(new AvSecurityPointFetcherBuilder().withApiKey(apikey).withIsinWkns(Arrays.asList(isinWkns))
+		return Optional.of(new AvSecurityPointFetcherBuilder().withApiKey(apikey).withIsinWkns(isinWkns)
 				.withIsinWknSybmolMapper(isinWknSybmolMapper).withMaxPerMinute(maxPerMinute).build());
 
 	}

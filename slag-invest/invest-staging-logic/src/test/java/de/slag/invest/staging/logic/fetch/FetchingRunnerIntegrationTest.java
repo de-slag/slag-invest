@@ -6,10 +6,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.slag.common.util.ResourceUtils;
+import de.slag.invest.staging.model.SecurityPointSource;
 import de.slag.invest.staging.model.StaSecurityPoint;
 
 class FetchingRunnerIntegrationTest {
@@ -32,7 +36,7 @@ class FetchingRunnerIntegrationTest {
 
 	@BeforeEach
 	void setUp() throws IOException {
-		
+
 		properties.load(new FileInputStream(ResourceUtils.getFileFromResources("config.properties")));
 
 		properties.put("mapping.file", ResourceUtils.getFileFromResources("mapping.csv").toString());
@@ -50,7 +54,14 @@ class FetchingRunnerIntegrationTest {
 
 		fetchingRunner.run();
 
-		assertEquals(100, securityPoints.size());
+		List<StaSecurityPoint> avPoints = securityPoints.stream()
+				.filter(p -> p.getSource() == SecurityPointSource.ALPHAVANTAGE).collect(Collectors.toList());
+
+		List<StaSecurityPoint> xstuPoints = securityPoints.stream()
+				.filter(p -> p.getSource() == SecurityPointSource.BOERSE_STUTTGART).collect(Collectors.toList());
+
+		assertEquals(100, avPoints.size());
+		assertEquals(50, xstuPoints.size());
 	}
 
 }

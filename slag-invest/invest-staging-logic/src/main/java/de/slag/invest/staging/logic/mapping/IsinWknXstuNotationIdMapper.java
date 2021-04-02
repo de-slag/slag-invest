@@ -15,8 +15,6 @@ public class IsinWknXstuNotationIdMapper implements Function<IsinWkn, XstuNotati
 		this.isinWknSymbols = isinWknSymbols;
 	}
 
-
-
 	@Override
 	public XstuNotationId apply(IsinWkn t) {
 		return XstuNotationId.of(isinWknSymbols.get(t.getValue()));

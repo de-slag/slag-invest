@@ -5,12 +5,13 @@ import java.util.Collection;
 
 import org.apache.commons.lang3.builder.Builder;
 
+import de.slag.invest.staging.logic.mapping.IsinWkn;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapper;
 
 public class AvSecurityPointFetcherBuilder implements Builder<AvSecurityPointFetcher> {
 
 	private String apiKey;
-	private final Collection<String> isinWkns = new ArrayList<>();
+	private final Collection<IsinWkn> isinWkns = new ArrayList<>();
 	private IsinWknSybmolMapper sybmolMapper;
 	private int maxPerMinute;
 	
@@ -25,7 +26,7 @@ public class AvSecurityPointFetcherBuilder implements Builder<AvSecurityPointFet
 	}
 	
 	
-	public AvSecurityPointFetcherBuilder withIsinWkns(Collection<String> isinWkns) {
+	public AvSecurityPointFetcherBuilder withIsinWkns(Collection<IsinWkn> isinWkns) {
 		this.isinWkns.addAll(isinWkns);
 		return this;
 	}

@@ -1,26 +1,33 @@
 package de.slag.invest.staging.logic.fetch.xstu;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
+
 import org.apache.commons.lang3.builder.Builder;
+
+import de.slag.invest.staging.logic.mapping.IsinWkn;
+import de.slag.invest.staging.logic.mapping.IsinWknXstuNotationIdMapper;
 
 public class XstuSecurityPointFetcherBuilder implements Builder<XstuSecurityPointFetcher> {
 
-	private String baseUrl = "https://www.boerse-stuttgart.de/api/bsg-feature-navigation/PriceDataComponents/DownloadQuoteArchive";
+	private Collection<IsinWkn> isinWkns = new ArrayList<>();
+	private IsinWknXstuNotationIdMapper mapper;
 
-	private String notationId;
+	public XstuSecurityPointFetcherBuilder withIsinWkns(Collection<IsinWkn> isinWkns) {
+		this.isinWkns.addAll(isinWkns);
+		return this;
+	}
 
-	private String timeFrom;
-
-	private String timeTo;
-
-	private String configId = "649e0402-3e80-426b-b89c-2fcc3f522c2a";
+	public XstuSecurityPointFetcherBuilder withMapper(IsinWknXstuNotationIdMapper mapper) {
+		this.mapper = mapper;
+		return this;
+	}
 
 	@Override
 	public XstuSecurityPointFetcher build() {
-
-		String fullUrl = "https://www.boerse-stuttgart.de/api/bsg-feature-navigation/PriceDataComponents/DownloadQuoteArchive?notationId=40066463&timeFrom=2021-03-31T04:46:00.000Z&timeTo=2021-03-31T05:16:00.000Z&configId=649e0402-3e80-426b-b89c-2fcc3f522c2a";
-
-		// TODO Auto-generated method stub
-		return null;
+		Objects.requireNonNull(mapper, "mapper not setted");
+		return new XstuSecurityPointFetcher(isinWkns, mapper);
 	}
 
 }
