@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import de.slag.common.data.AbstractPersistService;
 import de.slag.invest.staging.model.StaAdmConfig;
 
-@Service
+//@Service
 public class StaAdmConfigPersistServiceImpl extends AbstractPersistService<StaAdmConfig>
 		implements StaAdmConfigPersistService {
 
