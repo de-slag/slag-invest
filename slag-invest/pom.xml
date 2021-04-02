@@ -51,10 +51,11 @@
 		<module>invest-staging-model</module>
 		<module>invest-onv</module>
 		<module>invest-fetch-app</module>
-<module>invest-backend</module>
+        <module>invest-backend</module>
 		<module>invest-staging-logic</module>
 		<module>invest-staging-data</module>
 		<module>invest-staging-transfer-model</module>
+		<module>invest-staging-webapp</module>		
 	</modules>
 	<properties>
 		<slag.common.version>0.5.0</slag.common.version>
