@@ -7,11 +7,17 @@
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
+	
 		<!-- <module>slag-invest-alphavantage</module> -->
-		<module>slag-invest-model</module>
-	<!-- 	<module>slag-invest-av-app</module> -->
-<!-- 		<module>slag-invest-app-fetch</module> -->
+		<!-- <module>slag-invest-av-app</module> -->
+		<!-- <module>slag-invest-app-fetch</module> -->
 		<!-- <module>slag-invest-purchase-model</module> -->
+		<!-- <module>slag-invest-iface-av-api</module> -->
+		<!-- <module>slag-invest-iface-av</module> -->
+		<!-- <module>slag-invest-domain-model-dto</module> -->
+		<!-- <module>invest-webservice</module> -->
+
+		<module>slag-invest-model</module>
 		<module>slag-invest-api</module>
 		<module>slag-invest-repository</module>
 		<module>slag-invest-service-api</module>
@@ -27,9 +33,6 @@
 		<module>slag-invest-data-import</module>
 		<module>slag-invest-report</module>
 		<module>slag-invest-cli-app</module>
-		<!-- <module>slag-invest-iface-av-api</module> -->
-		<!-- <module>slag-invest-iface-av</module> -->
-		<!-- <module>slag-invest-domain-model-dto</module> -->
 		<module>slag-invest-import-cache-api</module>
 		<module>slag-invest-import-file-cache</module>
 		<module>slag-invest-portfolio-import-api</module>
@@ -39,7 +42,6 @@
 		<module>slag-invest-accounting-api</module>
 		<module>slag-invest-accounting</module>
 		<module>stock-value-fetch-service</module>
-		<!-- <module>invest-webservice</module> -->
 		<module>slag-invest-webservice</module>
 		<module>slag-invest-webgui</module>
 		<module>slag-invest-web-common</module>
@@ -51,14 +53,14 @@
 		<module>invest-staging-model</module>
 		<module>invest-onv</module>
 		<module>invest-fetch-app</module>
-        <module>invest-backend</module>
+		<module>invest-backend</module>
 		<module>invest-staging-logic</module>
 		<module>invest-staging-data</module>
 		<module>invest-staging-transfer-model</module>
-		<module>invest-staging-webapp</module>		
+		<module>invest-staging-webapp</module>
 	</modules>
 	<properties>
-		<slag.common.version>0.5.0</slag.common.version>
+		<slag.common.version>0.6.0-SNAPSHOT</slag.common.version>
 		<junit.version>4.12</junit.version>
 
 	</properties>
@@ -68,6 +70,12 @@
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
 				<version>2.8.6</version>
+			</dependency>
+
+			<dependency>
+				<groupId>de.slag.common</groupId>
+				<artifactId>common-data</artifactId>
+				<version>${slag.common.version}</version>
 			</dependency>
 
 

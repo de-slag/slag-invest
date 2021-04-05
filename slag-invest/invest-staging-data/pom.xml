@@ -20,7 +20,7 @@
 		</dependency>
 		<dependency>
 			<groupId>de.slag.common</groupId>
-			<artifactId>common-context</artifactId>
+			<artifactId>common-data</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.annotation</groupId>
