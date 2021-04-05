@@ -6,11 +6,14 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
 import de.slag.common.data.PersistService;
 import de.slag.common.logic.AbstractBusinessService;
 import de.slag.invest.staging.data.StaAdmConfigPersistService;
 import de.slag.invest.staging.model.StaAdmConfig;
 
+@Service
 public class StaAdmConfigBusinessServiceImpl extends AbstractBusinessService<StaAdmConfig>
 		implements StaAdmConfigBusinessService {
 
@@ -30,7 +33,7 @@ public class StaAdmConfigBusinessServiceImpl extends AbstractBusinessService<Sta
 	@Override
 	public Collection<StaAdmConfig> findBy(String key) {
 		return staAdmConfigPersistService.findAllIds().stream().map(id -> staAdmConfigPersistService.loadById(id))
-				.filter(o -> o.isPresent()).map(o -> o.get()).filter(e -> e.getKey().startsWith(key))
+				.filter(o -> o.isPresent()).map(o -> o.get()).filter(e -> e.getConfigKey().startsWith(key))
 				.collect(Collectors.toList());
 	}
 

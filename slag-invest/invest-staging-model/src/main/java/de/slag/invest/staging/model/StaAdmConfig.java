@@ -9,25 +9,25 @@ import de.slag.common.model.EntityBean;
 public class StaAdmConfig extends EntityBean {
 
 	@Basic
-	private String key;
+	private String configKey;
 
 	@Basic
-	private String value;
+	private String configValue;
 
-	public String getKey() {
-		return key;
+	public String getConfigValue() {
+		return configValue;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setConfigValue(String configValue) {
+		this.configValue = configValue;
 	}
 
-	public String getValue() {
-		return value;
+	public String getConfigKey() {
+		return configKey;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setConfigKey(String configKey) {
+		this.configKey = configKey;
 	}
 
 }
