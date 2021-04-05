@@ -8,6 +8,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import de.slag.common.data.SysLogPersistService;
+import de.slag.common.model.beans.SysLog;
+import de.slag.common.model.beans.SysLog.Severity;
 import de.slag.invest.staging.model.StaAdmConfig;
 
 @Service
@@ -25,6 +28,10 @@ public class StaCentralSchedulingServiceImpl implements StaCentralSchedulingServ
 	@Resource
 	private StaSecurityPointBusinessService staSecurityPointBusinessService;
 
+	@Resource
+	private SysLogPersistService sysLogPersistService;
+	
+	
 	@PostConstruct
 	public void init() {
 		LOG.info("initialized");
@@ -42,6 +49,11 @@ public class StaCentralSchedulingServiceImpl implements StaCentralSchedulingServ
 
 		staAdmConfigBusinessService.save(config);
 
+		SysLog syslog = new SysLog();
+		syslog.setSeverity(Severity.INFO);
+		syslog.setInfo("data fetched");
+		sysLogPersistService.save(syslog);
+		
 		LOG.info("data fetched");
 	}
 }
