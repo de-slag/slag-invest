@@ -1,6 +1,6 @@
 package de.slag.invest.staging.logic.mapping;
 
-public class IsinWkn {
+public class IsinWkn implements Mappable {
 
 	public static IsinWkn of(String isinWkn) {
 		return new IsinWkn(isinWkn);

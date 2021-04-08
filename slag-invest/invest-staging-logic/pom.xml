@@ -19,6 +19,10 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>de.slag.common</groupId>
+			<artifactId>common-logic</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>de.slag.invest</groupId>
 			<artifactId>invest-alphavantage4j</artifactId>
 			<version>${project.version}</version>

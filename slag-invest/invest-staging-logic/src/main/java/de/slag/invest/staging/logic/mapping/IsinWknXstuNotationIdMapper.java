@@ -1,24 +1,22 @@
 package de.slag.invest.staging.logic.mapping;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
-public class IsinWknXstuNotationIdMapper implements Function<IsinWkn, XstuNotationId> {
-
-	private Map<String, String> isinWknSymbols = new HashMap<>();
-	
-	
+public class IsinWknXstuNotationIdMapper extends AbstractMapper<IsinWkn, XstuNotationId>
+		implements Function<IsinWkn, XstuNotationId> {
 
 	IsinWknXstuNotationIdMapper(Map<String, String> isinWknSymbols) {
-		super();
-		this.isinWknSymbols = isinWknSymbols;
+		super(isinWknSymbols);
 	}
 
-
+	IsinWknXstuNotationIdMapper(Function<String, Optional<String>> provider) {
+		super(provider);
+	}
 
 	@Override
-	public XstuNotationId apply(IsinWkn t) {
-		return XstuNotationId.of(isinWknSymbols.get(t.getValue()));
+	protected XstuNotationId of(String value) {
+		return XstuNotationId.of(value);
 	}
 }

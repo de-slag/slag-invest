@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import de.slag.invest.staging.logic.StaCentralSchedulingService;
+import de.slag.invest.staging.logic.scheduling.StaCentralSchedulingService;
 
 @Controller
 public class GreetingController {

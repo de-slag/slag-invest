@@ -1,6 +1,6 @@
 package de.slag.invest.staging.logic.mapping;
 
-public class XstuNotationId {
+public class XstuNotationId implements Mappable {
 
 	public static XstuNotationId of(String xstuNotationId) {
 		return new XstuNotationId(xstuNotationId);

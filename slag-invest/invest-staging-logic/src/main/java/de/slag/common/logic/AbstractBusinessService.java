@@ -40,4 +40,5 @@ public abstract class AbstractBusinessService<E extends EntityBean> implements B
 		}
 		return Optional.of(new ArrayList<>(collection).get(0));
 	}
+
 }

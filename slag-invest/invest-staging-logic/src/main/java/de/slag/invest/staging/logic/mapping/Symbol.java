@@ -1,6 +1,6 @@
 package de.slag.invest.staging.logic.mapping;
 
-public class Symbol {
+public class Symbol implements Mappable {
 	
 	public static Symbol of(String sybmol) {
 		return new Symbol(sybmol);

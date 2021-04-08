@@ -7,7 +7,7 @@
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-	
+
 		<!-- <module>slag-invest-alphavantage</module> -->
 		<!-- <module>slag-invest-av-app</module> -->
 		<!-- <module>slag-invest-app-fetch</module> -->
@@ -78,7 +78,11 @@
 				<version>${slag.common.version}</version>
 			</dependency>
 
-
+			<dependency>
+				<groupId>de.slag.common</groupId>
+				<artifactId>common-logic</artifactId>
+				<version>${slag.common.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>de.slag.common</groupId>
 				<artifactId>common-base</artifactId>
