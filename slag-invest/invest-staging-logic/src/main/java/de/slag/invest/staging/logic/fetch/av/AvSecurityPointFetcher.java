@@ -1,4 +1,4 @@
-package de.slag.invest.staging.logic.fetch;
+package de.slag.invest.staging.logic.fetch.av;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -12,10 +12,14 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import de.slag.common.util.SleepUtils;
 import de.slag.invest.a4j.call.Alphavantage4jCallBuilder;
 import de.slag.invest.staging.logic.a4j.call.Alphavantage4jCallUtils;
 import de.slag.invest.staging.logic.a4j.call.AlphavantageStockDataModel;
+import de.slag.invest.staging.logic.fetch.SecurityPointsFetcher;
 import de.slag.invest.staging.logic.fetch.model.FetchSecurityPoint;
 import de.slag.invest.staging.logic.mapping.IsinWkn;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapper;
@@ -23,8 +27,10 @@ import de.slag.invest.staging.logic.mapping.Symbol;
 import de.slag.invest.staging.model.SecurityPointSource;
 
 public class AvSecurityPointFetcher implements SecurityPointsFetcher {
+	
+	private static final Log LOG = LogFactory.getLog(AvSecurityPointFetcher.class);
 
-	private final Collection<String> isinWkns = new ArrayList<>();
+	private final Collection<IsinWkn> isinWkns = new ArrayList<>();
 
 	private final String apiKey;
 
@@ -32,7 +38,7 @@ public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 
 	private int maxPerMinute;
 
-	public AvSecurityPointFetcher(String apiKey, Collection<String> isinWkns, IsinWknSybmolMapper sybmolMapper,
+	AvSecurityPointFetcher(String apiKey, Collection<IsinWkn> isinWkns, IsinWknSybmolMapper sybmolMapper,
 			int maxPerMinute) {
 		super();
 
@@ -48,13 +54,13 @@ public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 	public Collection<FetchSecurityPoint> fetchSecurityPoints() throws Exception {
 		ArrayList<FetchSecurityPoint> arrayList = new ArrayList<>();
 
-		List<List<String>> isinWknChunks = buildChunksOf(maxPerMinute, isinWkns);
+		List<List<IsinWkn>> isinWknChunks = buildChunksOf(maxPerMinute, isinWkns);
 
 		int count = 0;
 
-		for (List<String> isinWknChunk : isinWknChunks) {
-			for (String isinWkn : isinWknChunk) {
-				Symbol symbol = sybmolMapper.apply(IsinWkn.of(isinWkn));
+		for (List<IsinWkn> isinWknChunk : isinWknChunks) {
+			for (IsinWkn isinWkn : isinWknChunk) {
+				Symbol symbol = sybmolMapper.apply(isinWkn);
 				Alphavantage4jCallBuilder avCallBuilder = new Alphavantage4jCallBuilder();
 				avCallBuilder.withApiKey(apiKey);
 				avCallBuilder.withSymbol(symbol.getValue());
@@ -68,21 +74,25 @@ public class AvSecurityPointFetcher implements SecurityPointsFetcher {
 			SleepUtils.sleepFor(60000);
 
 		}
+		
+
+
+		LOG.info("recieved points: " + arrayList.size());
 
 		return arrayList;
 	}
 
-	private List<List<String>> buildChunksOf(int bunchSize, Collection<String> all) {
+	private List<List<IsinWkn>> buildChunksOf(int bunchSize, Collection<IsinWkn> all) {
 		final AtomicInteger counter = new AtomicInteger();
-		final Collection<List<String>> result = all.stream()
+		final Collection<List<IsinWkn>> result = all.stream()
 				.collect(Collectors.groupingBy(it -> counter.getAndIncrement() / bunchSize)).values();
-		return new ArrayList<List<String>>(result);
+		return new ArrayList<List<IsinWkn>>(result);
 
 	}
 
-	private FetchSecurityPoint createFetchSecurityPoint(Map<String, String> pointData, String isinWkn) {
+	private FetchSecurityPoint createFetchSecurityPoint(Map<String, String> pointData, IsinWkn isinWkn) {
 		FetchSecurityPoint fetchSecurityPoint = new FetchSecurityPoint();
-		fetchSecurityPoint.setIsinWkn(isinWkn);
+		fetchSecurityPoint.setIsinWkn(isinWkn.getValue());
 		fetchSecurityPoint.setSource(SecurityPointSource.ALPHAVANTAGE);
 
 		String string = pointData.get(AlphavantageStockDataModel.CLOSE);

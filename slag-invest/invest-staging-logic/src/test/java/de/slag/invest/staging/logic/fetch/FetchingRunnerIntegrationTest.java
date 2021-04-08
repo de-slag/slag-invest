@@ -2,58 +2,68 @@ package de.slag.invest.staging.logic.fetch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.slag.common.util.ResourceUtils;
+import de.slag.invest.staging.model.SecurityPointSource;
+import de.slag.invest.staging.model.StaSecurityBasePoint;
 import de.slag.invest.staging.model.StaSecurityPoint;
 
 class FetchingRunnerIntegrationTest {
 
-	private static final Log LOG = LogFactory.getLog(FetchingRunnerIntegrationTest.class);
-
-	private Map<String, String> configuration = new HashMap<>();
-	private Collection<StaSecurityPoint> securityPoints = new ArrayList<>();
+	private Properties properties = new Properties();
+	private Collection<StaSecurityBasePoint> securityPoints = new ArrayList<>();
 
 	private Function<String, String> configurationProvider;
-	private Consumer<StaSecurityPoint> securityPointPersister;
-	private Supplier<StaSecurityPoint> newSecurityPointSupplier;
+	private Consumer<StaSecurityBasePoint> securityPointPersister;
+	private Supplier<StaSecurityBasePoint> newSecurityPointSupplier;
 
 	@BeforeEach
 	void setUp() throws IOException {
-		File fileFromResources = ResourceUtils.getFileFromResources("mapping.csv");
 
-		configuration.put("staging.fetcher", "av");
-		configuration.put("staging.fetcher.av.apikey", "SEOG69AIA6X9PGR2");
-		configuration.put("staging.fetcher.av.isinWkns", "DE0007164600");
-		configuration.put("mapping.file", fileFromResources.toString());
+		properties.load(new FileInputStream(ResourceUtils.getFileFromResources("config.properties")));
 
-		configurationProvider = key -> configuration.get(key);
+		properties.put("mapping.file", ResourceUtils.getFileFromResources("mapping.csv").toString());
+
+		configurationProvider = key -> properties.getProperty(key);
 		securityPointPersister = point -> securityPoints.add(point);
-		newSecurityPointSupplier = () -> new StaSecurityPoint();
+		newSecurityPointSupplier = () -> new StaSecurityBasePoint();
 
 	}
 
 	@Test
 	void integrationTest() {
+		
 		FetchingRunner fetchingRunner = new FetchingRunner(configurationProvider, securityPointPersister,
 				newSecurityPointSupplier);
 
 		fetchingRunner.run();
 
-		assertEquals(100, securityPoints.size());
+		List<StaSecurityBasePoint> avPoints = securityPoints.stream()
+				.filter(p -> p.getSource() == SecurityPointSource.ALPHAVANTAGE).collect(Collectors.toList());
+
+		List<StaSecurityBasePoint> xstuPoints = securityPoints.stream()
+				.filter(p -> p.getSource() == SecurityPointSource.BOERSE_STUTTGART).collect(Collectors.toList());
+
+		List<StaSecurityBasePoint> ovPoints = securityPoints.stream()
+				.filter(p -> p.getSource() == SecurityPointSource.ONVISTA).collect(Collectors.toList());
+
+		
+		assertEquals(100, avPoints.size());
+		assertEquals(40, xstuPoints.size());
+		assertEquals(253, ovPoints.size());
 	}
 
 }

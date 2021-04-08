@@ -11,15 +11,22 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import de.slag.invest.staging.logic.fetch.av.AvSecurityPointFetcherBuilder;
 import de.slag.invest.staging.logic.fetch.model.FetchSecurityPoint;
+import de.slag.invest.staging.logic.fetch.ov.OvSecurityPointFetcherBuilder;
+import de.slag.invest.staging.logic.fetch.xstu.XstuSecurityPointFetcherBuilder;
+import de.slag.invest.staging.logic.mapping.IsinWkn;
+import de.slag.invest.staging.logic.mapping.IsinWknOvNotationIdMapper;
+import de.slag.invest.staging.logic.mapping.IsinWknOvNotationIdMapperBuilder;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapper;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapperBuilder;
 import de.slag.invest.staging.logic.mapping.IsinWknXstuNotationIdMapper;
 import de.slag.invest.staging.logic.mapping.IsinWknXstuNotationIdMapperBuilder;
-import de.slag.invest.staging.model.StaSecurityPoint;
+import de.slag.invest.staging.model.StaSecurityBasePoint;
 
 public class FetchingRunner implements Runnable {
 
@@ -27,16 +34,18 @@ public class FetchingRunner implements Runnable {
 
 	private Function<String, String> configurationProvider;
 
-	private Consumer<StaSecurityPoint> securityPointPersister;
+	private Consumer<StaSecurityBasePoint> securityPointPersister;
 
-	private Supplier<StaSecurityPoint> newSecurityPointSupplier;
+	private Supplier<StaSecurityBasePoint> newSecurityPointSupplier;
 
 	private IsinWknSybmolMapper isinWknSybmolMapper;
 
 	private IsinWknXstuNotationIdMapper isinWknXstuNotationIdMapper;
 
+	private IsinWknOvNotationIdMapper isinWknOvNotationIdMapper;
+
 	public FetchingRunner(Function<String, String> configurationProvider,
-			Consumer<StaSecurityPoint> securityPointPersister, Supplier<StaSecurityPoint> newSecurityPointSupplier) {
+			Consumer<StaSecurityBasePoint> securityPointPersister, Supplier<StaSecurityBasePoint> newSecurityPointSupplier) {
 		super();
 		this.configurationProvider = configurationProvider;
 		this.securityPointPersister = securityPointPersister;
@@ -58,6 +67,7 @@ public class FetchingRunner implements Runnable {
 		isinWknSybmolMapper = new IsinWknSybmolMapperBuilder().withSourceFileName(mappingFileName).build();
 		isinWknXstuNotationIdMapper = new IsinWknXstuNotationIdMapperBuilder().withSourceFileName(mappingFileName)
 				.build();
+		isinWknOvNotationIdMapper = new IsinWknOvNotationIdMapperBuilder().withSourceFileName(mappingFileName).build();
 
 		List<SecurityPointsFetcher> fetchers = asList.stream().map(c -> createFetchers(c)).filter(o -> o.isPresent())
 				.map(o -> o.get()).collect(Collectors.toList());
@@ -77,8 +87,8 @@ public class FetchingRunner implements Runnable {
 				.forEach(e -> securityPointPersister.accept(e));
 	}
 
-	private StaSecurityPoint createStaSecurityPoint(FetchSecurityPoint f) {
-		StaSecurityPoint p = newSecurityPointSupplier.get();
+	private StaSecurityBasePoint createStaSecurityPoint(FetchSecurityPoint f) {
+		StaSecurityBasePoint p = newSecurityPointSupplier.get();
 		p.setCurrency(f.getCurrency());
 		p.setIsinWkn(f.getIsinWkn());
 		p.setSource(f.getSource());
@@ -88,30 +98,61 @@ public class FetchingRunner implements Runnable {
 		return p;
 	}
 
-	private Optional<SecurityPointsFetcher> createFetchers(String c) {
-		switch (c) {
+	private Optional<SecurityPointsFetcher> createFetchers(String fetcherName) {
+		switch (fetcherName) {
 		case "av":
 			return createAvFetcher();
 		case "ov":
-			// TODO implement
+			return createOvFetcher();
 		case "xstu":
-			// TODO implement
+			return createXstuFetcher();
 		default:
 			return Optional.empty();
 		}
 	}
 
-	private Optional<SecurityPointsFetcher> createAvFetcher() {
-		String apikey = getConfig("staging.fetcher.av.apikey");
+	private Optional<SecurityPointsFetcher> createOvFetcher() {
 
-		String isinWkns = getConfig("staging.fetcher.av.isinWkns");
+		String isinWknsConfig = getConfig("staging.fetcher.ov.ininWkns");
+		if (StringUtils.isEmpty(isinWknsConfig)) {
+			return Optional.empty();
+		}
+
+		final List<IsinWkn> isinWkns = Arrays.asList(isinWknsConfig.split(";")).stream().map(e -> IsinWkn.of(e))
+				.collect(Collectors.toList());
+
+		return Optional.of(new OvSecurityPointFetcherBuilder().withNotationIdMapper(isinWknOvNotationIdMapper)
+				.withIsinWkns(isinWkns).build());
+	}
+
+	private Optional<SecurityPointsFetcher> createXstuFetcher() {
+		String isinWknsConfig = getConfig("staging.fetcher.xstu.isinWkns");
+		if (StringUtils.isEmpty(isinWknsConfig)) {
+			return Optional.empty();
+		}
+
+		final List<IsinWkn> isinWkns = Arrays.asList(isinWknsConfig.split(";")).stream().map(e -> IsinWkn.of(e))
+				.collect(Collectors.toList());
+
+		return Optional.of(new XstuSecurityPointFetcherBuilder().withIsinWkns(isinWkns)
+				.withMapper(isinWknXstuNotationIdMapper).build());
+	}
+
+	private Optional<SecurityPointsFetcher> createAvFetcher() {
+		String isinWknsConfig = getConfig("staging.fetcher.av.isinWkns");
+		if (StringUtils.isEmpty(isinWknsConfig)) {
+			return Optional.empty();
+		}
+		final List<IsinWkn> isinWkns = Arrays.asList(isinWknsConfig.split(";")).stream().map(e -> IsinWkn.of(e))
+				.collect(Collectors.toList());
+
+		String apikey = getConfig("staging.fetcher.av.apikey");
 
 		Integer maxPerMinute = Integer.valueOf(getConfig("staging.fetcher.av.maxPerMinute", "4"));
 
-		AvSecurityPointFetcher av = new AvSecurityPointFetcher(apikey, Arrays.asList(isinWkns), isinWknSybmolMapper,
-				maxPerMinute);
+		return Optional.of(new AvSecurityPointFetcherBuilder().withApiKey(apikey).withIsinWkns(isinWkns)
+				.withIsinWknSybmolMapper(isinWknSybmolMapper).withMaxPerMinute(maxPerMinute).build());
 
-		return Optional.of(av);
 	}
 
 	private String getConfig(String key) {

@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.Builder;
 
 import de.slag.common.util.CsvUtils;
@@ -29,10 +30,15 @@ public class IsinWknXstuNotationIdMapperBuilder implements Builder<IsinWknXstuNo
 
 	@Override
 	public IsinWknXstuNotationIdMapper build() {
-		if(provider != null) {
+
+		if (provider != null) {
 			return new IsinWknXstuNotationIdMapper(provider);
 		}
-		
+
+		if (StringUtils.isBlank(sourceFileName)) {
+			throw new IllegalStateException("sourceFileName not setted");
+		}
+
 		Collection<CSVRecord> records = CsvUtils.readRecords(sourceFileName);
 		Map<String, String> map = new HashMap<>();
 		records.forEach(rec -> {
