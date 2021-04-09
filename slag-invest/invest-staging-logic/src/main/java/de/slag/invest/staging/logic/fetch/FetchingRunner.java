@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import de.slag.common.model.beans.XiData;
 import de.slag.invest.staging.logic.fetch.av.AvSecurityPointFetcherBuilder;
 import de.slag.invest.staging.logic.fetch.model.FetchSecurityPoint;
 import de.slag.invest.staging.logic.fetch.ov.OvSecurityPointFetcherBuilder;
@@ -26,7 +27,6 @@ import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapper;
 import de.slag.invest.staging.logic.mapping.IsinWknSybmolMapperBuilder;
 import de.slag.invest.staging.logic.mapping.IsinWknXstuNotationIdMapper;
 import de.slag.invest.staging.logic.mapping.IsinWknXstuNotationIdMapperBuilder;
-import de.slag.invest.staging.model.StaSecurityBasePoint;
 
 public class FetchingRunner implements Runnable {
 
@@ -34,9 +34,9 @@ public class FetchingRunner implements Runnable {
 
 	private Function<String, String> configurationProvider;
 
-	private Consumer<StaSecurityBasePoint> securityPointPersister;
+	private Consumer<XiData> securityPointPersister;
 
-	private Supplier<StaSecurityBasePoint> newSecurityPointSupplier;
+	private Supplier<XiData> newSecurityPointSupplier;
 
 	private IsinWknSybmolMapper isinWknSybmolMapper;
 
@@ -44,12 +44,17 @@ public class FetchingRunner implements Runnable {
 
 	private IsinWknOvNotationIdMapper isinWknOvNotationIdMapper;
 
-	public FetchingRunner(Function<String, String> configurationProvider,
-			Consumer<StaSecurityBasePoint> securityPointPersister, Supplier<StaSecurityBasePoint> newSecurityPointSupplier) {
+	public FetchingRunner(Function<String, String> configurationProvider, Consumer<XiData> securityPointPersister,
+			Supplier<XiData> newSecurityPointSupplier, IsinWknSybmolMapper isinWknSybmolMapper,
+			IsinWknXstuNotationIdMapper xstuNotationIdMapper, IsinWknOvNotationIdMapper isinWknOvNotationIdMapper) {
 		super();
 		this.configurationProvider = configurationProvider;
 		this.securityPointPersister = securityPointPersister;
 		this.newSecurityPointSupplier = newSecurityPointSupplier;
+		this.isinWknSybmolMapper = isinWknSybmolMapper;
+		this.isinWknXstuNotationIdMapper = xstuNotationIdMapper;
+		this.isinWknOvNotationIdMapper = isinWknOvNotationIdMapper;
+
 	}
 
 	@Override
@@ -62,12 +67,12 @@ public class FetchingRunner implements Runnable {
 			return;
 		}
 
-		String mappingFileName = getConfig("mapping.file");
+//		String mappingFileName = getConfig("mapping.file");
 
-		isinWknSybmolMapper = new IsinWknSybmolMapperBuilder().withSourceFileName(mappingFileName).build();
-		isinWknXstuNotationIdMapper = new IsinWknXstuNotationIdMapperBuilder().withSourceFileName(mappingFileName)
-				.build();
-		isinWknOvNotationIdMapper = new IsinWknOvNotationIdMapperBuilder().withSourceFileName(mappingFileName).build();
+//		isinWknSybmolMapper = new IsinWknSybmolMapperBuilder().withSourceFileName(mappingFileName).build();
+//		isinWknXstuNotationIdMapper = new IsinWknXstuNotationIdMapperBuilder().withSourceFileName(mappingFileName)
+//				.build();
+//		isinWknOvNotationIdMapper = new IsinWknOvNotationIdMapperBuilder().withSourceFileName(mappingFileName).build();
 
 		List<SecurityPointsFetcher> fetchers = asList.stream().map(c -> createFetchers(c)).filter(o -> o.isPresent())
 				.map(o -> o.get()).collect(Collectors.toList());
@@ -83,17 +88,18 @@ public class FetchingRunner implements Runnable {
 			}
 			allFetchSecurityPoints.addAll(fetchSecurityPoints);
 		}
-		allFetchSecurityPoints.stream().map(f -> createStaSecurityPoint(f))
+		allFetchSecurityPoints.stream().map(f -> createExchangeImportData(f))
 				.forEach(e -> securityPointPersister.accept(e));
 	}
 
-	private StaSecurityBasePoint createStaSecurityPoint(FetchSecurityPoint f) {
-		StaSecurityBasePoint p = newSecurityPointSupplier.get();
-		p.setCurrency(f.getCurrency());
-		p.setIsinWkn(f.getIsinWkn());
-		p.setSource(f.getSource());
-		p.setTimestamp(f.getTimestamp());
-		p.setValue(f.getValue());
+	private XiData createExchangeImportData(FetchSecurityPoint f) {
+		XiData p = newSecurityPointSupplier.get();
+		p.setType(FetchSecurityPoint.class.getSimpleName());
+		p.addValue(FetchSecurityPoint.CURRENCY, f.getCurrency());
+		p.addValue(FetchSecurityPoint.ISIN_WKN, f.getIsinWkn());
+		p.addValue(FetchSecurityPoint.SECURITY_POINT_SOURCE, f.getSource().toString());
+		p.addValue(FetchSecurityPoint.TIMESTAMP, f.getTimestamp().toString());
+		p.addValue(FetchSecurityPoint.VALUE, f.getValue().toString());
 
 		return p;
 	}

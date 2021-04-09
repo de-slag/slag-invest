@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import de.slag.common.data.SysLogPersistService;
 import de.slag.common.logic.AdmParameterBusinessService;
-import de.slag.common.logic.XiBusinessService;
+import de.slag.common.logic.XiDataBusinessService;
 import de.slag.common.model.beans.SysLog;
 import de.slag.common.model.beans.SysLog.Severity;
 import de.slag.invest.staging.logic.StaSecurityPointBusinessService;
@@ -35,7 +35,7 @@ public class StaCentralSchedulingServiceImpl implements StaCentralSchedulingServ
 	private SysLogPersistService sysLogPersistService;
 
 	@Resource
-	private XiBusinessService xiBusinessService;
+	private XiDataBusinessService xiBusinessService;
 
 	@PostConstruct
 	public void init() {

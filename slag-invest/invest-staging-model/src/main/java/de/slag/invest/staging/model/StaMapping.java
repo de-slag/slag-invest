@@ -15,7 +15,10 @@ public class StaMapping extends EntityBean {
 	private String symbol;
 	
 	@Basic
-	private String XtsuNotationId;
+	private String xtsuNotationId;
+	
+	@Basic
+	private String ovNotationId;
 
 	public String getIsinWkn() {
 		return isinWkn;
@@ -34,11 +37,19 @@ public class StaMapping extends EntityBean {
 	}
 
 	public String getXtsuNotationId() {
-		return XtsuNotationId;
+		return xtsuNotationId;
 	}
 
 	public void setXtsuNotationId(String xtsuNotationId) {
-		XtsuNotationId = xtsuNotationId;
+		this.xtsuNotationId = xtsuNotationId;
+	}
+
+	public String getOvNotationId() {
+		return ovNotationId;
+	}
+
+	public void setOvNotationId(String ovNotationId) {
+		this.ovNotationId = ovNotationId;
 	}
 
 }

@@ -3,6 +3,8 @@ package de.slag.invest.staging.logic.mapping;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.builder.Builder;
@@ -13,6 +15,13 @@ public class IsinWknOvNotationIdMapperBuilder implements Builder<IsinWknOvNotati
 
 	private String sourceFileName;
 
+	private Function<String, Optional<String>> provider;
+
+	public IsinWknOvNotationIdMapperBuilder withProvider(Function<String, Optional<String>> provider) {
+		this.provider = provider;
+		return this;
+	}
+
 	public IsinWknOvNotationIdMapperBuilder withSourceFileName(String sourceFileName) {
 		this.sourceFileName = sourceFileName;
 		return this;
@@ -20,6 +29,10 @@ public class IsinWknOvNotationIdMapperBuilder implements Builder<IsinWknOvNotati
 
 	@Override
 	public IsinWknOvNotationIdMapper build() {
+		if (provider != null) {
+			return new IsinWknOvNotationIdMapper(provider);
+		}
+
 		Collection<CSVRecord> records = CsvUtils.readRecords(sourceFileName);
 		Map<String, String> map = new HashMap<>();
 		records.forEach(rec -> {

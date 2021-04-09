@@ -6,6 +6,18 @@ import java.util.Date;
 import de.slag.invest.staging.model.SecurityPointSource;
 
 public class FetchSecurityPoint {
+	
+	public static final String ISIN_WKN = "ISIN_WKN";
+	
+	public static final String TIMESTAMP = "TIMESTAMP";
+	
+	public static final String VALUE = "VALUE";
+	
+	public static final String CURRENCY = "CURRENCY";
+	
+	public static final String SECURITY_POINT_SOURCE = "SECURITY_POINT_SOURCE";
+	
+	
 
 	private String isinWkn;
 

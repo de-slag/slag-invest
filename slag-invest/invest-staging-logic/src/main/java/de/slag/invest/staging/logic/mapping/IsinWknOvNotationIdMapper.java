@@ -1,21 +1,22 @@
 package de.slag.invest.staging.logic.mapping;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
-public class IsinWknOvNotationIdMapper implements Function<IsinWkn, OvNotationId> {
-
-	private Map<String, String> isinWknOvNotationIds = new HashMap<>();
+public class IsinWknOvNotationIdMapper extends AbstractMapper<IsinWkn, OvNotationId> implements Function<IsinWkn, OvNotationId> {
 
 	IsinWknOvNotationIdMapper(Map<String, String> isinWknOvNotationIds) {
-		super();
-		this.isinWknOvNotationIds = isinWknOvNotationIds;
+		super(isinWknOvNotationIds);
+	}
+	
+	IsinWknOvNotationIdMapper(Function<String, Optional<String>> provider) {
+		super(provider);
 	}
 
 	@Override
-	public OvNotationId apply(IsinWkn isinWkn) {
-		return OvNotationId.of(isinWknOvNotationIds.get(isinWkn.getValue()));
+	protected OvNotationId of(String value) {
+		return OvNotationId.of(value);
 	}
 
 }
